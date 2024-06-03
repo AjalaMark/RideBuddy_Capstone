@@ -1,13 +1,10 @@
-import './Login.css';
 import { Link } from 'react-router-dom';
-import React from 'react';
 
 const Login = () => {
   return (
     <div className="login-page">
       <div className="background">
         <div className="cityscape">
-          {/* Add cityscape elements here if necessary */}
         </div>
       </div>
       <div className="login-box">
@@ -24,7 +21,7 @@ const Login = () => {
           </div>
           <button type="submit" className="login-button">Login</button>
           <div className="register-link">
-            <p style={{color:"black"}}>Don't have an account? <Link to="/Register">Register</Link> </p>
+            <p style={{color:"black"}}>Don't have an account? <Link to="/register">Register</Link> </p>
           </div>
         </form>
       </div>

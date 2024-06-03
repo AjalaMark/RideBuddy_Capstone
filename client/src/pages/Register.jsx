@@ -1,4 +1,3 @@
-import './Register.css';
 import { Link } from 'react-router-dom';
 
 const Register = () => {
@@ -6,7 +5,6 @@ const Register = () => {
     <div className="register-page">
       <div className="background">
         <div className="cityscape">
-          {/* Add cityscape elements here if necessary */}
         </div>
       </div>
       <div className="register-box">
