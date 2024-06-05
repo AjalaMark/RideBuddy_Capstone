@@ -4,12 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
-    "start": "nodemon app.js",
-=======
     "start": "node app.js",
     "dev": "nodemon app.js",
->>>>>>> Mark
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
