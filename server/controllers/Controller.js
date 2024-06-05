@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
-import { userModel } from "../models/UserModel";
+import { userModel } from "../models/UserModel.js";
 import {} from "dotenv/config.js";
+import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -8,7 +9,7 @@ export default class Controller {
   static post_register = async (req, res) => {
     try {
       const formData = req.body;
-      const userMatched = userModel.findOne({ email: formData.email });
+      const userMatched = await userModel.findOne({ email: formData.email });
       if (!userMatched) {
         const hashedPassword = await bcrypt.hash(formData.password, 10);
 
@@ -34,18 +35,18 @@ export default class Controller {
     try {
       const user = await userModel.findOne({ email });
       if (!user) {
-        return res.status(400).send("Invalid credentials");
+        return res.status(400).send("Invalid email");
       }
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).send("Invalid credentials");
+        return res.status(400).send("Invalid password");
       }
       const token = jwt.sign(
         { userId: user._id, email: user.email },
         SECRET_KEY,
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token });
+      res.status(200).json({ token, message: "login successful" });
     } catch (err) {
       res.status(500).send("Server error");
     }
