@@ -9,6 +9,8 @@ export default class Controller {
   static post_register = async (req, res) => {
     try {
       const formData = req.body;
+      console.log("Received form data:", formData);
+
       const userMatched = await userModel.findOne({ email: formData.email });
       if (!userMatched) {
         const hashedPassword = await bcrypt.hash(formData.password, 10);
@@ -21,12 +23,15 @@ export default class Controller {
           password: hashedPassword,
         });
         await user.save();
-        res.status(201).send("User registered");
+        res.status(201).json({ message: "User registered" });
       } else {
-        res.status(400).send("User already exists");
+        res.status(400).json({ message: "User already exists" });
       }
     } catch (err) {
-      res.status(400).send("Error registering user");
+      console.error("Error registering user:", err);
+      res
+        .status(500)
+        .json({ message: "Error registering user", error: err.message });
     }
   };
 
@@ -35,11 +40,11 @@ export default class Controller {
     try {
       const user = await userModel.findOne({ email });
       if (!user) {
-        return res.status(400).send("Invalid email");
+        return res.status(400).json({ message: "Invalid email" });
       }
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).send("Invalid password");
+        return res.status(400).json({ message: "Invalid password" });
       }
       const token = jwt.sign(
         { userId: user._id, email: user.email },
