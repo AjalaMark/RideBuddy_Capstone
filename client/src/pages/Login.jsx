@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import CryptoJS from 'crypto-js';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,12 +11,13 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
+      const encPassword = CryptoJS.AES.encrypt(password, 'ride-buddy-aes-key').toString();
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password: encPassword }),
       });
       const data = await response.json();
       if (response.ok) {

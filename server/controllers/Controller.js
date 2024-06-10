@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { userModel } from "../models/UserModel.js";
 import {} from "dotenv/config.js";
 import jwt from "jsonwebtoken";
+import CryptoJS from "crypto-js";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -42,7 +43,9 @@ export default class Controller {
       if (!user) {
         return res.status(400).json({ message: "Invalid email" });
       }
-      const isMatch = await bcrypt.compare(password, user.password);
+      const oriPassword  = CryptoJS.AES.decrypt(password, 'ride-buddy-aes-key').toString(CryptoJS.enc.Utf8);
+      console.log("oriPassword: ", oriPassword);
+      const isMatch = await bcrypt.compare(oriPassword, user.password);
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid password" });
       }
