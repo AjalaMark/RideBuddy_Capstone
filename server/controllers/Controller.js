@@ -43,7 +43,10 @@ export default class Controller {
       if (!user) {
         return res.status(400).json({ message: "Invalid email" });
       }
-      const oriPassword  = CryptoJS.AES.decrypt(password, 'ride-buddy-aes-key').toString(CryptoJS.enc.Utf8);
+      let oriPassword  = CryptoJS.AES.decrypt(password, 'ride-buddy-aes-key').toString(CryptoJS.enc.Utf8);
+      if (req.body?.notEncrypted) {
+        oriPassword = password
+      }
       console.log("oriPassword: ", oriPassword);
       const isMatch = await bcrypt.compare(oriPassword, user.password);
       if (!isMatch) {

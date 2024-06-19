@@ -1,10 +1,9 @@
-import {Schema} from "mongoose";
+import {model, Schema} from "mongoose";
 
 const rideSchema = Schema({
     car: {
         type: Schema.ObjectId,
         ref: "Car",
-        required: true
     },
     driver: {
         type: Schema.ObjectId,
@@ -22,11 +21,11 @@ const rideSchema = Schema({
         required: true
     },
     departTime: {
-        type: Schema.Date,
+        type: Date,
         required: true
     }
 
 })
 
-const RideModel = mongoose.model("Ride", rideSchema);
+const RideModel = model("Ride", rideSchema);
 export { RideModel };
