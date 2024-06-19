@@ -3,8 +3,6 @@ import router from "./routes/routes.js";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
-
-import { userModel } from "./models/UserModel.js";
 import {} from "dotenv/config.js";
 
 const uri = process.env.MONGO_URI;

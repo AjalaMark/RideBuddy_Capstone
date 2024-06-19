@@ -3,6 +3,8 @@ import { userModel } from "../models/UserModel.js";
 import {} from "dotenv/config.js";
 import jwt from "jsonwebtoken";
 import CryptoJS from "crypto-js";
+import { PostRideModel } from "../models/PostRideModel.js";
+import { CityModel } from "../models/CityModel.js";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -115,7 +117,7 @@ export default class Controller {
       if (!startCityObj || !endCityObj || !departTime) {
         return res.status(500).json({ message: "fields missing" });
       }
-      const ride = new RideModel({
+      const ride = new PostRideModel({
         driver: req.user.userId,
         startCity: startCityObj._id,
         endCity: endCityObj._id,
