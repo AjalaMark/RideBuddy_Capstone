@@ -99,7 +99,7 @@ export default class Controller {
         };
       }
 
-      const rides = await RideModel.find(filter)
+      const rides = await PostRideModel.find(filter)
         .populate("driver")
         .populate("startCity")
         .populate("endCity");
