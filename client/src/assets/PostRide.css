@@ -1,0 +1,32 @@
+body, html {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+section.mb-5 {
+    margin-top: 10px;
+    text-align: center;
+}
+
+section.mb-5 h3 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+section.mb-5 label {
+    font-weight: bold;
+}
+
+section.mb-5 .form-control {
+    font-size: 14px;
+    background-color: #f0f0f0;
+    border-color: #ccc;
+    width: 300px;
+    margin: 0 auto;
+}
+
+section.mb-5 input[type="time"]::-webkit-calendar-picker-indicator,
+section.mb-5 input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
