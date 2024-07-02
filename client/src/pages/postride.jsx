@@ -28,6 +28,7 @@ const PostRide = () => {
       const token = localStorage.getItem("token");
       if (!token) {
         setError("Authentication token not found. Please log in.");
+        navigate("/login");
         return;
       }
       const response = await fetch("http://localhost:3000/ride", {

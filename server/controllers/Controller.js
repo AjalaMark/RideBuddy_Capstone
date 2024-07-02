@@ -110,18 +110,18 @@ export default class Controller {
   };
   static post_ride = async (req, res) => {
     try {
-      let { startCity, endCity, departTime } = req.body;
-      const startCityObj = await CityModel.findOne({ name: startCity });
-      const endCityObj = await CityModel.findOne({ name: endCity });
-      departTime = new Date(departTime);
-      if (!startCityObj || !endCityObj || !departTime) {
-        return res.status(500).json({ message: "fields missing" });
+      let { origin, destination, departureTime } = req.body;
+      const startCityObj = await CityModel.findOne({ name: origin });
+      const endCityObj = await CityModel.findOne({ name: destination });
+      departureTime = new Date(departureTime);
+      if (!startCityObj || !endCityObj || !departureTime) {
+        return res.status(400).json({ message: "fields missing" });
       }
       const ride = new PostRideModel({
         driver: req.user.userId,
         startCity: startCityObj._id,
         endCity: endCityObj._id,
-        departTime,
+        departTime: departureTime,
       });
       await ride.save();
       res.status(200).json({ message: "ride post successfully" });
