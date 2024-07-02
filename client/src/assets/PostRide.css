@@ -1,32 +1,107 @@
-body, html {
+/* body, html {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
+} */
+.parent-container {
+    font-family: Arial, sans-serif;
+    
+    color: #004e56;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    
+}
+
+.child-container {
+    display: flex;
+    justify-content: center;
 }
 
 section.mb-5 {
     margin-top: 10px;
-    text-align: center;
+    /* text-align: center; */
 }
 
 section.mb-5 h3 {
     margin-bottom: 10px;
     font-weight: bold;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 section.mb-5 label {
     font-weight: bold;
+    color: #2E5862;
+    margin: 7px;
 }
 
 section.mb-5 .form-control {
     font-size: 14px;
-    background-color: #f0f0f0;
-    border-color: #ccc;
+    background-color: rgb(46, 88, 98,0.09);
+    border-color: rgb(46, 88, 98,0.09);
     width: 300px;
-    margin: 0 auto;
+    margin: 5px auto;
+}
+
+hr{
+    border: none;
+    height: 7px;
+    background-color: #2E5862; /* Adjust this color to match the desired one */
+    border-radius: 50px;
+    margin: 20px 0;
+    width: 80px;
+}
+
+h1{
+    font-weight: 600;
+    color: #2E5862;
+}
+
+h3{
+    color: #2E5862;
+}
+
+section p{
+    color: hsla(190, 100%, 16%, 0.6);
+    font-weight: 300;
 }
 
 section.mb-5 input[type="time"]::-webkit-calendar-picker-indicator,
 section.mb-5 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
+}
+.main-container{
+    display: flex;
+    width: 70%;
+}
+/* .container{
+    width: 60%;
+} */
+
+
+
+input[type="text"],
+input[type="time"],
+input[type="date"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #2E5862;
+    border-radius: 5px;
+    color: #004553;
+    font-size: 16px;
+}
+
+.btn{
+    background-color: #004553;
+    border: 1px solid #004553;
+}
+
+.btn:hover{
+    background-color: rgba(0, 69, 83, 0.1);
+    border: 1px solid #004553;
+    color: #004553;
 }

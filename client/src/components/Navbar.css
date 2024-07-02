@@ -4,6 +4,10 @@
   }
   
   .text-blue {
-    color: blue !important;
+    color: #2ED1FF !important;
+    font-weight: 700;
+    font-size: large;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   
