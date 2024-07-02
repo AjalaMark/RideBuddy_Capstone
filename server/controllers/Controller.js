@@ -129,4 +129,33 @@ export default class Controller {
       res.status(500).json({ message: e.message });
     }
   };
+
+  static get_city = async (req, res) => {
+    try {
+      const city = await CityModel.find();
+      res.status(200).json({ city, message: "city get successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+  // {
+  //   "city": ["Guelph", "Waterloo", "Kitchener", "Toronto", "Barrie", "Kingston", "Hamilton", "Oshawa", "Windsor", "Mississauga",
+  //   "Brantford", "Thunder Bay", "Brampton", "North Bay", "Ottawa", "Cambridge", "Stratford", "London"]
+  // }
+  static post_city = async (req, res) => {
+    try {
+      if (!Array.isArray(req.body?.city)) {
+        throw new Error("should have a city field which type is Array")
+      }
+      let data = []
+      req.body.city.forEach((city)=>{
+        data.push({name: city})
+      })
+      await CityModel.create(data, {aggregateErrors: true});
+      res.status(200).json({ message: "city post successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+
 }
