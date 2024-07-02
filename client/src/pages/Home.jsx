@@ -17,8 +17,7 @@ const HomePage = () => {
   return (
     <div>
       <header className="bg-primary text-white">
-      <Navbar textColor="text-white" />
-
+        <Navbar textColor="text-white" />
         <SearchBar />
       </header>
       <main className="container my-5">
