@@ -1,5 +1,5 @@
-import express from "express";
 import {} from "dotenv/config.js";
+import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 

@@ -8,6 +8,7 @@ router
   .post("/login", Controller.post_login)
   .post("/register", Controller.post_register)
   .get("/home", authenticateToken, Controller.get_home)
-  .post("/post-ride", authenticateToken, Controller.post_ride);
+  .get("/ride", authenticateToken, Controller.get_ride)
+  .post("/ride", authenticateToken, Controller.post_ride);
 
 export default router;

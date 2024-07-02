@@ -3,6 +3,8 @@ import { userModel } from "../models/UserModel.js";
 import {} from "dotenv/config.js";
 import jwt from "jsonwebtoken";
 import CryptoJS from "crypto-js";
+import { PostRideModel } from "../models/PostRideModel.js";
+import { CityModel } from "../models/CityModel.js";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -43,10 +45,13 @@ export default class Controller {
       if (!user) {
         return res.status(400).json({ message: "Invalid email" });
       }
-      const oriPassword = CryptoJS.AES.decrypt(
+      let oriPassword = CryptoJS.AES.decrypt(
         password,
         "ride-buddy-aes-key"
       ).toString(CryptoJS.enc.Utf8);
+      if (req.body?.notEncrypted) {
+        oriPassword = password;
+      }
       console.log("oriPassword: ", oriPassword);
       const isMatch = await bcrypt.compare(oriPassword, user.password);
       if (!isMatch) {
@@ -67,5 +72,61 @@ export default class Controller {
     res.status(200).json({ message: "Welcome to the Home Page" });
   };
 
-  static post_ride = async (req, res) => {};
+  static get_ride = async (req, res) => {
+    try {
+      let filter = {};
+      const { startCity, endCity, departTime, passengerNum } = req.body;
+      if (startCity) {
+        const startCityObj = await CityModel.findOne({ name: startCity });
+        if (startCityObj) {
+          filter.startCity = { _id: startCityObj._id };
+        }
+      }
+      if (endCity) {
+        const endCityObj = await CityModel.findOne({ name: endCity });
+        if (endCityObj) {
+          filter.endCity = { _id: endCityObj._id };
+        }
+      }
+      if (departTime) {
+        let departTimeDateLT1H = new Date(departTime);
+        departTimeDateLT1H.setHours(departTimeDateLT1H.getHours() + 1);
+        let departTimeDateGT1H = new Date(departTime);
+        departTimeDateGT1H.setHours(departTimeDateGT1H.getHours() - 1);
+        filter.departTime = {
+          $lte: departTimeDateLT1H,
+          $gte: departTimeDateGT1H,
+        };
+      }
+
+      const rides = await PostRideModel.find(filter)
+        .populate("driver")
+        .populate("startCity")
+        .populate("endCity");
+      res.status(200).json({ rides, message: "ride get successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+  static post_ride = async (req, res) => {
+    try {
+      let { startCity, endCity, departTime } = req.body;
+      const startCityObj = await CityModel.findOne({ name: startCity });
+      const endCityObj = await CityModel.findOne({ name: endCity });
+      departTime = new Date(departTime);
+      if (!startCityObj || !endCityObj || !departTime) {
+        return res.status(500).json({ message: "fields missing" });
+      }
+      const ride = new PostRideModel({
+        driver: req.user.userId,
+        startCity: startCityObj._id,
+        endCity: endCityObj._id,
+        departTime,
+      });
+      await ride.save();
+      res.status(200).json({ message: "ride post successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
 }

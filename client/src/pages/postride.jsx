@@ -25,10 +25,16 @@ const PostRide = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/post-ride", {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Authentication token not found. Please log in.");
+        return;
+      }
+      const response = await fetch("http://localhost:3000/ride", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           origin,
@@ -60,6 +66,7 @@ const PostRide = () => {
       }
     } catch (error) {
       setError("An error occurred. Please try again.");
+      console.log(error);
     }
   };
 
