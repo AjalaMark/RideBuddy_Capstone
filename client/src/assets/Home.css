@@ -12,19 +12,17 @@ header {
 }
 
 #header {
-  background-image: url('./carpool_only_large-1fb250954893109fa160.svg');
+  background-image: url("./carpool_only_large-1fb250954893109fa160.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   height: 350px;
 }
 
-
 .icon-img {
-  width: 50px; 
+  width: 50px;
   height: 50px;
 }
-
 
 #header .form-control {
   margin-bottom: 10px;
@@ -56,7 +54,7 @@ section ul {
 }
 
 section ul li {
-  background: url('check-icon.png') no-repeat left center;
+  background: url("check-icon.png") no-repeat left center;
   color: #333;
   padding-left: 25px;
   margin-bottom: 10px;
@@ -72,8 +70,8 @@ button {
 }
 
 .tick-mark {
-  width: 16px; 
-  margin-right: 8px; 
+  width: 16px;
+  margin-right: 8px;
   vertical-align: middle;
 }
 
@@ -111,7 +109,7 @@ button:hover {
 .user-icon {
   width: 50px;
   height: 50px;
-  background: url('path-to-icon.png') no-repeat center center;
+  background: url("path-to-icon.png") no-repeat center center;
   background-size: contain;
   margin-top: 20px;
 }
