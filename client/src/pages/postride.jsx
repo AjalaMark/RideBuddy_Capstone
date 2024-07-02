@@ -74,31 +74,29 @@ const PostRide = () => {
   return (
     <>
       <Navbar textColor="text-blue" />
-    <div class='parent-container'>
-    <div class='child-container'>
-        <div className="container my-5">
-          <div >
-            <h1>
-              Post a Ride
-            </h1>
-            <hr />
-          </div>
+      <div className="parent-container">
+        <div className="child-container">
+          <div className="container my-5">
+            <div>
+              <h1>Post a Ride</h1>
+              <hr />
+            </div>
 
-          <form onSubmit={handlePost}>
-            <section className="mb-5">
-              <h3>Travel Plan</h3>
-              <p>
-                Your origin and destination you&apos;re willing to make along the
-                way.
-              </p>
-              <div className="form-group row">
-                <label
-                  htmlFor="origin"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Origin
-                </label>
-                
+            <form onSubmit={handlePost}>
+              <section className="mb-5">
+                <h3>Travel Plan</h3>
+                <p>
+                  Your origin and destination you&apos;re willing to make along
+                  the way.
+                </p>
+                <div className="form-group row">
+                  <label
+                    htmlFor="origin"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Origin
+                  </label>
+
                   <input
                     type="text"
                     className="form-control"
@@ -108,15 +106,15 @@ const PostRide = () => {
                     placeholder="Enter an origin"
                   />
                 </div>
-              
-              <div className="form-group row">
-                <label
-                  htmlFor="destination"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Destination
-                </label>
-                
+
+                <div className="form-group row">
+                  <label
+                    htmlFor="destination"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Destination
+                  </label>
+
                   <input
                     type="text"
                     className="form-control"
@@ -125,25 +123,24 @@ const PostRide = () => {
                     onChange={(e) => setDestination(e.target.value)}
                     placeholder="Enter a destination"
                   />
-                
-              </div>
-            </section>
-            <hr />
-            
+                </div>
+              </section>
+              <hr />
 
-            <section className="mb-5">
-              <h3>Ride Schedule</h3>
-              <p>
-                Enter a precise date and time with am (morning) or pm (evening).
-              </p>
-              <div className="form-group row">
-                <label
-                  htmlFor="departure-time"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Time for Leaving
-                </label>
-                
+              <section className="mb-5">
+                <h3>Ride Schedule</h3>
+                <p>
+                  Enter a precise date and time with am (morning) or pm
+                  (evening).
+                </p>
+                <div className="form-group row">
+                  <label
+                    htmlFor="departure-time"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Time for Leaving
+                  </label>
+
                   <input
                     type="time"
                     className="form-control"
@@ -151,16 +148,15 @@ const PostRide = () => {
                     value={departureTime}
                     onChange={(e) => setDepartureTime(e.target.value)}
                   />
-                
-              </div>
-              <div className="form-group row">
-                <label
-                  htmlFor="return-time"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Time for Returning
-                </label>
-                
+                </div>
+                <div className="form-group row">
+                  <label
+                    htmlFor="return-time"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Time for Returning
+                  </label>
+
                   <input
                     type="time"
                     className="form-control"
@@ -168,16 +164,15 @@ const PostRide = () => {
                     value={returnTime}
                     onChange={(e) => setReturnTime(e.target.value)}
                   />
-                
-              </div>
-              <div className="form-group row">
-                <label
-                  htmlFor="travel-date"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Travel Date
-                </label>
-                
+                </div>
+                <div className="form-group row">
+                  <label
+                    htmlFor="travel-date"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Travel Date
+                  </label>
+
                   <input
                     type="date"
                     className="form-control"
@@ -185,25 +180,24 @@ const PostRide = () => {
                     value={travelDate}
                     onChange={(e) => setTravelDate(e.target.value)}
                   />
-                
-              </div>
-            </section>
+                </div>
+              </section>
 
-            <hr />
-            <section className="mb-5">
-              <h3>Vehicle Details</h3>
-              <p>
-                This helps you get more bookings and makes it easier for
-                passengers to identify your vehicle.
-              </p>
-              <div className="form-group row">
-                <label
-                  htmlFor="car-model"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Model
-                </label>
-                
+              <hr />
+              <section className="mb-5">
+                <h3>Vehicle Details</h3>
+                <p>
+                  This helps you get more bookings and makes it easier for
+                  passengers to identify your vehicle.
+                </p>
+                <div className="form-group row">
+                  <label
+                    htmlFor="car-model"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Model
+                  </label>
+
                   <input
                     type="text"
                     className="form-control"
@@ -212,16 +206,15 @@ const PostRide = () => {
                     onChange={(e) => setCarModel(e.target.value)}
                     placeholder="Name of the car"
                   />
-                
-              </div>
-              <div className="form-group row">
-                <label
-                  htmlFor="car-type"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Type
-                </label>
-                
+                </div>
+                <div className="form-group row">
+                  <label
+                    htmlFor="car-type"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Type
+                  </label>
+
                   <select
                     className="form-control"
                     id="car-type"
@@ -236,15 +229,15 @@ const PostRide = () => {
                     <option value="hybrid">Hybrid/Electric</option>
                   </select>
                 </div>
-              
-              <div className="form-group row">
-                <label
-                  htmlFor="car-color"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Color
-                </label>
-                
+
+                <div className="form-group row">
+                  <label
+                    htmlFor="car-color"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Color
+                  </label>
+
                   <select
                     className="form-control"
                     id="car-color"
@@ -259,15 +252,15 @@ const PostRide = () => {
                     <option value="blue">Blue</option>
                   </select>
                 </div>
-              
-              <div className="form-group row">
-                <label
-                  htmlFor="car-year"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Year
-                </label>
-                
+
+                <div className="form-group row">
+                  <label
+                    htmlFor="car-year"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Year
+                  </label>
+
                   <input
                     type="number"
                     className="form-control"
@@ -278,15 +271,15 @@ const PostRide = () => {
                     min="2017"
                   />
                 </div>
-              
-              <div className="form-group row">
-                <label
-                  htmlFor="licence-plate"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  License Plate
-                </label>
-                
+
+                <div className="form-group row">
+                  <label
+                    htmlFor="licence-plate"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    License Plate
+                  </label>
+
                   <input
                     type="text"
                     className="form-control"
@@ -296,20 +289,19 @@ const PostRide = () => {
                     placeholder="License Plate"
                   />
                 </div>
-              
-            </section>
+              </section>
 
-            <hr />
-            <section className="mb-5">
-              <h3>Empty Seats</h3>
-              <div className="form-group row">
-                <label
-                  htmlFor="seats-number"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Select Number of Seats
-                </label>
-              
+              <hr />
+              <section className="mb-5">
+                <h3>Empty Seats</h3>
+                <div className="form-group row">
+                  <label
+                    htmlFor="seats-number"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Select Number of Seats
+                  </label>
+
                   <select
                     className="form-control"
                     id="seats-number"
@@ -321,25 +313,24 @@ const PostRide = () => {
                     <option value="2">2</option>
                     <option value="3">3</option>
                   </select>
-                
-              </div>
-            </section>
-            
-            <hr />
-            <section className="mb-5">
-              <h3>Pricing</h3>
-              <p>
-                Enter a fair price per seat to cover your gas and other expenses.
-                Note that all prices are CAD.
-              </p>
-              <div className="form-group row">
-                <label
-                  htmlFor="seat-price"
-                  className="col-sm-5 col-form-label text-right"
-                >
-                  Price per Seat (CAD)
-                </label>
-                
+                </div>
+              </section>
+
+              <hr />
+              <section className="mb-5">
+                <h3>Pricing</h3>
+                <p>
+                  Enter a fair price per seat to cover your gas and other
+                  expenses. Note that all prices are CAD.
+                </p>
+                <div className="form-group row">
+                  <label
+                    htmlFor="seat-price"
+                    className="col-sm-5 col-form-label text-right"
+                  >
+                    Price per Seat (CAD)
+                  </label>
+
                   <input
                     type="number"
                     className="form-control"
@@ -348,22 +339,21 @@ const PostRide = () => {
                     onChange={(e) => setSeatPrice(e.target.value)}
                     placeholder="Enter price per seat"
                   />
-                
+                </div>
+              </section>
+
+              {error && <div className="error-message">{error}</div>}
+
+              <div className="text-center">
+                <button type="submit" className="btn btn-primary">
+                  Post Ride
+                </button>
               </div>
-            </section>
-
-            {error && <div className="error-message">{error}</div>}
-
-            <div className="text-center">
-              <button type="submit" className="btn btn-primary">
-                Post Ride
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-    </div>
-    </div>
-            <Footer />
+      </div>
+      <Footer />
     </>
   );
 };
