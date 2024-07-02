@@ -43,7 +43,10 @@ export default class Controller {
       if (!user) {
         return res.status(400).json({ message: "Invalid email" });
       }
-      const oriPassword  = CryptoJS.AES.decrypt(password, 'ride-buddy-aes-key').toString(CryptoJS.enc.Utf8);
+      const oriPassword = CryptoJS.AES.decrypt(
+        password,
+        "ride-buddy-aes-key"
+      ).toString(CryptoJS.enc.Utf8);
       console.log("oriPassword: ", oriPassword);
       const isMatch = await bcrypt.compare(oriPassword, user.password);
       if (!isMatch) {
@@ -63,4 +66,6 @@ export default class Controller {
   static get_home = (req, res) => {
     res.status(200).json({ message: "Welcome to the Home Page" });
   };
+
+  static post_ride = async (req, res) => {};
 }
