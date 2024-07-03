@@ -13,7 +13,8 @@ import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import Footer from "../components/Footer";
 
-const HomePage = () => {
+const HomePage = () => 
+  {
   return (
     <div>
       <header className="text-white">
