@@ -19,54 +19,114 @@ body {
 }
 
 .main-container {
-    padding: 2rem;
+    padding: 80px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    
 }
 
 h1 {
     text-align: center;
     margin-bottom: 2rem;
 }
+.driver-image-container{
+    flex:1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.driver-image-container > div{
+    width: 200px; 
+    height: 200px; 
+    border: solid 1px #004e56;
+    border-radius: 50%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(19, 19, 19); 
+    font-family: Arial, sans-serif; 
+}
+.ride-price-container {
+    /* text-align: right; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex:1;
+}
 .rides-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    
 }
 
 .ride-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #ddd;
+    border: solid 1.5px #004e56;
     padding: 1rem;
-    border-radius: 5px;
+    border-radius: 30px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: white;
 }
 
-.ride-details {
-    flex-grow: 1;
-    padding-right: 1rem;
-    text-align: center;
+.ride-card:hover{
+    border: solid 1.5px #F1890E;
 }
 
-.ride-details h2 {
+.ride-details-container {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 2; 
+}
+
+.ride-details-container h2 {
     margin: 0 0 0.5rem;
 }
 
-.ride-price-container {
-    text-align: right;
+.rout, .leaving{
+    font-size: 25px;
+    font-weight: 550;
+    color: #004e56;
+}
+
+.leaving, .returning{
+    font-size: 20px;
+    font-weight: 450;
+    color: #004e56;
+    margin: 1px;
+}
+
+.pick-up, .drop-off{
+    font-size: 20px;
+    font-weight: 450;
+    color: rgb(0, 78, 86,0.5);
+    margin: 1px;
+}
+
+.leaving-returning-container, .pickup-dropoff-container{
+    display: flex;
+    flex-direction: column;
+    padding: 11px 0px;
 }
 
 .ride-price {
-    font-size: 1.5rem;
+    font-size: 3.5rem;
     color: orange;
     font-weight: bold;
 }
 
 .seats-left {
-    font-size: 1rem;
-    color: #333;
+    font-size: 20px;
+    font-weight: 350;
+    color: #004e56;
 }
 
 .footer {
