@@ -96,15 +96,32 @@ const PostRide = () => {
                   >
                     Origin
                   </label>
-
-                  <input
-                    type="text"
+                  <select
                     className="form-control"
                     id="origin"
                     value={origin}
                     onChange={(e) => setOrigin(e.target.value)}
-                    placeholder="Enter an origin"
-                  />
+                  >
+                    <option value="">Select an Origin</option>
+                    <option value="Guelph">Guelph</option>
+                    <option value="Waterloo">Waterloo</option>
+                    <option value="Kitchener">Kitchener</option>
+                    <option value="Toronto">Toronto</option>
+                    <option value="Barrie">Barrie</option>
+                    <option value="Kingston">Kingston</option>
+                    <option value="Hamilton">Hamilton</option>
+                    <option value="Oshawa">Oshawa</option>
+                    <option value="Windsor">Windsor</option>
+                    <option value="Mississauga">Mississauga</option>
+                    <option value="Brantford">Brantford</option>
+                    <option value="Thunder Bay">Thunder Bay</option>
+                    <option value="Brampton">Brampton</option>
+                    <option value="North Bay">North Bay</option>
+                    <option value="Ottawa">Ottawa</option>
+                    <option value="Cambridge">Cambridge</option>
+                    <option value="Stratford">Stratford</option>
+                    <option value="London">London</option>
+                  </select>
                 </div>
 
                 <div className="form-group row">
@@ -114,15 +131,32 @@ const PostRide = () => {
                   >
                     Destination
                   </label>
-
-                  <input
-                    type="text"
+                  <select
                     className="form-control"
                     id="destination"
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
-                    placeholder="Enter a destination"
-                  />
+                  >
+                    <option value="">Select a Destination</option>
+                    <option value="Guelph">Guelph</option>
+                    <option value="Waterloo">Waterloo</option>
+                    <option value="Kitchener">Kitchener</option>
+                    <option value="Toronto">Toronto</option>
+                    <option value="Barrie">Barrie</option>
+                    <option value="Kingston">Kingston</option>
+                    <option value="Hamilton">Hamilton</option>
+                    <option value="Oshawa">Oshawa</option>
+                    <option value="Windsor">Windsor</option>
+                    <option value="Mississauga">Mississauga</option>
+                    <option value="Brantford">Brantford</option>
+                    <option value="Thunder Bay">Thunder Bay</option>
+                    <option value="Brampton">Brampton</option>
+                    <option value="North Bay">North Bay</option>
+                    <option value="Ottawa">Ottawa</option>
+                    <option value="Cambridge">Cambridge</option>
+                    <option value="Stratford">Stratford</option>
+                    <option value="London">London</option>
+                  </select>
                 </div>
               </section>
               <hr />
