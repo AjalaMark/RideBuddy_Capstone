@@ -75,17 +75,18 @@ export default class Controller {
   static get_ride = async (req, res) => {
     try {
       let filter = {};
-      const { startCity, endCity, departTime, passengerNum } = req.body;
+      const { startCity, endCity, departTime, passengerNum } = req.query;
+
       if (startCity) {
         const startCityObj = await CityModel.findOne({ name: startCity });
         if (startCityObj) {
-          filter.startCity = { _id: startCityObj._id };
+          filter.startCity = startCityObj._id;
         }
       }
       if (endCity) {
         const endCityObj = await CityModel.findOne({ name: endCity });
         if (endCityObj) {
-          filter.endCity = { _id: endCityObj._id };
+          filter.endCity = endCityObj._id;
         }
       }
       if (departTime) {
@@ -103,11 +104,14 @@ export default class Controller {
         .populate("driver")
         .populate("startCity")
         .populate("endCity");
-      res.status(200).json({ rides, message: "ride get successfully" });
+      res
+        .status(200)
+        .json({ rides, message: "Ride(s) retrieved successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
   };
+
   static post_ride = async (req, res) => {
     try {
       let { origin, destination, departureTime } = req.body;

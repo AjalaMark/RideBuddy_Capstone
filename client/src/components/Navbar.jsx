@@ -9,7 +9,7 @@ const Navbar = (props) => {
         <Link className={`nav-link me-3 ${props.textColor}`} to="/home">
           Home
         </Link>
-        <Link className={`nav-link me-3 ${props.textColor}`} to="#find-ride">
+        <Link className={`nav-link me-3 ${props.textColor}`} to="/findride">
           Find Ride
         </Link>
         <Link className={`nav-link me-3 ${props.textColor}`} to="/postride">
