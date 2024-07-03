@@ -18,9 +18,6 @@ const Navbar = (props) => {
         <Link className={`nav-link me-3 ${props.textColor}`} to="#about-us">
           About Us
         </Link>
-        <Link className={`nav-link ${props.textColor}`} to="#login">
-          Login
-        </Link>
       </nav>
     </div>
   );
