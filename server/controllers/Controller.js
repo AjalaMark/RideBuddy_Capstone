@@ -118,18 +118,31 @@ export default class Controller {
       let {
         origin,
         destination,
+        departureTime,
+        returnTime,
         travelDate,
         carModel,
         carType,
-        licensePlate,
+        carColor,
         carYear,
+        licensePlate,
+        seatsNumber,
+        seatPrice,
       } = req.body;
+
+      const departTime = new Date(travelDate);
+      const returnTimeDate = new Date(returnTime);
+      const travelDateDate = new Date(travelDate);
+
+      if (isNaN(departTime) || isNaN(returnTimeDate) || isNaN(travelDateDate)) {
+        return res.status(400).json({ message: "Invalid date format" });
+      }
 
       const startCityObj = await CityModel.findOne({ name: origin });
       const endCityObj = await CityModel.findOne({ name: destination });
-      const departTime = new Date(travelDate);
-      if (!startCityObj || !endCityObj || !departTime) {
-        return res.status(400).json({ message: "fields missing" });
+
+      if (!startCityObj || !endCityObj) {
+        return res.status(400).json({ message: "Invalid cities" });
       }
       const car = new CarDetailsModel({
         make: carType,
@@ -147,6 +160,15 @@ export default class Controller {
         endCity: endCityObj._id,
         departTime: departTime,
         car: savedCar._id,
+        returnTime: returnTimeDate,
+        travelDate: travelDateDate,
+        carModel,
+        carType,
+        carColor,
+        carYear,
+        licensePlate,
+        seatsNumber,
+        seatPrice,
       });
 
       await ride.save();

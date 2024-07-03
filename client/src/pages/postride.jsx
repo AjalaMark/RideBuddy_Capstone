@@ -31,6 +31,25 @@ const PostRide = () => {
         navigate("/login");
         return;
       }
+
+      const combineDateAndTime = (date, time) => {
+        if (!date || !time) return null;
+        return new Date(`${date}T${time}:00`);
+      };
+
+      const departTime = combineDateAndTime(travelDate, departureTime);
+      const returnTimeDate = combineDateAndTime(travelDate, returnTime);
+
+      if (
+        !departTime ||
+        !returnTimeDate ||
+        isNaN(departTime) ||
+        isNaN(returnTimeDate)
+      ) {
+        setError("Invalid date or time format. Please check your inputs.");
+        return;
+      }
+
       const response = await fetch("http://localhost:3000/ride", {
         method: "POST",
         headers: {
@@ -40,8 +59,8 @@ const PostRide = () => {
         body: JSON.stringify({
           origin,
           destination,
-          departureTime,
-          returnTime,
+          departureTime: departTime.toISOString(),
+          returnTime: returnTimeDate.toISOString(),
           travelDate,
           carModel,
           carType,
@@ -61,7 +80,7 @@ const PostRide = () => {
 
       const data = await response.json();
       if (response.ok) {
-        // navigate("/rides");
+        navigate("/findride");
       } else {
         setError(data?.message || "An error occurred. Please try again.");
       }

@@ -58,10 +58,19 @@ const FindRide = () => {
                   Route: {ride.startCity.name} to {ride.endCity.name}
                 </p>
                 <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
+                <p>Returning: {new Date(ride.returnTime).toLocaleString()}</p>
+                <p>
+                  Travel Date: {new Date(ride.travelDate).toLocaleDateString()}
+                </p>
+                <p>
+                  Car: {ride.carType} {ride.carModel} ({ride.carYear})
+                </p>
+                <p>License Plate: {ride.licensePlate}</p>
+                <p>Car Color: {ride.carColor}</p>
               </div>
               <div className="ride-price-container">
-                <div className="ride-price">${ride.price}</div>
-                <div className="seats-left">{ride.seats} seats left</div>
+                <div className="ride-price">${ride.seatPrice}</div>
+                <div className="seats-left">{ride.seatsNumber} seats left</div>
               </div>
             </div>
           ))}
