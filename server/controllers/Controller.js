@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import CryptoJS from "crypto-js";
 import { PostRideModel } from "../models/PostRideModel.js";
 import { CityModel } from "../models/CityModel.js";
+import { CarDetailsModel } from "../models/CarDetailsModel.js";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -110,19 +111,40 @@ export default class Controller {
   };
   static post_ride = async (req, res) => {
     try {
-      let { origin, destination, departureTime } = req.body;
+      let {
+        origin,
+        destination,
+        travelDate,
+        carModel,
+        carType,
+        licensePlate,
+        carYear,
+      } = req.body;
+
       const startCityObj = await CityModel.findOne({ name: origin });
       const endCityObj = await CityModel.findOne({ name: destination });
-      departureTime = new Date(departureTime);
-      if (!startCityObj || !endCityObj || !departureTime) {
+      const departTime = new Date(travelDate);
+      if (!startCityObj || !endCityObj || !departTime) {
         return res.status(400).json({ message: "fields missing" });
       }
+      const car = new CarDetailsModel({
+        make: carType,
+        model: carModel,
+        year: carYear,
+        licensePlate: licensePlate,
+        user: req.user.userId,
+      });
+
+      const savedCar = await car.save();
+
       const ride = new PostRideModel({
         driver: req.user.userId,
         startCity: startCityObj._id,
         endCity: endCityObj._id,
-        departTime: departureTime,
+        departTime: departTime,
+        car: savedCar._id,
       });
+
       await ride.save();
       res.status(200).json({ message: "ride post successfully" });
     } catch (e) {
@@ -145,17 +167,16 @@ export default class Controller {
   static post_city = async (req, res) => {
     try {
       if (!Array.isArray(req.body?.city)) {
-        throw new Error("should have a city field which type is Array")
+        throw new Error("should have a city field which type is Array");
       }
-      let data = []
-      req.body.city.forEach((city)=>{
-        data.push({name: city})
-      })
-      await CityModel.create(data, {aggregateErrors: true});
+      let data = [];
+      req.body.city.forEach((city) => {
+        data.push({ name: city });
+      });
+      await CityModel.create(data, { aggregateErrors: true });
       res.status(200).json({ message: "city post successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
   };
-
 }
