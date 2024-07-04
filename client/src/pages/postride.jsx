@@ -21,6 +21,8 @@ const PostRide = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
   const handlePost = async (event) => {
     event.preventDefault();
 
@@ -41,16 +43,34 @@ const PostRide = () => {
       const returnTimeDate = combineDateAndTime(travelDate, returnTime);
 
       if (
+        !origin &&
+        !destination &&
+        !departureTime &&
+        !returnTime &&
+        !travelDate &&
+        !carModel &&
+        !carType &&
+        !carColor &&
+        !carYear &&
+        !licensePlate &&
+        !seatsNumber &&
+        !seatPrice
+      ) {
+        setError("Fields cannot be empty");
+        return;
+      }
+
+      if (
         !departTime ||
         !returnTimeDate ||
         isNaN(departTime) ||
         isNaN(returnTimeDate)
       ) {
-        setError("Invalid date or time format. Please check your inputs.");
+        setError("Ride Schedule is required.");
         return;
       }
 
-      const response = await fetch("http://localhost:3000/ride", {
+      const response = await fetch(`${apiUrl}/ride`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

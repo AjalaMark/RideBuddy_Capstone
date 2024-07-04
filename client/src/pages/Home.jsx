@@ -1,20 +1,23 @@
 import "../assets/Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import driverImage from "../assets/driver.png";
-import tickMark from "../assets/tick.png";
-import whoWeAreImage from "../assets/who-we-are-01.jpeg";
-import userIcon from "../assets/user.png";
-import signUpIcon from "../assets/signup.png";
-import bookARideIcon from "../assets/book.png";
-import getADriverIcon from "../assets/driver1.png";
-import enjoyTripIcon from "../assets/enjoy.png";
+import {
+  driverImage,
+  tickMark,
+  whoWeAreImage,
+  userIcon,
+  signUpIcon,
+  bookARideIcon,
+  getADriverIcon,
+  enjoyTripIcon,
+  iconImgClass,
+} from "../Constants";
+
 import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import Footer from "../components/Footer";
 
-const HomePage = () => 
-  {
+const HomePage = () => {
   return (
     <div>
       <header className="text-white">
@@ -30,7 +33,7 @@ const HomePage = () =>
                   <img
                     src={signUpIcon}
                     alt="Sign Up"
-                    className="icon-img img-fluid mb-3"
+                    className={iconImgClass}
                   />
                   <h3>Sign Up</h3>
                   <p>
@@ -44,7 +47,7 @@ const HomePage = () =>
                   <img
                     src={bookARideIcon}
                     alt="Book A Ride"
-                    className="icon-img img-fluid mb-3"
+                    className={iconImgClass}
                   />
                   <h3>Book A Ride</h3>
                   <p>Enter your destination and confirm your booking.</p>
@@ -56,7 +59,7 @@ const HomePage = () =>
                   <img
                     src={getADriverIcon}
                     alt="Get A Driver"
-                    className="icon-img img-fluid mb-3"
+                    className={iconImgClass}
                   />
                   <h3>Get a driver </h3>
                   <p>
@@ -70,7 +73,7 @@ const HomePage = () =>
                   <img
                     src={enjoyTripIcon}
                     alt="Enjoy Trip"
-                    className="icon-img img-fluid mb-3"
+                    className={iconImgClass}
                   />
                   <h3>Enjoy Trip</h3>
                   <p>Sit back, relax, and enjoy the ride with RideBuddy.</p>
@@ -128,7 +131,7 @@ const HomePage = () =>
                     Safety First
                   </li>
                 </ul>
-                <button className="btn btn-info">Read More</button>
+                <button className="btn btn-success">Read More</button>
               </div>
               <div className="col-md-6">
                 <img

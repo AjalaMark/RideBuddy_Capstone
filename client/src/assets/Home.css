@@ -121,30 +121,39 @@ button:hover {
 }
 
 footer {
-  background-color: #a1a5a9;
-  padding: 20px;
+  background-color: #d9d9d9;
+  padding: 40px;
   border-top: 1px solid #ddd;
   color: #191c57;
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.footer-column {
-  margin-bottom: 20px;
-  flex: 1;
-  min-width: 200px;
 }
 
 footer a {
   text-decoration: none;
-  color: #191c57;
+  color: #004753;
   display: block;
-  margin-bottom: 5px;
+  margin: 20px 0 20px 0;
+}
+
+footer h4 {
+  margin-top: 30px;
+  color: #004753;
+  font-weight: 700;
+}
+
+footer h5 {
+  font-weight: 700;
+}
+
+footer h5,
+p {
+  color: #004753;
 }
 
 footer a:hover {
   text-decoration: underline;
+  color: #004753;
 }
 
 .footer-column a i {

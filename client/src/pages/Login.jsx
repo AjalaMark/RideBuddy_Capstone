@@ -8,6 +8,8 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -15,7 +17,7 @@ const Login = () => {
         password,
         "ride-buddy-aes-key"
       ).toString();
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${apiUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

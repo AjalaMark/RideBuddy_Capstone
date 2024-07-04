@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/findride.css";
 import "../assets/Home.css";
 import Navbar from "../components/Navbar";
@@ -13,7 +13,8 @@ const FindRide = () => {
   useEffect(() => {
     const fetchRides = async () => {
       try {
-        const response = await fetch("http://localhost:3000/ride", {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/ride`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -64,8 +65,14 @@ const FindRide = () => {
                     {ride.startCity.name} to {ride.endCity.name}
                   </p>
                   <div className="leaving-returning-container">
-                    <p className="leaving">Leaving:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{new Date(ride.departTime).toLocaleString()}</p>
-                    <p className="returning">Returning:&nbsp;&nbsp;&nbsp; {new Date(ride.returnTime).toLocaleString()}</p>
+                    <p className="leaving">
+                      Leaving:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      {new Date(ride.departTime).toLocaleString()}
+                    </p>
+                    <p className="returning">
+                      Returning:&nbsp;&nbsp;&nbsp;{" "}
+                      {new Date(ride.returnTime).toLocaleString()}
+                    </p>
                   </div>
                   {/* <p>
                     Travel Date: {new Date(ride.travelDate).toLocaleDateString()}
@@ -74,11 +81,16 @@ const FindRide = () => {
                     Car: {ride.carType} {ride.carModel} ({ride.carYear})
                   </p>
                   <p>License Plate: {ride.licensePlate}</p>
-                  <p>Car Color: {ride.carColor}</p> */
-                  }
+                  <p>Car Color: {ride.carColor}</p> */}
                   <div className="pickup-dropoff-container">
-                    <p className="pick-up">Pickup:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {ride.startCity.name}</p>
-                    <p className="drop-off">Dropoff:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ride.endCity.name}</p>
+                    <p className="pick-up">
+                      Pickup:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
+                      {ride.startCity.name}
+                    </p>
+                    <p className="drop-off">
+                      Dropoff:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      {ride.endCity.name}
+                    </p>
                   </div>
                 </div>
               </div>

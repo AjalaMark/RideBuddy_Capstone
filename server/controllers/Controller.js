@@ -130,12 +130,26 @@ export default class Controller {
         seatPrice,
       } = req.body;
 
-      const departTime = new Date(travelDate);
+      const departTime = new Date(departureTime);
       const returnTimeDate = new Date(returnTime);
       const travelDateDate = new Date(travelDate);
 
       if (isNaN(departTime) || isNaN(returnTimeDate) || isNaN(travelDateDate)) {
         return res.status(400).json({ message: "Invalid date format" });
+      }
+
+      if (
+        !carModel ||
+        !carType ||
+        !carColor ||
+        !carYear ||
+        !licensePlate ||
+        !seatsNumber ||
+        !seatPrice
+      ) {
+        return res
+          .status(400)
+          .json({ message: "Please Input Car Information" });
       }
 
       const startCityObj = await CityModel.findOne({ name: origin });

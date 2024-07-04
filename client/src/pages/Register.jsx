@@ -14,6 +14,12 @@ const Register = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
+  const isEmailValid = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const handleRegister = async (event) => {
     event.preventDefault();
 
@@ -22,7 +28,7 @@ const Register = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch(`${apiUrl}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,6 +62,7 @@ const Register = () => {
       setError("An error occurred. Please try again.");
     }
   };
+
   return (
     <div className="register-page">
       <div className="background">
@@ -90,6 +97,11 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+            {email && !isEmailValid(email) && (
+              <div className="error-message">
+                Please enter a valid email address.
+              </div>
+            )}
           </div>
           <div className="textbox">
             <input
