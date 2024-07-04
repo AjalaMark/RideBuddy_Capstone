@@ -1,5 +1,3 @@
-// Constants.jsx
-
 // Images
 import driverImage from "./assets/driver.png";
 import tickMark from "./assets/tick.png";
