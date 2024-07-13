@@ -11,6 +11,8 @@ router
   .get("/ride", Controller.get_ride)
   .post("/ride", authenticateToken, Controller.post_ride)
   .get("/city", Controller.get_city)
-  .post("/city", Controller.post_city);
+  .post("/city", Controller.post_city)
+  .get("/history/:userId/:contactId", Controller.get_message)
+  .post("/send", Controller.post_message);
 
 export default router;

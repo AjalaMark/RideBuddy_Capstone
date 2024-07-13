@@ -6,6 +6,7 @@ import CryptoJS from "crypto-js";
 import { PostRideModel } from "../models/PostRideModel.js";
 import { CityModel } from "../models/CityModel.js";
 import { CarDetailsModel } from "../models/CarDetailsModel.js";
+import Chat from "../models/ChatModel.js";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -217,6 +218,41 @@ export default class Controller {
       res.status(200).json({ message: "city post successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
+    }
+  };
+
+  static get_message = async (req, res) => {
+    try {
+      const { userId, contactId } = req.params;
+      const messages = await Chat.find({
+        $or: [
+          { senderId: userId, receiverId: contactId },
+          { senderId: contactId, receiverId: userId },
+        ],
+      }).sort({ timestamp: 1 });
+
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ error: "Server Error" });
+    }
+  };
+
+  static post_message = async (req, res) => {
+    try {
+      const { senderId, receiverId, message } = req.body;
+
+      const newMessage = new Chat({
+        senderId,
+        receiverId,
+        message,
+      });
+
+      const savedMessage = await newMessage.save();
+      res.json(savedMessage);
+
+      req.app.get("socketio").emit("chat message", savedMessage);
+    } catch (error) {
+      res.status(500).json({ error: "Server Error" });
     }
   };
 }
