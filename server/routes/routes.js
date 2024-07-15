@@ -11,6 +11,9 @@ router
   .get("/ride", Controller.get_ride)
   .post("/ride", authenticateToken, Controller.post_ride)
   .get("/city", Controller.get_city)
-  .post("/city", Controller.post_city);
+  .post("/city", Controller.post_city)
+  .get("/ride/:id/availability", Controller.check_ride_availability)
+  .get("/booking", authenticateToken, Controller.get_booking)
+  .post("/booking", authenticateToken, Controller.post_booking)
 
 export default router;

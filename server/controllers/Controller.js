@@ -6,6 +6,8 @@ import CryptoJS from "crypto-js";
 import { PostRideModel } from "../models/PostRideModel.js";
 import { CityModel } from "../models/CityModel.js";
 import { CarDetailsModel } from "../models/CarDetailsModel.js";
+import { BookingModel } from "../models/BookingModel.js"
+import {promisify} from "util"
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -219,4 +221,81 @@ export default class Controller {
       res.status(500).json({ message: e.message });
     }
   };
+
+  static check_ride_availability = async (req, res) => {
+    try {
+      const rideId = req.params.id;
+      check_ride_avail(rideId, (e, avail)=>{
+        if (e) {
+          return res.status(500).json({ message: e.message });
+        }
+        if (avail) {
+          res.status(200).json({ message: "available" });
+          return
+        }
+        res.status(200).json({ message: "unavailable" });
+      })
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+
+  static get_booking = async (req, res) => {
+    try {
+      const user = req.user.userId
+      const booking = await BookingModel.find({passenger: user})
+        .populate({
+          path: "ride",
+          populate: { path: 'driver' },
+        })
+        .populate({
+          path: "ride",
+          populate: { path: 'startCity' },
+        })
+        .populate({
+          path: "ride",
+          populate: { path: 'endCity' },
+        })
+        .populate("passenger");
+      res.status(200).json({booking, message: "get booking successfully"})
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+    
+  }
+  static post_booking = async (req, res) => {
+    try {
+      let rideId = req.body.rideId
+      let avail = await promisify(check_ride_avail)(rideId)
+      if (!avail) {
+        return res.status(200).json({ message: "ride occupied" });
+      }
+      let user = req.user.userId
+      const booking = new BookingModel({
+        ride: rideId,
+        passenger: user
+      })
+      await booking.save()
+      res.status(200).json({ message: "ride book successfully" });
+    } catch(e) {
+      res.status(500).json({ message: e.message });
+    }
+  }
+}
+
+async function check_ride_avail(rideId, cb) {
+  try {
+    const ride = await PostRideModel.findById(rideId)
+    if (!ride) {
+      return cb(new Error("no such ride"))
+    }
+    const booking = await BookingModel.findOne({ride: rideId})
+    if (!booking) {
+      cb(null, true)
+      return
+    }
+    cb(null, false)
+  } catch (e) {
+    cb(e);
+  }
 }
