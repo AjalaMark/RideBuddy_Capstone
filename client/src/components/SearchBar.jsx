@@ -5,32 +5,32 @@ const SearchBar = () => {
         <div className="container">
           <div className="row align-items-end">
             <div className="col-md-2">
-              <label>From</label>
-              <input
+              <label>From <input
                 type="text"
                 className="form-control"
                 placeholder="Enter origin"
-              />
+              /></label>
+              
             </div>
             <div className="col-md-2">
-              <label>To</label>
-              <input
+              <label>To <input
                 type="text"
                 className="form-control"
                 placeholder="Enter destination"
-              />
+              /></label>
+              
             </div>
             <div className="col-md-2">
-              <label>Date</label>
-              <input type="date" className="form-control" />
+              <label htmlFor="search-date-input">Date</label>
+              <input type="date" className="form-control" id="search-date-input"/>
             </div>
             <div className="col-md-2">
-              <label>Passenger</label>
-              <input
+              <label>Passenger <input
                 type="text"
                 className="form-control"
                 placeholder="Passenger"
-              />
+              /></label>
+              
             </div>
             <div className="col-md-2">
               <button className="btn btn-warning w-100 mt-3">Search</button>
