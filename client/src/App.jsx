@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import PostRide from "./pages/PostRide";
 import Findride from "./pages/FindRide";
+import BookRide from "./pages/Bookride";
 
 const routes = [
   { path: "/home", element: <Home /> },
@@ -12,7 +13,7 @@ const routes = [
   { path: "/login", element: <Login /> },
   { path: "/postride", element: <PostRide /> },
   { path: "/findride", element: <Findride /> },
-  { path: "/bookride", element: <BookRide /> },
+  { path: "/book-ride/:rideId", element: <BookRide /> },
 ];
 
 function App() {

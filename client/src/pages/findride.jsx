@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../assets/findride.css";
 import "../assets/Home.css";
 import Navbar from "../components/Navbar";
@@ -9,6 +10,7 @@ const FindRide = () => {
   const [rides, setRides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRides = async () => {
@@ -42,6 +44,10 @@ const FindRide = () => {
     return <div>Error: {error}</div>;
   }
 
+  const handleRideClick = (rideId) => {
+    navigate(`/book-ride/${rideId}`);
+  };
+
   return (
     <div>
       <header className="text-white">
@@ -53,7 +59,11 @@ const FindRide = () => {
         <h1>Find a Ride</h1>
         <div className="rides-container">
           {rides.map((ride) => (
-            <div className="ride-card" key={ride._id}>
+            <div
+              className="ride-card"
+              key={ride._id}
+              onClick={() => handleRideClick(ride._id)}
+            >
               <div className="driver-image-container">
                 <div>driver image</div>
               </div>
@@ -74,14 +84,6 @@ const FindRide = () => {
                       {new Date(ride.returnTime).toLocaleString()}
                     </p>
                   </div>
-                  {/* <p>
-                    Travel Date: {new Date(ride.travelDate).toLocaleDateString()}
-                  </p>
-                  <p>
-                    Car: {ride.carType} {ride.carModel} ({ride.carYear})
-                  </p>
-                  <p>License Plate: {ride.licensePlate}</p>
-                  <p>Car Color: {ride.carColor}</p> */}
                   <div className="pickup-dropoff-container">
                     <p className="pick-up">
                       Pickup:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
