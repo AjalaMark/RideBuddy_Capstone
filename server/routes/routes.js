@@ -13,6 +13,9 @@ router
   .get("/city", Controller.get_city)
   .post("/city", Controller.post_city)
   .get("/history/:userId/:contactId", Controller.get_message)
-  .post("/send", Controller.post_message);
+  .post("/send", Controller.post_message)
+  .get("/ride/:id/availability", Controller.check_ride_availability)
+  .get("/booking", authenticateToken, Controller.get_booking)
+  .post("/booking", authenticateToken, Controller.post_booking);
 
 export default router;
