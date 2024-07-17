@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import "../assets/Bookride.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { jwtDecode } from "jwt-decode";
 
 const BookRide = () => {
   const { rideId } = useParams();
@@ -13,6 +14,7 @@ const BookRide = () => {
   const [expDate, setExpDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchRideDetails = async () => {
@@ -36,7 +38,7 @@ const BookRide = () => {
     fetchRideDetails();
   }, [rideId]);
 
-  const handleBooking = (event) => {
+  const handleBooking = async (event) => {
     event.preventDefault();
 
     if (!nameOnCard || !cardNumber || !expDate || !cvv) {
@@ -44,7 +46,40 @@ const BookRide = () => {
       return;
     }
 
-    console.log("Booking successful");
+    const token = localStorage.getItem("token");
+    const decoded = jwtDecode(token);
+    const { userId } = decoded;
+
+    if (!userId) {
+      setError("User not authenticated");
+      return;
+    }
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiUrl}/booking`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          rideId,
+          userId,
+          seats,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setMessage(result.message);
+      } else {
+        setError(result.message);
+      }
+    } catch (error) {
+      setError("Failed to book the ride");
+    }
   };
 
   if (!ride) {
@@ -117,7 +152,20 @@ const BookRide = () => {
                   <h3>${ride.seatPrice * seats + 8}</h3>
                 </div>
                 <hr />
-                <button className="request-button">Request To Book</button>
+                <button className="request-button" onClick={handleBooking}>
+                  Request To Book
+                </button>
+                {message && (
+                  <div
+                    className={`${
+                      message.type === "success"
+                        ? "success-message"
+                        : "error-message"
+                    }`}
+                  >
+                    {message}
+                  </div>
+                )}
               </div>
             </div>
 

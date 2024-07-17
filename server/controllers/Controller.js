@@ -274,33 +274,6 @@ export default class Controller {
     }
   };
 
-  static book_ride = async (req, res) => {
-    try {
-      const { rideId, userId } = req.body;
-
-      const ride = await PostRideModel.findById(rideId);
-      if (!ride || ride.status !== "available") {
-        return res.status(400).json({ error: "Ride not available" });
-      }
-
-      const paymentStatus = "completed";
-
-      const newBooking = new Booking({
-        rideId,
-        userId,
-        paymentStatus,
-      });
-
-      const savedBooking = await newBooking.save();
-
-      ride.status = "booked";
-      await ride.save();
-
-      res.json(savedBooking);
-    } catch (error) {
-      res.status(500).json({ error: "Server Error" });
-    }
-  };
   static check_ride_availability = async (req, res) => {
     try {
       const rideId = req.params.id;
@@ -322,7 +295,7 @@ export default class Controller {
   static get_booking = async (req, res) => {
     try {
       const user = req.user.userId;
-      const booking = await BookingModel.find({ userId: user })
+      const booking = await Booking.find({ userId: user })
         .populate({
           path: "rideId",
           populate: { path: "driver" },
@@ -344,19 +317,21 @@ export default class Controller {
 
   static post_booking = async (req, res) => {
     try {
-      let rideId = req.body.rideId;
+      const { rideId, userId } = req.body;
       let avail = await promisify(check_ride_avail)(rideId);
+
       if (!avail) {
-        return res.status(200).json({ message: "ride occupied" });
+        return res
+          .status(200)
+          .json({ message: "Ride has already been booked" });
       }
-      let user = req.user.userId;
 
       const paymentStatus = "completed";
 
-      const booking = new BookingModel({
-        rideId: rideId,
-        userId: user,
-        paymentStatus: paymentStatus,
+      const booking = new Booking({
+        rideId,
+        userId,
+        paymentStatus,
       });
       await booking.save();
       res.status(200).json({ message: "ride booked successfully" });
@@ -372,7 +347,7 @@ async function check_ride_avail(rideId, cb) {
     if (!ride) {
       return cb(new Error("no such ride"));
     }
-    const booking = await BookingModel.findOne({ rideId: rideId });
+    const booking = await Booking.findOne({ rideId: rideId });
     if (!booking) {
       cb(null, true);
       return;
