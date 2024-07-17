@@ -1,17 +1,20 @@
 import { model, Schema } from "mongoose";
 
 const bookingSchema = new Schema({
-    ride: {
-        type: Schema.Types.ObjectId, 
-        ref: "ride", 
-        required: true
-    },
-    passenger: { 
-        type: Schema.Types.ObjectId, 
-        ref: "userData", 
-        required: true },
-})
+  rideId: { type: mongoose.Schema.Types.ObjectId, ref: "ride", required: true },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "userData",
+    required: true,
+  },
+  bookingTime: { type: Date, default: Date.now },
+  paymentStatus: {
+    type: String,
+    enum: ["pending", "completed", "failed"],
+    default: "pending",
+  },
+});
 
-const BookingModel = model("booking", bookingSchema);
+const Booking = model("Booking", bookingSchema);
 
-export { BookingModel };
+export default Booking;

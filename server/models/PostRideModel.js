@@ -15,6 +15,11 @@ const rideSchema = new Schema({
   licensePlate: { type: String, required: true },
   seatsNumber: { type: Number, required: true },
   seatPrice: { type: Number, required: true },
+  status: {
+    type: String,
+    enum: ["available", "booked", "completed"],
+    default: "available",
+  },
 });
 
 const PostRideModel = model("ride", rideSchema);

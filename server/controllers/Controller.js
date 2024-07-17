@@ -6,7 +6,8 @@ import CryptoJS from "crypto-js";
 import { PostRideModel } from "../models/PostRideModel.js";
 import { CityModel } from "../models/CityModel.js";
 import { CarDetailsModel } from "../models/CarDetailsModel.js";
-import { BookingModel } from "../models/BookingModel.js";
+import Chat from "../models/ChatModel.js";
+import Booking from "../models/BookingModel.js";
 import { promisify } from "util";
 
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -238,6 +239,68 @@ export default class Controller {
     }
   };
 
+  static get_message = async (req, res) => {
+    try {
+      const { userId, contactId } = req.params;
+      const messages = await Chat.find({
+        $or: [
+          { senderId: userId, receiverId: contactId },
+          { senderId: contactId, receiverId: userId },
+        ],
+      }).sort({ timestamp: 1 });
+
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ error: "Server Error" });
+    }
+  };
+
+  static post_message = async (req, res) => {
+    try {
+      const { senderId, receiverId, message } = req.body;
+
+      const newMessage = new Chat({
+        senderId,
+        receiverId,
+        message,
+      });
+
+      const savedMessage = await newMessage.save();
+      res.json(savedMessage);
+
+      req.app.get("socketio").emit("chat message", savedMessage);
+    } catch (error) {
+      res.status(500).json({ error: "Server Error" });
+    }
+  };
+
+  static book_ride = async (req, res) => {
+    try {
+      const { rideId, userId } = req.body;
+
+      const ride = await PostRideModel.findById(rideId);
+      if (!ride || ride.status !== "available") {
+        return res.status(400).json({ error: "Ride not available" });
+      }
+
+      const paymentStatus = "completed";
+
+      const newBooking = new Booking({
+        rideId,
+        userId,
+        paymentStatus,
+      });
+
+      const savedBooking = await newBooking.save();
+
+      ride.status = "booked";
+      await ride.save();
+
+      res.json(savedBooking);
+    } catch (error) {
+      res.status(500).json({ error: "Server Error" });
+    }
+  };
   static check_ride_availability = async (req, res) => {
     try {
       const rideId = req.params.id;
@@ -259,25 +322,26 @@ export default class Controller {
   static get_booking = async (req, res) => {
     try {
       const user = req.user.userId;
-      const booking = await BookingModel.find({ passenger: user })
+      const booking = await BookingModel.find({ userId: user })
         .populate({
-          path: "ride",
+          path: "rideId",
           populate: { path: "driver" },
         })
         .populate({
-          path: "ride",
+          path: "rideId",
           populate: { path: "startCity" },
         })
         .populate({
-          path: "ride",
+          path: "rideId",
           populate: { path: "endCity" },
         })
-        .populate("passenger");
+        .populate("userId");
       res.status(200).json({ booking, message: "get booking successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
   };
+
   static post_booking = async (req, res) => {
     try {
       let rideId = req.body.rideId;
@@ -286,12 +350,16 @@ export default class Controller {
         return res.status(200).json({ message: "ride occupied" });
       }
       let user = req.user.userId;
+
+      const paymentStatus = "completed";
+
       const booking = new BookingModel({
-        ride: rideId,
-        passenger: user,
+        rideId: rideId,
+        userId: user,
+        paymentStatus: paymentStatus,
       });
       await booking.save();
-      res.status(200).json({ message: "ride book successfully" });
+      res.status(200).json({ message: "ride booked successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
@@ -304,7 +372,7 @@ async function check_ride_avail(rideId, cb) {
     if (!ride) {
       return cb(new Error("no such ride"));
     }
-    const booking = await BookingModel.findOne({ ride: rideId });
+    const booking = await BookingModel.findOne({ rideId: rideId });
     if (!booking) {
       cb(null, true);
       return;
