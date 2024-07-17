@@ -8,14 +8,13 @@ import http from "http";
 import { Server } from "socket.io";
 
 const app = express();
+const server = http.createServer(app);
 
 const uri = process.env.MONGO_URI;
-const server = http.createServer(app);
 const io = new Server(server);
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", router);
 app.set("socketio", io);

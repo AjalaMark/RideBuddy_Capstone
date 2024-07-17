@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../assets/Bookride.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -15,6 +15,7 @@ const BookRide = () => {
   const [cvv, setCvv] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRideDetails = async () => {
@@ -74,12 +75,17 @@ const BookRide = () => {
 
       if (response.ok) {
         setMessage(result.message);
+        setError("");
       } else {
         setError(result.message);
       }
     } catch (error) {
       setError("Failed to book the ride");
     }
+  };
+
+  const handleMessageDriver = () => {
+    navigate(`/message/${ride.driver._id}`);
   };
 
   if (!ride) {
@@ -98,7 +104,7 @@ const BookRide = () => {
                 <div className="driver-info">
                   <div className="profile-pic"></div>
                   <div className="driver-details">
-                    <h2>{ride.driver.name}</h2>
+                    <h2>{ride.driver.firstName}</h2>
                     <div className="rating">
                       <span>★</span>
                       <span>★</span>
@@ -108,7 +114,7 @@ const BookRide = () => {
                     </div>
                   </div>
                 </div>
-                <h3>Request to book with {ride.driver.name}</h3>
+                <h3>Request to book with {ride.driver.firstName}</h3>
                 <div className="ride-info">
                   <h4>
                     {ride.startCity.name} to {ride.endCity.name}
@@ -166,6 +172,7 @@ const BookRide = () => {
                     {message}
                   </div>
                 )}
+                {error && <div className="error-message">{error}</div>}
               </div>
             </div>
 
@@ -182,8 +189,11 @@ const BookRide = () => {
                     <option value="2">2</option>
                   </select>
                 </div>
-                <button className="message-button">
-                  Message {ride.driver.name}
+                <button
+                  className="message-button"
+                  onClick={handleMessageDriver}
+                >
+                  Message {ride.driver.firstName}
                 </button>
                 <div className="payment-policy">
                   <h3>Payment policy</h3>
@@ -239,7 +249,6 @@ const BookRide = () => {
                 </div>
               </div>
             </div>
-            {error && <div className="error-message">{error}</div>}
           </div>
         </div>
       </div>

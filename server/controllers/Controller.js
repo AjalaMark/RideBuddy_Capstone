@@ -28,6 +28,7 @@ export default class Controller {
           email: formData.email,
           phoneNumber: formData.phoneNo,
           password: hashedPassword,
+          userType: formData.userType,
         });
         await user.save();
         res.status(201).json({ message: "User registered" });
@@ -61,12 +62,13 @@ export default class Controller {
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid password" });
       }
+      const { userType } = user;
       const token = jwt.sign(
         { userId: user._id, email: user.email },
         SECRET_KEY,
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token, message: "login successful" });
+      res.status(200).json({ token, userType, message: "login successful" });
     } catch (err) {
       res.status(500).send("Server error");
     }
@@ -242,6 +244,10 @@ export default class Controller {
   static get_message = async (req, res) => {
     try {
       const { userId, contactId } = req.params;
+      console.log(userId, contactId);
+      if (!userId || !contactId) {
+        return res.status(400).json({ error: "Missing required parameters" });
+      }
       const messages = await Chat.find({
         $or: [
           { senderId: userId, receiverId: contactId },
@@ -249,8 +255,13 @@ export default class Controller {
         ],
       }).sort({ timestamp: 1 });
 
+      if (!messages || messages.length === 0) {
+        return res.json([]);
+      }
+
       res.json(messages);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Server Error" });
     }
   };
@@ -259,17 +270,34 @@ export default class Controller {
     try {
       const { senderId, receiverId, message } = req.body;
 
-      const newMessage = new Chat({
-        senderId,
-        receiverId,
-        message,
+      let chat = await Chat.findOne({
+        $or: [
+          { senderId: senderId, receiverId: receiverId },
+          { senderId: receiverId, receiverId: senderId },
+        ],
       });
 
-      const savedMessage = await newMessage.save();
+      if (!chat) {
+        chat = new Chat({
+          senderId: senderId,
+          receiverId: receiverId,
+          messages: [],
+        });
+      }
+
+      chat.messages.push({
+        senderId: senderId,
+        receiverId: receiverId,
+        message: message,
+        timestamp: new Date(),
+      });
+
+      const savedMessage = await chat.save();
       res.json(savedMessage);
 
       req.app.get("socketio").emit("chat message", savedMessage);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Server Error" });
     }
   };
