@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+// src/components/Navbar.jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
 import "../assets/Navbar.css";
 
 const Navbar = (props) => {
@@ -10,7 +12,7 @@ const Navbar = (props) => {
   ];
 
   return (
-    <div className="container d-flex justify-content-between align-items-center py-3 navbar-bg">
+    <div data-testid="navbar-testid" className="container d-flex justify-content-between align-items-center py-3 navbar-bg">
       <div>LOGO</div>
       <nav className="d-flex">
         {links.map((link, index) => (
