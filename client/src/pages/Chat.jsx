@@ -55,9 +55,7 @@ const Chat = () => {
     };
   }, [contactId]);
 
-  const handleSendMessage = async (event) => {
-    event.preventDefault();
-
+  const handleSendMessage = async () => {
     const token = localStorage.getItem("token");
     const decoded = jwtDecode(token);
     const userId = decoded.userId;
