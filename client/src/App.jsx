@@ -12,6 +12,7 @@ const routes = [
   { path: "/login", element: <Login /> },
   { path: "/postride", element: <PostRide /> },
   { path: "/findride", element: <Findride /> },
+  { path: "/bookride", element: <BookRide /> },
 ];
 
 function App() {
