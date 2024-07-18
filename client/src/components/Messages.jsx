@@ -1,23 +1,53 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import "../assets/Chat.css";
 import io from "socket.io-client";
 import Navbar from "../components/Navbar";
 
-const Chat = () => {
-  const { contactId } = useParams();
+const Messages = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [contactId, setContactId] = useState("");
 
   useEffect(() => {
+    const fetchContacts = async () => {
+      const token = localStorage.getItem("token");
+      const decoded = jwtDecode(token);
+      const userId = decoded.userId;
+
+      try {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/contacts/${userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+
+        if (data.length > 0) {
+          setContactId(data[0]._id);
+        }
+
+        setError("");
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to fetch contacts");
+      }
+    };
+
+    fetchContacts();
+  }, []);
+
+  useEffect(() => {
+    if (!contactId) return;
+
     const token = localStorage.getItem("token");
     const decoded = jwtDecode(token);
     const userId = decoded.userId;
-
     const socket = io(import.meta.env.VITE_API_BASE_URL);
 
     const fetchMessages = async () => {
@@ -105,7 +135,7 @@ const Chat = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar contactId={contactId} />
       <button onClick={() => navigate(-1)} className="btn btn-primary hBack">
         Back to Book Ride
       </button>
@@ -150,4 +180,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default Messages;

@@ -11,7 +11,12 @@ const app = express();
 const server = http.createServer(app);
 
 const uri = process.env.MONGO_URI;
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -43,6 +48,6 @@ io.on("connection", (socket) => {
   });
 });
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log("server listening on port 3000");
 });

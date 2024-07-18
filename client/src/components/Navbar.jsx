@@ -6,6 +6,11 @@ const Navbar = (props) => {
     { path: "/home", text: "Home" },
     { path: "/findride", text: "Find Ride", userType: "passenger" },
     { path: "/postride", text: "Post Rides", userType: "driver" },
+    {
+      path: "/messages/:contactId",
+      text: "Messages",
+      userType: "driver",
+    },
     { path: "#about-us", text: "About Us" },
   ];
 

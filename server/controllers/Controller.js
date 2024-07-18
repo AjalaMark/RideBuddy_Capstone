@@ -266,6 +266,36 @@ export default class Controller {
     }
   };
 
+  static getContactsByContactId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+      const chats = await Chat.find({
+        $or: [{ senderId: userId }, { receiverId: userId }],
+      })
+        .populate("senderId", "name")
+        .populate("receiverId", "name");
+
+      const contacts = [];
+      chats.forEach((chat) => {
+        if (chat.senderId._id.toString() !== userId) {
+          contacts.push(chat.senderId);
+        } else {
+          contacts.push(chat.receiverId);
+        }
+      });
+
+      const uniqueContacts = [
+        ...new Map(
+          contacts.map((contact) => [contact._id.toString(), contact])
+        ).values(),
+      ];
+
+      res.json(uniqueContacts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch contacts" });
+    }
+  };
+
   static post_message = async (req, res) => {
     try {
       const { senderId, receiverId, message } = req.body;
