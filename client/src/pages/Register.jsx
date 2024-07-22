@@ -11,6 +11,7 @@ const Register = () => {
   const [province, setProvince] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [userType, setUserType] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -42,6 +43,7 @@ const Register = () => {
           postalCode,
           province,
           password,
+          userType,
         }),
       });
 
@@ -156,6 +158,19 @@ const Register = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
+          </div>
+          <div className="form-group">
+            <select
+              className="form-control"
+              id="userType"
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              required
+            >
+              <option value="">Select User Type</option>
+              <option value="driver">Driver</option>
+              <option value="passenger">Passenger</option>
+            </select>
           </div>
           {error && <div className="error-message">{error}</div>}
           <button type="submit" className="register-button">

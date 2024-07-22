@@ -11,6 +11,7 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   phoneNumber: { type: Number, default: "0", required: true },
   profilePicture: { type: String, default: null },
+  userType: { type: String, enum: ["driver", "passenger"], required: true },
 });
 
 const userModel = model("userData", userSchema);

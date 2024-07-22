@@ -4,8 +4,25 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import {} from "dotenv/config.js";
+import http from "http";
+import { Server } from "socket.io";
+
+const app = express();
+const server = http.createServer(app);
 
 const uri = process.env.MONGO_URI;
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
+
+app.use(bodyParser.json());
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use("/", router);
+app.set("socketio", io);
 
 mongoose
   .connect(uri, {
@@ -19,13 +36,18 @@ mongoose
     console.log(`error connecting to mongodb, error: ${err}`);
   });
 
-const app = express();
+io.on("connection", (socket) => {
+  console.log("a user connected");
 
-app.use(bodyParser.json());
-app.use(cors());
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
 
-app.listen(3000, () => {
-  console.log("server listening on port 3000");
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
+  });
 });
 
-app.use("/", router);
+server.listen(3000, () => {
+  console.log("server listening on port 3000");
+});
