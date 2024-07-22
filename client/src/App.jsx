@@ -5,8 +5,8 @@ import Home from "./pages/Home";
 import PostRide from "./pages/PostRide";
 import Findride from "./pages/FindRide";
 import BookRide from "./pages/BookRide";
-import Chat from "./pages/Chat";
-import Messages from "./components/Messages";
+import PassChat from "./pages/PassChat";
+import DriverChats from "./pages/DriverChats";
 
 const routes = [
   { path: "/home", element: <Home /> },
@@ -16,8 +16,8 @@ const routes = [
   { path: "/postride", element: <PostRide /> },
   { path: "/findride", element: <Findride /> },
   { path: "/book-ride/:rideId", element: <BookRide /> },
-  { path: "/message/:contactId", element: <Chat /> },
-  { path: "/messages/:contactId", element: <Messages /> },
+  { path: "/message/:contactId", element: <PassChat /> },
+  { path: "/messages", element: <DriverChats /> },
 ];
 
 function App() {

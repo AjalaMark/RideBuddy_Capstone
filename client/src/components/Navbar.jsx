@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "../assets/Navbar.css";
+import PropTypes from "prop-types";
 
 const Navbar = (props) => {
   const links = [
@@ -7,7 +8,7 @@ const Navbar = (props) => {
     { path: "/findride", text: "Find Ride", userType: "passenger" },
     { path: "/postride", text: "Post Rides", userType: "driver" },
     {
-      path: "/messages/:contactId",
+      path: "/messages",
       text: "Messages",
       userType: "driver",
     },
@@ -37,6 +38,10 @@ const Navbar = (props) => {
       </nav>
     </div>
   );
+};
+
+Navbar.propTypes = {
+  textColor: PropTypes.string.isRequired,
 };
 
 export default Navbar;

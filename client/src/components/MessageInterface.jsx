@@ -1,28 +1,21 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import "../assets/Chat.css";
 import io from "socket.io-client";
-import Navbar from "../components/Navbar";
+import PropTypes from "prop-types";
 
-const Chat = () => {
-  const { contactId } = useParams();
-  const navigate = useNavigate();
+const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const decoded = jwtDecode(token);
-    const userId = decoded.userId;
+    if (!contactId) return;
 
-    const socket = io(import.meta.env.VITE_API_BASE_URL);
+    const socket = io(apiUrl);
 
     const fetchMessages = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_BASE_URL;
         const response = await fetch(
           `${apiUrl}/history/${userId}/${contactId}`,
           {
@@ -55,20 +48,15 @@ const Chat = () => {
     return () => {
       socket.disconnect();
     };
-  }, [contactId]);
+  }, [apiUrl, contactId, userId]);
 
   const handleSendMessage = async () => {
-    const token = localStorage.getItem("token");
-    const decoded = jwtDecode(token);
-    const userId = decoded.userId;
-
     if (!userId) {
       setError("User not authenticated");
       return;
     }
 
     try {
-      const apiUrl = import.meta.env.VITE_API_BASE_URL;
       const response = await fetch(`${apiUrl}/send`, {
         method: "POST",
         headers: {
@@ -105,9 +93,8 @@ const Chat = () => {
 
   return (
     <>
-      <Navbar />
-      <button onClick={() => navigate(-1)} className="btn btn-primary hBack">
-        Back to Book Ride
+      <button onClick={onBack} className="btn btn-primary hBack">
+        Go Back
       </button>
       <div className="message-interface">
         <div className="messages-container">
@@ -117,13 +104,13 @@ const Chat = () => {
                 <div
                   key={msgIndex}
                   className={`message ${
-                    msg.senderId ===
-                    jwtDecode(localStorage.getItem("token")).userId
-                      ? "own"
-                      : "other"
+                    msg.senderId === userId ? "own" : "other"
                   }`}
                 >
-                  <p>{msg.message}</p>
+                  <p className="message-text">{msg.message}</p>
+                  <p className="message-timestamp">
+                    {new Date(msg.timestamp).toLocaleString()}
+                  </p>
                 </div>
               ))}
             </div>
@@ -150,4 +137,11 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+MessageInterface.propTypes = {
+  apiUrl: PropTypes.string.isRequired,
+  contactId: PropTypes.string,
+  userId: PropTypes.string.isRequired,
+  onBack: PropTypes.func.isRequired,
+};
+
+export default MessageInterface;
