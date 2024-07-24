@@ -21,6 +21,7 @@ const DriverChats = () => {
         const response = await fetch(`${apiUrl}/contacts/${userId}`, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
 

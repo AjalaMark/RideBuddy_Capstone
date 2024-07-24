@@ -11,6 +11,7 @@ const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
 
   useEffect(() => {
     if (!contactId) return;
+    const token = localStorage.getItem;
 
     const socket = io(apiUrl);
 
@@ -21,6 +22,7 @@ const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );

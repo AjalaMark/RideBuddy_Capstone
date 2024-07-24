@@ -7,14 +7,14 @@ import Findride from "./pages/FindRide";
 import BookRide from "./pages/BookRide";
 import PassChat from "./pages/PassChat";
 import DriverChats from "./pages/DriverChats";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 const routes = [
-  { path: "/home", element: <Home /> },
+  { path: "/", element: <Home /> },
   { path: "/register", element: <Register /> },
-  { path: "/", element: <Login /> },
   { path: "/login", element: <Login /> },
-  { path: "/postride", element: <PostRide /> },
-  { path: "/findride", element: <Findride /> },
+  { path: "/postride", element: <ProtectedRoute element={PostRide} /> },
+  { path: "/findride", element: <ProtectedRoute element={Findride} /> },
   { path: "/book-ride/:rideId", element: <BookRide /> },
   { path: "/message/:contactId", element: <PassChat /> },
   { path: "/messages", element: <DriverChats /> },

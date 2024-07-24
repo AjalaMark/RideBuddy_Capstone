@@ -22,6 +22,7 @@ const PostRide = () => {
   const navigate = useNavigate();
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const currentYear = new Date().getFullYear();
 
   const handlePost = async (event) => {
     event.preventDefault();
@@ -70,6 +71,16 @@ const PostRide = () => {
         return;
       }
 
+      if (carYear > currentYear) {
+        setError("Car year cannot exceed the current year.");
+        return;
+      }
+
+      if (seatPrice < 0) {
+        setError("Price per seat cannot be less than 0.");
+        return;
+      }
+
       const response = await fetch(`${apiUrl}/ride`, {
         method: "POST",
         headers: {
@@ -112,7 +123,7 @@ const PostRide = () => {
 
   return (
     <>
-      <Navbar textColor="text-blue" />
+      <Navbar textColor="#005770" />
       <div className="parent-container">
         <div className="child-container">
           <div className="container my-5">
@@ -340,8 +351,9 @@ const PostRide = () => {
                     id="car-year"
                     value={carYear}
                     onChange={(e) => setCarYear(e.target.value)}
-                    placeholder="Year"
-                    min="2017"
+                    min="1990"
+                    max={currentYear}
+                    placeholder="Year of Manufacture"
                   />
                 </div>
 
@@ -410,6 +422,7 @@ const PostRide = () => {
                     id="seat-price"
                     value={seatPrice}
                     onChange={(e) => setSeatPrice(e.target.value)}
+                    min="0"
                     placeholder="Enter price per seat"
                   />
                 </div>

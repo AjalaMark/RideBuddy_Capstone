@@ -241,6 +241,43 @@ export default class Controller {
     }
   };
 
+  static search = async (req, res) => {
+    let filter = {};
+    const { from, to, date } = req.query;
+    try {
+      const startCity = await CityModel.findOne({ name: from });
+      const endCity = await CityModel.findOne({ name: to });
+      if (!startCity || !endCity) {
+        return res.status(404).json({ message: "City not found" });
+      }
+      if (!startCity || !endCity) {
+        return res.status(404).json({ message: "City not found" });
+      }
+
+      // Build the filter object
+      if (startCity) {
+        filter.startCity = startCity._id;
+      }
+      if (endCity) {
+        filter.endCity = endCity._id;
+      }
+      if (date) {
+        // Assuming your date field in the model is called "rideDate"
+        filter.rideDate = new Date(date);
+      }
+      const rides = await PostRideModel.find(filter)
+        .populate("startCity")
+        .populate("endCity")
+        .populate("driver");
+
+      res.status(200).json({ rides });
+      console.log(`this is the object being sent ${rides}`);
+    } catch (error) {
+      res.status(500).send("Server error");
+      console.log(error);
+    }
+  };
+
   static get_message = async (req, res) => {
     try {
       const { userId, contactId } = req.params;
