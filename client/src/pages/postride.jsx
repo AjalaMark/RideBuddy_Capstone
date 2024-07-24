@@ -134,7 +134,7 @@ const PostRide = () => {
 
             <form onSubmit={handlePost}>
               <section className="mb-5">
-                <h3>Travel Plan</h3>
+                <p className="h3">Travel Plan</p>
                 <p>
                   Your origin and destination you&apos;re willing to make along
                   the way.
@@ -212,7 +212,7 @@ const PostRide = () => {
               <hr />
 
               <section className="mb-5">
-                <h3>Ride Schedule</h3>
+                <p className="h3">Ride Schedule</p>
                 <p>
                   Enter a precise date and time with am (morning) or pm
                   (evening).
@@ -269,7 +269,7 @@ const PostRide = () => {
 
               <hr />
               <section className="mb-5">
-                <h3>Vehicle Details</h3>
+                <p className="h3">Vehicle Details</p>
                 <p>
                   This helps you get more bookings and makes it easier for
                   passengers to identify your vehicle.
@@ -378,7 +378,7 @@ const PostRide = () => {
 
               <hr />
               <section className="mb-5">
-                <h3>Empty Seats</h3>
+                <p className="h3">Empty Seats</p>
                 <div className="form-group row">
                   <label
                     htmlFor="seats-number"
@@ -403,7 +403,7 @@ const PostRide = () => {
 
               <hr />
               <section className="mb-5">
-                <h3>Pricing</h3>
+                <p className="h3">Pricing</p>
                 <p>
                   Enter a fair price per seat to cover your gas and other
                   expenses. Note that all prices are CAD.
