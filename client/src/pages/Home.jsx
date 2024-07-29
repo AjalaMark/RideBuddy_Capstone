@@ -17,6 +17,9 @@ import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import Footer from "../components/Footer";
 
+const token = localStorage.getItem("token");
+const isLoggedIn = !!token;
+
 const Home = () => {
   return (
     <div>
@@ -30,25 +33,38 @@ const Home = () => {
             <div className="row align-items-center">
               <div className="col-md-3 mb-4">
                 <div className="box p-4 bg-light">
-                  <img
-                    src={signUpIcon}
-                    alt="Sign Up"
-                    className={iconImgClass}
-                  />
+                  <a href="/register">
+                    <img
+                      src={signUpIcon}
+                      alt="Sign Up"
+                      className={iconImgClass}
+                    />
+                  </a>
                   <h3>Sign Up</h3>
                   <p>
                     Create your RideBuddy account in just a few simple steps.
                   </p>
                 </div>
               </div>
-
               <div className="col-md-3 mb-4">
                 <div className="box p-4 bg-light">
-                  <img
-                    src={bookARideIcon}
-                    alt="Book A Ride"
-                    className={iconImgClass}
-                  />
+                  {isLoggedIn ? (
+                    <a href="/findride">
+                      <img
+                        src={bookARideIcon}
+                        alt="Book A Ride"
+                        className={iconImgClass}
+                      />
+                    </a>
+                  ) : (
+                    <a href="/login">
+                      <img
+                        src={bookARideIcon}
+                        alt="Book A Ride"
+                        className={iconImgClass}
+                      />
+                    </a>
+                  )}
                   <h3>Book A Ride</h3>
                   <p>Enter your destination and confirm your booking.</p>
                 </div>

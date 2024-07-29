@@ -12,13 +12,35 @@ const FindRide = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const handleSearch = async ({ fromLocation, toLocation, date }) => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(
+        `${apiUrl}/rides/search?from=${fromLocation}&to=${toLocation}&date=${date}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch rides");
+      }
+      const data = await response.json();
+      console.log("this is the data received", data);
+      setRides(data.rides);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchRides = async () => {
+      const token = localStorage.getItem("token");
+
       try {
         const apiUrl = import.meta.env.VITE_API_BASE_URL;
         const response = await fetch(`${apiUrl}/ride`, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
         if (!response.ok) {
@@ -52,7 +74,11 @@ const FindRide = () => {
     <div>
       <header className="text-white">
         <Navbar textColor="text-white" />
-        <SearchBar />
+        {localStorage.getItem("userType") === "passenger" ? (
+          <SearchBar onSearch={handleSearch} />
+        ) : (
+          ""
+        )}
       </header>
 
       <main className="main-container">
