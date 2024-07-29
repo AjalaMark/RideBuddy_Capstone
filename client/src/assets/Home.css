@@ -91,11 +91,13 @@ button:hover {
 }
 
 .testimonial-card {
+  position: relative;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 10px;
+  height: 350px;
   max-width: 300px;
   display: flex;
   flex-direction: column;
@@ -113,6 +115,8 @@ button:hover {
 }
 
 .user-icon {
+  position: absolute;
+  bottom: 25px;
   width: 50px;
   height: 50px;
   background: url("path-to-icon.png") no-repeat center center;

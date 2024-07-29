@@ -8,6 +8,7 @@ const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
   const [newMessage, setNewMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     if (!contactId) return;
@@ -44,6 +45,13 @@ const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
         (message.senderId === contactId && message.receiverId === userId)
       ) {
         setMessages([message]);
+      }
+    });
+
+    socket.on("typing", (data) => {
+      if (data.userId === contactId) {
+        setIsTyping(true);
+        setTimeout(() => setIsTyping(false), 2000);
       }
     });
 
@@ -93,6 +101,11 @@ const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
     }
   };
 
+  const handleTyping = () => {
+    const socket = io(apiUrl);
+    socket.emit("typing", { userId, contactId });
+  };
+
   return (
     <>
       <button onClick={onBack} className="btn btn-primary hBack">
@@ -117,18 +130,20 @@ const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
               ))}
             </div>
           ))}
+          {isTyping && <div className="typing-indicator">Typing...</div>}
+          <form onSubmit={handleSendMessage} className="message-form">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={handleTyping}
+              placeholder="Type your message..."
+              required
+            />
+            <button type="submit">Send</button>
+          </form>
         </div>
 
-        <form onSubmit={handleSendMessage} className="message-form">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message..."
-            required
-          />
-          <button type="submit">Send</button>
-        </form>
         {error && <div className="error-message">{error}</div>}
         {loading && <div className="loading-message">Loading messages...</div>}
         {!loading && messages.length === 0 && (
