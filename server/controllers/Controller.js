@@ -206,8 +206,8 @@ export default class Controller {
         seatPrice,
       });
 
-      await ride.save();
-      res.status(200).json({ message: "ride post successfully" });
+      let savedRide = await ride.save();
+      res.status(200).json({rideId: savedRide._id, message: "ride post successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
