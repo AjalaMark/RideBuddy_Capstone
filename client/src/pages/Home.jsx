@@ -29,54 +29,62 @@ const HomePage = () => {
           <div className="container">
             <div className="row align-items-center">
               <div className="col-md-3 mb-4">
-                <div className="box p-4 bg-light">
-                  <img
-                    src={signUpIcon}
-                    alt="Sign Up"
-                    className={iconImgClass}
-                  />
+                <div className="box p-4 bg-light flex-container">
+                  <div className="orange-circle">
+                    <img
+                      src={signUpIcon}
+                      alt="Sign Up"
+                      className={iconImgClass}
+                    />
+                  </div>
                   <h3>Sign Up</h3>
-                  <p>
+                  <p className="p-con">
                     Create your RideBuddy account in just a few simple steps.
                   </p>
                 </div>
               </div>
 
-              <div className="col-md-3 mb-4">
-                <div className="box p-4 bg-light">
-                  <img
-                    src={bookARideIcon}
-                    alt="Book A Ride"
-                    className={iconImgClass}
-                  />
+              <div className="col-md-3 mb-4 ">
+                <div className="box p-4 bg-light flex-container">
+                  <div className="orange-circle">
+                    <img
+                      src={bookARideIcon}
+                      alt="Book A Ride"
+                      className={iconImgClass}
+                    />
+                  </div>
                   <h3>Book A Ride</h3>
-                  <p>Enter your destination and confirm your booking.</p>
+                  <p className="p-con">Enter your destination and confirm your booking.</p>
                 </div>
               </div>
 
-              <div className="col-md-3 mb-4">
-                <div className="box p-4 bg-light">
-                  <img
-                    src={getADriverIcon}
-                    alt="Get A Driver"
-                    className={iconImgClass}
-                  />
+              <div className="col-md-3 mb-4 ">
+                <div className="box p-4 bg-light flex-container">
+                  <div className="orange-circle">
+                    <img
+                      src={getADriverIcon}
+                      alt="Get A Driver"
+                      className={iconImgClass}
+                    />
+                  </div>
                   <h3>Get a driver </h3>
-                  <p>
+                  <p className="p-con">
                     We match you with the available driver for a prompt pickup.
                   </p>
                 </div>
               </div>
 
               <div className="col-md-3 mb-4">
-                <div className="box p-4 bg-light">
-                  <img
-                    src={enjoyTripIcon}
-                    alt="Enjoy Trip"
-                    className={iconImgClass}
-                  />
+                <div className="box p-4 bg-light flex-container">
+                  <div className="orange-circle">
+                    <img
+                      src={enjoyTripIcon}
+                      alt="Enjoy Trip"
+                      className={iconImgClass}
+                    />
+                  </div>
                   <h3>Enjoy Trip</h3>
-                  <p>Sit back, relax, and enjoy the ride with RideBuddy.</p>
+                  <p className="p-con">Sit back, relax, and enjoy the ride with RideBuddy.</p>
                 </div>
               </div>
             </div>
@@ -86,14 +94,17 @@ const HomePage = () => {
           <div className="container">
             <div className="row align-items-center">
               <div className="col-md-6">
-                <img src={driverImage} className="img-fluid" alt="Image" />
+                <img src={driverImage} id="driver-img" alt="Image" />
               </div>
               <div className="col-md-6">
                 <h2>Driving in your car soon?</h2>
-                <p>
+                <p className="p-con2">
                   Drivers, fantastic news! Your good habits are being rewarded.
                   Enjoy the Carpool Bonus by carpooling. Check the eligibility
-                  conditions for more details.
+                  conditions for more details.  By choosing to share your ride 
+                  with others, you're not only helping to reduce traffic congestion 
+                  and lower carbon emissions but also saving on fuel costs 
+                  and contributing to a more sustainable future.
                 </p>
                 <button className="btn btn-success">Offer Ride</button>
               </div>
@@ -106,31 +117,36 @@ const HomePage = () => {
             <div className="row align-items-center">
               <div className="col-md-6">
                 <h2>About RideBuddy</h2>
-                <p>
+                <p className="p-con2">
                   At RideBuddy, we believe in making transportation easy,
                   affordable, and sustainable. Whether you&apos;re commuting to
                   work, heading to an event, or just exploring the city,
                   RideBuddy is here to connect you with reliable rides that fit
                   your schedule and budget.
                 </p>
-                <ul className="list-unstyled">
-                  <li>
+
+                <div className="gridContainer">
+                  <div>
                     <img src={tickMark} alt="Tick Mark" className="tick-mark" />{" "}
                     Convenient Booking
-                  </li>
-                  <li>
+                  </div>
+
+                  <div>
                     <img src={tickMark} alt="Tick Mark" className="tick-mark" />{" "}
                     Eco-Friendly Options
-                  </li>
-                  <li>
+                  </div>
+
+
+                  <div>
                     <img src={tickMark} alt="Tick Mark" className="tick-mark" />{" "}
                     Affordable Rates
-                  </li>
-                  <li>
+                  </div>
+
+                  <div>
                     <img src={tickMark} alt="Tick Mark" className="tick-mark" />{" "}
                     Safety First
-                  </li>
-                </ul>
+                  </div>
+                </div>
                 <button className="btn btn-success">Read More</button>
               </div>
               <div className="col-md-6">
@@ -147,7 +163,8 @@ const HomePage = () => {
         <section className="testimonials text-center bg-light py-5">
           <div className="container">
             <div className="row">
-              <div className="col-md-4 mb-4">
+              <div className="bkg-color"></div>
+              <div className="flex-review">
                 <div className="testimonial-card p-4">
                   <blockquote>
                     &quot;RideBuddy has been a game-changer for my daily
@@ -161,29 +178,27 @@ const HomePage = () => {
                     <img src={userIcon} alt="User" className="img-fluid" />
                   </div>
                 </div>
-              </div>
-              <div className="col-md-4 mb-4">
                 <div className="testimonial-card p-4">
                   <blockquote>
                     &quot;I&apos;ve tried several ride-sharing services, but
                     RideBuddy stands out for its affordability and reliability.
                     The app is super user-friendly, and I&apos;ve never had to
                     wait long for a driver. Plus, I love the option to choose
-                    eco-friendly vehicles. &quot;
+                    eco-friendly vehicles I would highly recommend as they are
+                    providing the best service. &quot;
                   </blockquote>
                   <div className="user-icon">
                     <img src={userIcon} alt="User" className="img-fluid" />
                   </div>
                 </div>
-              </div>
-              <div className="col-md-4 mb-4">
                 <div className="testimonial-card p-4">
                   <blockquote>
                     &quot;RideBuddy is fantastic! I use it for everything from
                     grocery runs to airport trips. The drivers are always
                     courteous, and I feel safe knowing that RideBuddy thoroughly
                     vets them. The transparent pricing is a huge plus, and
-                    I&apos;ve never had any surprise charges. Five stars!&quot;
+                    I&apos;ve never had any surprise charges. Five stars!.
+                    Go for it, it's safe, it's awesome&quot;
                   </blockquote>
                   <div className="user-icon">
                     <img src={userIcon} alt="User" className="img-fluid" />

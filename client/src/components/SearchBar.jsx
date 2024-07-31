@@ -1,39 +1,43 @@
+import "../assets/SearchBar.css"
 const SearchBar = () => {
   return (
     <div>
       <section id="header" className="bg-light p-4">
-        <div className="container">
-          <div className="row align-items-end">
-            <div className="col-md-2">
-              <label>From</label>
+        <div className="main-container">
+          <div className="row">
+            <div className="col-md-2 f-element">
+              {/* <label>From</label> */}
               <input
                 type="text"
-                className="form-control"
-                placeholder="Enter origin"
+                className="bkg"
+                placeholder="From"
+                id="input-from"
               />
             </div>
-            <div className="col-md-2">
-              <label>To</label>
+            <div className="col-md-2 m-element">
+              {/* <label>To</label> */}
               <input
                 type="text"
-                className="form-control"
-                placeholder="Enter destination"
+                className="bkg"
+                placeholder="To"
+                id="input-to"
               />
             </div>
-            <div className="col-md-2">
-              <label>Date</label>
-              <input type="date" className="form-control" />
+            <div className="col-md-2 m-element">
+              {/* <label>Date</label> */}
+              <input type="date" className="bkg" placeholder="Date" id="input-date" />
             </div>
-            <div className="col-md-2">
-              <label>Passenger</label>
+            <div className="col-md-2 m-element">
+              {/* <label>Passenger</label> */}
               <input
                 type="text"
-                className="form-control"
-                placeholder="Passenger"
+                className="bkg "
+                placeholder="Passenger" 
+                id="input-passenger"
               />
             </div>
-            <div className="col-md-2">
-              <button className="btn btn-warning w-100 mt-3">Search</button>
+            <div className="col-md-2 l-element">
+              <button id="click-btn" className="btn btn-warning w-100 " >Search</button>
             </div>
           </div>
         </div>

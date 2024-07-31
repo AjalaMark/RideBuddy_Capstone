@@ -1,0 +1,56 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.btn{
+    height: 40px;
+    margin-bottom: 0%;
+}
+.row{
+    justify-content: center;
+    padding: 10px;
+}
+.col-md-2{
+    background-color: azure;
+    height: 45px;
+    padding: 2.5px;
+}
+.main-container{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 0 ;
+    width: fit-content;
+    height: fit-content;
+}
+
+.m-element{
+    padding-left: 2.5px;
+    padding-right: 2.5px;
+}
+
+.bkg {
+    margin: 0%;
+    background-color: rgb(217, 217, 217, 0.4);
+}
+.bkg::placeholder{
+    font-weight:500;
+    color: #000;
+}
+#input-from, #input-to, #input-date, #input-passenger, #click-btn{
+    margin-bottom: 10px;
+    border: 1px solid rgb(217, 217, 217, 0.4);
+    border-radius: 0px;
+    outline: none;
+    height: 40px;
+}
+.f-element{
+ padding-left: 5px;
+ padding-right: 2.5px;
+}
+.l-element{
+    padding-right: 5px;
+    padding-left: 2.5px;
+}
