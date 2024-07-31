@@ -6,8 +6,9 @@ import CryptoJS from "crypto-js";
 import { PostRideModel } from "../models/PostRideModel.js";
 import { CityModel } from "../models/CityModel.js";
 import { CarDetailsModel } from "../models/CarDetailsModel.js";
-import { BookingModel } from "../models/BookingModel.js"
-import {promisify} from "util"
+import Chat from "../models/ChatModel.js";
+import Booking from "../models/BookingModel.js";
+import { promisify } from "util";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -27,6 +28,7 @@ export default class Controller {
           email: formData.email,
           phoneNumber: formData.phoneNo,
           password: hashedPassword,
+          userType: formData.userType,
         });
         await user.save();
         res.status(201).json({ message: "User registered" });
@@ -60,12 +62,13 @@ export default class Controller {
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid password" });
       }
+      const { userType } = user;
       const token = jwt.sign(
         { userId: user._id, email: user.email },
         SECRET_KEY,
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token, message: "login successful" });
+      res.status(200).json({ token, userType, message: "login successful" });
     } catch (err) {
       res.status(500).send("Server error");
     }
@@ -78,7 +81,7 @@ export default class Controller {
   static get_ride = async (req, res) => {
     try {
       let filter = {};
-      const { startCity, endCity, departTime, passengerNum } = req.query;
+      const { startCity, endCity, departTime } = req.query;
 
       if (startCity) {
         const startCityObj = await CityModel.findOne({ name: startCity });
@@ -112,6 +115,22 @@ export default class Controller {
         .json({ rides, message: "Ride(s) retrieved successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
+    }
+  };
+
+  static get_ride_id = async (req, res) => {
+    try {
+      const rideId = req.params.rideId;
+      const ride = await PostRideModel.findById(rideId).populate(
+        "driver startCity endCity"
+      );
+      if (!ride) {
+        return res.status(404).json({ message: "Ride not found" });
+      }
+      res.json({ ride });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
     }
   };
 
@@ -222,19 +241,110 @@ export default class Controller {
     }
   };
 
+  static get_message = async (req, res) => {
+    try {
+      const { userId, contactId } = req.params;
+      console.log(userId, contactId);
+      if (!userId || !contactId) {
+        return res.status(400).json({ error: "Missing required parameters" });
+      }
+      const messages = await Chat.find({
+        $or: [
+          { senderId: userId, receiverId: contactId },
+          { senderId: contactId, receiverId: userId },
+        ],
+      }).sort({ timestamp: 1 });
+
+      if (!messages || messages.length === 0) {
+        return res.json([]);
+      }
+
+      res.json(messages);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server Error" });
+    }
+  };
+
+  static getContactsByContactId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+      const chats = await Chat.find({
+        $or: [{ senderId: userId }, { receiverId: userId }],
+      })
+        .populate("senderId", "name")
+        .populate("receiverId", "name");
+
+      const contacts = [];
+      chats.forEach((chat) => {
+        if (chat.senderId._id.toString() !== userId) {
+          contacts.push(chat.senderId);
+        } else {
+          contacts.push(chat.receiverId);
+        }
+      });
+
+      const uniqueContacts = [
+        ...new Map(
+          contacts.map((contact) => [contact._id.toString(), contact])
+        ).values(),
+      ];
+
+      res.json(uniqueContacts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch contacts" });
+    }
+  };
+
+  static post_message = async (req, res) => {
+    try {
+      const { senderId, receiverId, message } = req.body;
+
+      let chat = await Chat.findOne({
+        $or: [
+          { senderId: senderId, receiverId: receiverId },
+          { senderId: receiverId, receiverId: senderId },
+        ],
+      });
+
+      if (!chat) {
+        chat = new Chat({
+          senderId: senderId,
+          receiverId: receiverId,
+          messages: [],
+        });
+      }
+
+      chat.messages.push({
+        senderId: senderId,
+        receiverId: receiverId,
+        message: message,
+        timestamp: new Date(),
+      });
+
+      const savedMessage = await chat.save();
+      res.json(savedMessage);
+
+      req.app.get("socketio").emit("chat message", savedMessage);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server Error" });
+    }
+  };
+
   static check_ride_availability = async (req, res) => {
     try {
       const rideId = req.params.id;
-      check_ride_avail(rideId, (e, avail)=>{
+      check_ride_avail(rideId, (e, avail) => {
         if (e) {
           return res.status(500).json({ message: e.message });
         }
         if (avail) {
           res.status(200).json({ message: "available" });
-          return
+          return;
         }
         res.status(200).json({ message: "unavailable" });
-      })
+      });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
@@ -242,59 +352,65 @@ export default class Controller {
 
   static get_booking = async (req, res) => {
     try {
-      const user = req.user.userId
-      const booking = await BookingModel.find({passenger: user})
+      const user = req.user.userId;
+      const booking = await Booking.find({ userId: user })
         .populate({
-          path: "ride",
-          populate: { path: 'driver' },
+          path: "rideId",
+          populate: { path: "driver" },
         })
         .populate({
-          path: "ride",
-          populate: { path: 'startCity' },
+          path: "rideId",
+          populate: { path: "startCity" },
         })
         .populate({
-          path: "ride",
-          populate: { path: 'endCity' },
+          path: "rideId",
+          populate: { path: "endCity" },
         })
-        .populate("passenger");
-      res.status(200).json({booking, message: "get booking successfully"})
+        .populate("userId");
+      res.status(200).json({ booking, message: "get booking successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
-    
-  }
+  };
+
   static post_booking = async (req, res) => {
     try {
-      let rideId = req.body.rideId
-      let avail = await promisify(check_ride_avail)(rideId)
+      const { rideId, userId } = req.body;
+      let avail = await promisify(check_ride_avail)(rideId);
+
       if (!avail) {
-        return res.status(200).json({ message: "ride occupied" });
+        return res
+          .status(200)
+          .json({ message: "Ride has already been booked" });
       }
-      let user = req.user.userId
-      const booking = new BookingModel({
-        ride: rideId,
-        passenger: user
-      })
-      await booking.save()
-      res.status(200).json({ message: "ride book successfully" });
-    } catch(e) {
+
+      const paymentStatus = "completed";
+
+      const booking = new Booking({
+        rideId,
+        userId,
+        paymentStatus,
+      });
+      await booking.save();
+      res.status(200).json({ message: "ride booked successfully" });
+    } catch (e) {
       res.status(500).json({ message: e.message });
     }
-  }
+  };
 }
 
 async function check_ride_avail(rideId, cb) {
   try {
-    const ride = await PostRideModel.findById(rideId)
+    const ride = await PostRideModel.findById(rideId);
     if (!ride) {
-      return cb(new Error("no such ride"))
+      return cb(new Error("no such ride"));
     }
-    const booking = await BookingModel.findOne({ride: rideId})
+    const booking = await Booking.findOne({ rideId: rideId });
     if (!booking) {
-      cb(null, true)
-      return
+      cb(null, true);
+      return;
     }
-    cb(null, false)
+    cb(null, false);
   } catch (e) {
     cb(e);
   }

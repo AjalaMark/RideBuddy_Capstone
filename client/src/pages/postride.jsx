@@ -100,7 +100,7 @@ const PostRide = () => {
 
       const data = await response.json();
       if (response.ok) {
-        navigate("/findride");
+        navigate("/home");
       } else {
         setError(data?.message || "An error occurred. Please try again.");
       }

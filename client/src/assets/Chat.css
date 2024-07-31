@@ -1,0 +1,94 @@
+*::after,
+*::before,
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.message-interface {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.chat-header {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.messages-container {
+  flex: 1;
+  min-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.messages-container > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  width: 100%;
+}
+
+.message.own {
+  background-color: #d1e7dd;
+  align-self: flex-end;
+  max-width: 60%;
+}
+
+.message.other {
+  background-color: #eaeaea;
+  align-self: flex-start;
+  max-width: 60%;
+}
+
+.message-text {
+  margin: 0;
+}
+
+.message-timestamp {
+  font-size: 0.8em;
+  color: #888;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.message-form {
+  display: flex;
+  align-items: center;
+}
+
+.message-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.message-form button {
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}

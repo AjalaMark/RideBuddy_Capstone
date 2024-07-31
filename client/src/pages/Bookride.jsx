@@ -1,18 +1,45 @@
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import "../assets/Bookride.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const BookRide = () => {
+  const { rideId } = useParams();
+  const [ride, setRide] = useState(null);
   const [seats, setSeats] = useState(1);
   const [nameOnCard, setNameOnCard] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expDate, setExpDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
-  const handleBooking = (event) => {
+  useEffect(() => {
+    const fetchRideDetails = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/ride/${rideId}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch ride details");
+        }
+        const data = await response.json();
+        setRide(data.ride);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchRideDetails();
+  }, [rideId]);
+
+  const handleBooking = async (event) => {
     event.preventDefault();
 
     if (!nameOnCard || !cardNumber || !expDate || !cvv) {
@@ -20,9 +47,50 @@ const BookRide = () => {
       return;
     }
 
-    // Simulate successful booking
-    console.log("Booking successful");
+    const token = localStorage.getItem("token");
+    const decoded = jwtDecode(token);
+    const { userId } = decoded;
+
+    if (!userId) {
+      setError("User not authenticated");
+      return;
+    }
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiUrl}/booking`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          rideId,
+          userId,
+          seats,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setMessage(result.message);
+        setError("");
+      } else {
+        setError(result.message);
+      }
+    } catch (error) {
+      setError("Failed to book the ride");
+    }
   };
+
+  const handleMessageDriver = () => {
+    navigate(`/message/${ride.driver._id}`);
+  };
+
+  if (!ride) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -36,7 +104,7 @@ const BookRide = () => {
                 <div className="driver-info">
                   <div className="profile-pic"></div>
                   <div className="driver-details">
-                    <h2>Mike Yohanas</h2>
+                    <h2>{ride.driver.firstName}</h2>
                     <div className="rating">
                       <span>★</span>
                       <span>★</span>
@@ -46,33 +114,40 @@ const BookRide = () => {
                     </div>
                   </div>
                 </div>
-                <h3>Request to book with Mike Yohanas</h3>
+                <h3>Request to book with {ride.driver.firstName}</h3>
                 <div className="ride-info">
-                  <h4>Kitchener to Listowel</h4>
-                  <p>Saturday, June 15 at 7:30am</p>
-                  <h5>2 seats left</h5>
-                  <p>Pickup: Kitchener, ON</p>
-                  <p>Dropoff: Listowel, ON</p>
+                  <h4>
+                    {ride.startCity.name} to {ride.endCity.name}
+                  </h4>
+                  <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
+                  <p>Returning: {new Date(ride.returnTime).toLocaleString()}</p>
+                  <h5>{ride.seatsNumber} seats left</h5>
+                  <p>Pickup: {ride.startCity.name}</p>
+                  <p>Dropoff: {ride.endCity.name}</p>
                   <hr />
                   <div className="vehicle-info">
-                    <p>Vehicle: Honda Civic</p>
-                    <p>Type: Sedan</p>
-                    <p>Color: Black</p>
-                    <p>Year: 2020</p>
-                    <p>Licence Plate: EROR 404</p>
+                    <p>
+                      Vehicle: {ride.carType} {ride.carModel}
+                    </p>
+                    <p>Type: {ride.carType}</p>
+                    <p>Color: {ride.carColor}</p>
+                    <p>Year: {ride.carYear}</p>
+                    <p>Licence Plate: {ride.licensePlate}</p>
                     <hr />
                   </div>
                 </div>
               </div>
               <div className="booking-summary">
                 <h4>Booking request</h4>
-                <p>Kitchener to Listowel</p>
-                <p>Leaving: Saturday, June 15 at 7:30am</p>
-                <p>Returning: Saturday, June 15 at 1:30pm</p>
+                <p>
+                  {ride.startCity.name} to {ride.endCity.name}
+                </p>
+                <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
+                <p>Returning: {new Date(ride.returnTime).toLocaleString()}</p>
                 <hr />
                 <div className="cost-summary">
-                  <p>2 seats</p>
-                  <p>$26</p>
+                  <p>{seats} seats</p>
+                  <p>${ride.seatPrice * seats}</p>
                 </div>
                 <div className="cost-summary">
                   <p>Booking Fee</p>
@@ -80,13 +155,27 @@ const BookRide = () => {
                 </div>
                 <div className="cost-summary">
                   <h3>Total</h3>
-                  <h3>$34</h3>
+                  <h3>${ride.seatPrice * seats + 8}</h3>
                 </div>
                 <hr />
-                <button className="request-button">Request To Book</button>
+                <button className="request-button" onClick={handleBooking}>
+                  Request To Book
+                </button>
+                {message && (
+                  <div
+                    className={`${
+                      message.type === "success"
+                        ? "success-message"
+                        : "error-message"
+                    }`}
+                  >
+                    {message}
+                  </div>
+                )}
+                {error && <div className="error-message">{error}</div>}
               </div>
             </div>
-            
+
             <div className="additional-info">
               <div className="select-seats">
                 <div className="select-seats-container">
@@ -100,14 +189,31 @@ const BookRide = () => {
                     <option value="2">2</option>
                   </select>
                 </div>
-                <button className="message-button">Message Mike</button>
+                <button
+                  className="message-button"
+                  onClick={handleMessageDriver}
+                >
+                  Message {ride.driver.firstName}
+                </button>
                 <div className="payment-policy">
                   <h3>Payment policy</h3>
-                  <p>Your card isn’t charged until the driver approves your Booking Request.</p>
+                  <p>
+                    Your card isn’t charged until the driver approves your
+                    Booking Request.
+                  </p>
                   <h3>Cancellation policy</h3>
-                  <p>Full refund if your Booking Request isn't approved by the driver, is withdrawn or expires before being approved.</p>
-                  <p>100% refund if you cancel your booking more than 24h before departure.</p>
-                  <p>50% refund if you cancel your booking less than 24h before departure.</p>
+                  <p>
+                    Full refund if your Booking Request isn&apos;t approved by
+                    the driver, is withdrawn or expires before being approved.
+                  </p>
+                  <p>
+                    100% refund if you cancel your booking more than 24h before
+                    departure.
+                  </p>
+                  <p>
+                    50% refund if you cancel your booking less than 24h before
+                    departure.
+                  </p>
                 </div>
               </div>
               <div className="payment-method-box">
@@ -143,7 +249,6 @@ const BookRide = () => {
                 </div>
               </div>
             </div>
-            {error && <div className="error-message">{error}</div>}
           </div>
         </div>
       </div>

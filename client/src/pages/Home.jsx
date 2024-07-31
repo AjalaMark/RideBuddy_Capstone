@@ -17,7 +17,7 @@ import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import Footer from "../components/Footer";
 
-const HomePage = () => {
+const Home = () => {
   return (
     <div>
       <header className="text-white">
@@ -214,4 +214,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Home;

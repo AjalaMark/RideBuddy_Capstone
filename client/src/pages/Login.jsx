@@ -25,8 +25,10 @@ const Login = () => {
         body: JSON.stringify({ email, password: encPassword }),
       });
       const data = await response.json();
+      console.log(data);
       if (response.ok) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("userType", data.userType);
         navigate("/home");
       } else {
         setError(data?.message || "An error occurred. Please try again.");

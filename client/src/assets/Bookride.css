@@ -214,3 +214,11 @@ hr {
 .cancellation-policy h3 {
   margin-top: 0;
 }
+
+.success-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}
