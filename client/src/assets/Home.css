@@ -17,11 +17,11 @@
   background-color: white;
 }
 
-.home-container header {
+header {
   background-color: #2ed1ff;
 }
 
-.home-container #header {
+#header {
   background-image: url("./carpool_only_large-1fb250954893109fa160.svg");
   background-size: cover;
   background-position: center;
