@@ -23,6 +23,7 @@ const Navbar = (props) => {
       userType: "driver",
     },
     { path: "#about-us", text: "About Us" },
+    { path: "/profile", text: "Profile" },
     !token
       ? { path: "/login", text: "Login" }
       : { path: "#", text: "Logout", onClick: handleLogout },

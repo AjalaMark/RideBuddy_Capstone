@@ -8,6 +8,7 @@ import BookRide from "./pages/BookRide";
 import PassChat from "./pages/PassChat";
 import DriverChats from "./pages/DriverChats";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import Profile from "./pages/Profile";
 
 const routes = [
   { path: "/", element: <Home /> },
@@ -18,6 +19,7 @@ const routes = [
   { path: "/book-ride/:rideId", element: <BookRide /> },
   { path: "/message/:contactId", element: <PassChat /> },
   { path: "/messages", element: <DriverChats /> },
+  { path: "/profile", element: <ProtectedRoute element={Profile} /> },
 ];
 
 function App() {
