@@ -1,14 +1,22 @@
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 
+const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+const authDomain = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
+const storageBucket = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
+const messagingSenderId = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
+const appId = import.meta.env.VITE_FIREBASE_APP_ID;
+const measurementId = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDTJn_yYozak8J6BNdatkbRIvdoQPeqmco",
-  authDomain: "ridebuddy-2334b.firebaseapp.com",
-  projectId: "ridebuddy-2334b",
-  storageBucket: "ridebuddy-2334b.appspot.com",
-  messagingSenderId: "1051735886466",
-  appId: "1:1051735886466:web:80eb2ddaa17223ae7f429b",
-  measurementId: "G-M9CQJ9XL2F",
+  apiKey: apiKey,
+  authDomain: authDomain,
+  projectId: projectId,
+  storageBucket: storageBucket,
+  messagingSenderId: messagingSenderId,
+  appId: appId,
+  measurementId: measurementId,
 };
 
 const app = initializeApp(firebaseConfig);
