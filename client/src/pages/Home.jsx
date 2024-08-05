@@ -20,11 +20,9 @@ import Testimonial from "../components/Testimonial";
 const token = localStorage.getItem("token");
 const isLoggedIn = !!token;
 
-console.log(isLoggedIn);
-
 const Home = () => {
   return (
-    <div>
+    <div className="home-container">
       <header className="text-white">
         <Navbar textColor="text-white" />
         <SearchBar />

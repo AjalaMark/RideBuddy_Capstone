@@ -352,15 +352,26 @@ export default class Controller {
         });
       }
 
-      chat.messages.push({
+      const newMessage = {
         senderId: senderId,
         receiverId: receiverId,
         message: message,
         timestamp: new Date(),
-      });
+        status: "sent",
+      };
+
+      chat.messages.push(newMessage);
 
       const savedMessage = await chat.save();
-      res.json(savedMessage);
+
+      const addedMessage =
+        savedMessage.messages[savedMessage.messages.length - 1];
+
+      res.json({
+        chatId: savedMessage._id,
+        messageId: addedMessage._id,
+        chat: savedMessage,
+      });
 
       req.app.get("socketio").emit("chat message", savedMessage);
     } catch (error) {

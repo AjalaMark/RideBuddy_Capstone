@@ -1,4 +1,4 @@
-*,
+.home-container *,
 *::after,
 *::before {
   margin: 0;
@@ -6,18 +6,22 @@
   box-sizing: border-box;
 }
 
-body {
+.App {
+  height: 100vh;
+}
+
+.home-container {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: white;
 }
 
-header {
+.home-container header {
   background-color: #2ed1ff;
 }
 
-#header {
+.home-container #header {
   background-image: url("./carpool_only_large-1fb250954893109fa160.svg");
   background-size: cover;
   background-position: center;
@@ -30,43 +34,43 @@ header {
   height: 50px;
 }
 
-#header .form-control {
+.home-container #header .form-control {
   margin-bottom: 10px;
 }
 
-#header button {
+.home-container #header button {
   background-color: #ffcc00;
   color: #000;
   border: none;
   margin-bottom: 10px;
 }
 
-main {
+.home-container main {
   padding: 20px;
 }
 
-section h2 {
+.home-container section h2 {
   color: #2c3e50;
 }
 
-section p {
+.home-container section p {
   line-height: 1.6;
   color: #555;
 }
 
-section ul {
+.home-container section ul {
   list-style-type: none;
   padding: 0;
 }
 
-section ul li {
+.home-container section ul li {
   background: url("check-icon.png") no-repeat left center;
   color: #333;
   padding-left: 25px;
   margin-bottom: 10px;
 }
 
-button {
+.home-container button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -75,13 +79,13 @@ button {
   margin-top: 10px;
 }
 
-.tick-mark {
+.home-container .tick-mark {
   width: 16px;
   margin-right: 8px;
   vertical-align: middle;
 }
 
-button:hover {
+.home-container button:hover {
   background-color: #1d3249;
 }
 

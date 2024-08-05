@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import {} from "dotenv/config.js";
 import http from "http";
 import { Server } from "socket.io";
+import Chat from "./models/ChatModel.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -30,24 +31,56 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("connected to mongodb successfully");
+    console.log("Connected to MongoDB successfully");
   })
   .catch((err) => {
-    console.log(`error connecting to mongodb, error: ${err}`);
+    console.log(`Error connecting to MongoDB, error: ${err}`);
   });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log("A user connected", socket.id);
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    console.log("User disconnected", socket.id);
   });
 
   socket.on("chat message", (msg) => {
+    console.log("Received chat message:", msg);
     io.emit("chat message", msg);
+  });
+
+  socket.on("typing", (data) => {
+    const { userId, contactId } = data;
+    io.emit("typing", { userId, contactId });
+  });
+
+  socket.on("message delivered", async (data) => {
+    console.log("Message delivered event received:", data);
+
+    const { chatId, messageId, receiverId } = data;
+
+    try {
+      const result = await Chat.updateOne(
+        { _id: chatId, "messages._id": messageId },
+        { $set: { "messages.$.status": "delivered" } }
+      );
+      console.log("MongoDB update result:", result);
+
+      io.to(receiverId).emit("message status updated", {
+        chatId,
+        messageId,
+        status: "delivered",
+      });
+      console.log(
+        "Emitted message status updated to delivered for:",
+        receiverId
+      );
+    } catch (error) {
+      console.error("Error updating message status to delivered:", error);
+    }
   });
 });
 
 server.listen(3000, () => {
-  console.log("server listening on port 3000");
+  console.log("Server listening on port 3000");
 });

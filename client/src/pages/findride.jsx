@@ -71,7 +71,7 @@ const FindRide = () => {
   };
 
   return (
-    <div>
+    <div className="findRide-container">
       <header className="text-white">
         <Navbar textColor="text-white" />
         {localStorage.getItem("userType") === "passenger" ? (
