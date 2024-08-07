@@ -5,6 +5,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { jwtDecode } from "jwt-decode";
 
+import { userIcon } from "../Constants";
+
 const BookRide = () => {
   const { rideId } = useParams();
   const [ride, setRide] = useState(null);
@@ -102,7 +104,12 @@ const BookRide = () => {
             <div className="ride-details">
               <div className="left-section">
                 <div className="driver-info">
-                  <div className="profile-pic"></div>
+                  <div className="profile-picture">
+                    <img
+                      src={ride.driver.profilePicture || userIcon}
+                      alt="profile-picture"
+                    />
+                  </div>
                   <div className="driver-details">
                     <h2>{ride.driver.firstName}</h2>
                     <div className="rating">

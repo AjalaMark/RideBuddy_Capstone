@@ -57,7 +57,7 @@ export default class Controller {
       if (req.body?.notEncrypted) {
         oriPassword = password;
       }
-      console.log("oriPassword: ", oriPassword);
+
       const isMatch = await bcrypt.compare(oriPassword, user.password);
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid password" });
@@ -74,8 +74,83 @@ export default class Controller {
     }
   };
 
-  static get_home = (req, res) => {
-    res.status(200).json({ message: "Welcome to the Home Page" });
+  static get_profile = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await userModel
+        .findById(userId)
+        .select("-password -userType");
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  };
+
+  static update_profile_picture = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const { profilePicture } = req.body;
+
+      const user = await userModel
+        .findOneAndUpdate(
+          { _id: userId },
+          { profilePicture },
+          { new: true, runValidators: true }
+        )
+        .select("-userType");
+
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  };
+
+  static update_profile = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const updatedData = req.body.user;
+
+      // Extract fields from updatedData
+      const {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+        profilePicture,
+      } = updatedData;
+
+      const updateObject = {};
+
+      if (firstName) updateObject.firstName = firstName;
+      if (lastName) updateObject.lastName = lastName;
+      if (email) updateObject.email = email;
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        updateObject.password = hashedPassword;
+      }
+      if (phoneNumber) updateObject.phoneNumber = phoneNumber;
+      if (profilePicture) updateObject.profilePicture = profilePicture;
+
+      const user = await userModel.findOneAndUpdate(
+        { _id: userId },
+        updateObject,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+      // Check if the user was found and updated
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.status(200).json(user);
+    } catch (error) {
+      // Log the error for debugging
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
   };
 
   static get_ride = async (req, res) => {
@@ -352,15 +427,26 @@ export default class Controller {
         });
       }
 
-      chat.messages.push({
+      const newMessage = {
         senderId: senderId,
         receiverId: receiverId,
         message: message,
         timestamp: new Date(),
-      });
+        status: "sent",
+      };
+
+      chat.messages.push(newMessage);
 
       const savedMessage = await chat.save();
-      res.json(savedMessage);
+
+      const addedMessage =
+        savedMessage.messages[savedMessage.messages.length - 1];
+
+      res.json({
+        chatId: savedMessage._id,
+        messageId: addedMessage._id,
+        chat: savedMessage,
+      });
 
       req.app.get("socketio").emit("chat message", savedMessage);
     } catch (error) {

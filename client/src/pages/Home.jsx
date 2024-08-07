@@ -5,7 +5,6 @@ import {
   driverImage,
   tickMark,
   whoWeAreImage,
-  userIcon,
   signUpIcon,
   bookARideIcon,
   getADriverIcon,
@@ -16,13 +15,14 @@ import {
 import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import Footer from "../components/Footer";
+import Testimonial from "../components/Testimonial";
 
 const token = localStorage.getItem("token");
 const isLoggedIn = !!token;
 
 const Home = () => {
   return (
-    <div>
+    <div className="home-container">
       <header className="text-white">
         <Navbar textColor="text-white" />
         <SearchBar />
@@ -163,8 +163,8 @@ const Home = () => {
         <section className="testimonials text-center bg-light py-5">
           <div className="container">
             <div className="row">
-              <div className="col-md-4 mb-4">
-                <div className="testimonial-card p-4">
+              <Testimonial
+                message={
                   <blockquote>
                     &quot;RideBuddy has been a game-changer for my daily
                     commute. The booking process is quick and easy, and the
@@ -173,13 +173,10 @@ const Home = () => {
                     know exactly when my ride will arrive. Highly recommend!
                     &quot;
                   </blockquote>
-                  <div className="user-icon">
-                    <img src={userIcon} alt="User" className="img-fluid" />
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-4 mb-4">
-                <div className="testimonial-card p-4">
+                }
+              />
+              <Testimonial
+                message={
                   <blockquote>
                     &quot;I&apos;ve tried several ride-sharing services, but
                     RideBuddy stands out for its affordability and reliability.
@@ -187,13 +184,10 @@ const Home = () => {
                     wait long for a driver. Plus, I love the option to choose
                     eco-friendly vehicles. &quot;
                   </blockquote>
-                  <div className="user-icon">
-                    <img src={userIcon} alt="User" className="img-fluid" />
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-4 mb-4">
-                <div className="testimonial-card p-4">
+                }
+              />
+              <Testimonial
+                message={
                   <blockquote>
                     &quot;RideBuddy is fantastic! I use it for everything from
                     grocery runs to airport trips. The drivers are always
@@ -201,11 +195,8 @@ const Home = () => {
                     vets them. The transparent pricing is a huge plus, and
                     I&apos;ve never had any surprise charges. Five stars!&quot;
                   </blockquote>
-                  <div className="user-icon">
-                    <img src={userIcon} alt="User" className="img-fluid" />
-                  </div>
-                </div>
-              </div>
+                }
+              />
             </div>
           </div>
         </section>
