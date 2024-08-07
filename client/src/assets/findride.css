@@ -64,6 +64,7 @@
 
 .ride-card {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   border: solid 1.5px #004e56;
@@ -178,4 +179,11 @@
   height: 80px;
   margin-right: 1rem;
   padding-left: 1rem;
+}
+
+@media (min-width: 1025px) {
+  .ride-card {
+    display: flex;
+    flex-direction:row;
+  }
 }

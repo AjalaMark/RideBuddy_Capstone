@@ -1,14 +1,21 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "../assets/Searchbar.css";
+import { useNavigate } from "react-router-dom";
+
 
 const SearchBar = ({ onSearch }) => {
   const [fromLocation, setFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
   const [date, setDate] = useState("");
   const [passenger, setPassenger] = useState("");
+  const navigate = useNavigate()
 
   const handleSearch = () => {
+    if (!onSearch) {
+      navigate(`/findride`)
+      return
+    }
     onSearch({ fromLocation, toLocation, date });
   };
 
@@ -16,7 +23,7 @@ const SearchBar = ({ onSearch }) => {
     <div>
       <section id="header" className="bg-light p-4">
         <div className="container">
-          <div className="row align-items-end">
+          <div className="row align-items-end justify-content-between">
             <div className="col-md-2">
               <label>
                 From
