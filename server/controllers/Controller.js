@@ -215,7 +215,6 @@ export default class Controller {
         origin,
         destination,
         departureTime,
-        returnTime,
         travelDate,
         carModel,
         carType,
@@ -227,10 +226,9 @@ export default class Controller {
       } = req.body;
 
       const departTime = new Date(departureTime);
-      const returnTimeDate = new Date(returnTime);
       const travelDateDate = new Date(travelDate);
 
-      if (isNaN(departTime) || isNaN(returnTimeDate) || isNaN(travelDateDate)) {
+      if (isNaN(departTime) || isNaN(travelDateDate)) {
         return res.status(400).json({ message: "Invalid date format" });
       }
 
@@ -270,7 +268,6 @@ export default class Controller {
         endCity: endCityObj._id,
         departTime: departTime,
         car: savedCar._id,
-        returnTime: returnTimeDate,
         travelDate: travelDateDate,
         carModel,
         carType,
@@ -507,19 +504,108 @@ export default class Controller {
           .json({ message: "Ride has already been booked" });
       }
 
-      const paymentStatus = "completed";
-
       const booking = new Booking({
         rideId,
         userId,
-        paymentStatus,
+        paymentStatus: "pending", // Payment is pending until ride is accepted
+        status: "pending", // Booking status is pending
       });
+
       await booking.save();
       res.status(200).json({ message: "ride booked successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
   };
+
+  // Controller function to get all pending bookings for a driver
+  static get_pending_bookings = async (req, res) => {
+    try {
+      // Extract the token from the request headers
+      const authHeader = req.headers["authorization"];
+      const token = authHeader && authHeader.split(" ")[1];
+
+      if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+      }
+
+      const decoded = jwt.decode(token);
+      const driverId = decoded.userId;
+
+      // Fetch rides for the driver
+      const rides = await PostRideModel.find({ driver: driverId });
+      const rideIds = rides.map((ride) => ride._id);
+
+      // Fetch pending bookings for these rides
+      const bookings = await Booking.find({
+        rideId: { $in: rideIds },
+        status: "pending",
+      }).populate("userId"); // Populate user details
+
+      res.status(200).json(bookings);
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+  // Controller function to accept a booking
+  static accept_booking = async (req, res) => {
+    try {
+      const { bookingId } = req.params;
+
+      const updatedBooking = await Booking.findByIdAndUpdate(
+        bookingId,
+        { status: "accepted", paymentStatus: "pending" }, // Adjust if needed
+        { new: true } // Return the updated document
+      ).populate("userId"); // Optionally populate user details
+
+      if (!updatedBooking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      res.status(200).json({ message: "Booking accepted successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+
+  // Controller function to decline a booking
+  static decline_booking = async (req, res) => {
+    try {
+      const { bookingId } = req.params;
+
+      const updatedBooking = await Booking.findByIdAndUpdate(
+        bookingId,
+        { status: "declined", paymentStatus: "pending" }, // Adjust if needed
+        { new: true } // Return the updated document
+      ).populate("userId"); // Optionally populate user details
+
+      if (!updatedBooking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      res.status(200).json({ message: "Booking declined successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+
+  // static get_booking_ride = async (req, res) => {
+  //   try {
+  //     const rideId = req.params.rideId;
+  //     console.log(rideId);
+  //     const booking = await Booking.findById(rideId).populate("ride");
+
+  //     console.log(booking);
+
+  //     if (!booking) {
+  //       return res.status(404).json({ message: "Booking not found" });
+  //     }
+
+  //     res.json({ booking: ride.booking });
+  //   } catch (error) {
+  //     res.status(500).json({ message: error.message });
+  //   }
+  // };
 }
 
 async function check_ride_avail(rideId, cb) {

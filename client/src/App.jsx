@@ -9,6 +9,7 @@ import PassChat from "./pages/PassChat";
 import DriverChats from "./pages/DriverChats";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Profile from "./pages/Profile";
+// import DriverNotification from "./pages/DriverNotification";
 
 const routes = [
   { path: "/", element: <Home /> },
@@ -20,6 +21,10 @@ const routes = [
   { path: "/message/:contactId", element: <PassChat /> },
   { path: "/messages", element: <DriverChats /> },
   { path: "/profile", element: <ProtectedRoute element={Profile} /> },
+  // {
+  //   path: "/driver-notification",
+  //   element: <ProtectedRoute element={DriverNotification} />,
+  // },
 ];
 
 function App() {

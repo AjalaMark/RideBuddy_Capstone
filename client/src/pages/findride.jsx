@@ -91,7 +91,7 @@ const FindRide = () => {
               onClick={() => handleRideClick(ride._id)}
             >
               <div className="driver-image-container">
-                <div>driver image</div>
+                <img src={ride.driver.profilePicture} alt="driver-image" />
               </div>
 
               <div className="ride-details-container">
@@ -104,10 +104,6 @@ const FindRide = () => {
                     <p className="leaving">
                       Leaving:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       {new Date(ride.departTime).toLocaleString()}
-                    </p>
-                    <p className="returning">
-                      Returning:&nbsp;&nbsp;&nbsp;{" "}
-                      {new Date(ride.returnTime).toLocaleString()}
                     </p>
                   </div>
                   <div className="pickup-dropoff-container">

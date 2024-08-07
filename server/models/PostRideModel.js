@@ -3,12 +3,10 @@ import { model, Schema } from "mongoose";
 const rideSchema = new Schema({
   driver: { type: Schema.Types.ObjectId, ref: "userData", required: true },
   departTime: { type: Date, required: true },
-  returnTime: { type: Date, required: true },
   travelDate: { type: Date, required: true },
   car: { type: Schema.Types.ObjectId, ref: "car", required: true },
   startCity: { type: Schema.Types.ObjectId, ref: "city", required: true },
   endCity: { type: Schema.Types.ObjectId, ref: "city", required: true },
-  driver: { type: Schema.Types.ObjectId, ref: "userData", required: true },
   carModel: { type: String, required: true },
   carType: { type: String, required: true },
   carColor: { type: String, required: true },

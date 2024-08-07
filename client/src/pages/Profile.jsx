@@ -4,8 +4,8 @@ import { storage } from "../utils/FirebaseConfig";
 import "../assets/Profile.css";
 import { jwtDecode } from "jwt-decode";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-
 import { userIcon } from "../Constants";
 import { logout } from "../utils/Auth";
 
@@ -110,7 +110,7 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar textColor="#005770" />
       <div className="profile-page">
         <h2>User Profile</h2>
         <div className="profile-picture">
@@ -175,6 +175,7 @@ const Profile = () => {
           <button onClick={() => setIsEditing(true)}>Edit</button>
         )}
       </div>
+      <Footer />
     </>
   );
 };

@@ -9,7 +9,6 @@ const PostRide = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [departureTime, setDepartureTime] = useState("");
-  const [returnTime, setReturnTime] = useState("");
   const [travelDate, setTravelDate] = useState("");
   const [carModel, setCarModel] = useState("");
   const [carType, setCarType] = useState("");
@@ -41,13 +40,11 @@ const PostRide = () => {
       };
 
       const departTime = combineDateAndTime(travelDate, departureTime);
-      const returnTimeDate = combineDateAndTime(travelDate, returnTime);
 
       if (
         !origin &&
         !destination &&
         !departureTime &&
-        !returnTime &&
         !travelDate &&
         !carModel &&
         !carType &&
@@ -61,12 +58,7 @@ const PostRide = () => {
         return;
       }
 
-      if (
-        !departTime ||
-        !returnTimeDate ||
-        isNaN(departTime) ||
-        isNaN(returnTimeDate)
-      ) {
+      if (!departTime || isNaN(departTime)) {
         setError("Ride Schedule is required.");
         return;
       }
@@ -91,7 +83,6 @@ const PostRide = () => {
           origin,
           destination,
           departureTime: departTime.toISOString(),
-          returnTime: returnTimeDate.toISOString(),
           travelDate,
           carModel,
           carType,
@@ -231,22 +222,6 @@ const PostRide = () => {
                     id="departure-time"
                     value={departureTime}
                     onChange={(e) => setDepartureTime(e.target.value)}
-                  />
-                </div>
-                <div className="form-group row">
-                  <label
-                    htmlFor="return-time"
-                    className="col-sm-5 col-form-label text-right"
-                  >
-                    Time for Returning
-                  </label>
-
-                  <input
-                    type="time"
-                    className="form-control"
-                    id="return-time"
-                    value={returnTime}
-                    onChange={(e) => setReturnTime(e.target.value)}
                   />
                 </div>
                 <div className="form-group row">

@@ -1,224 +1,255 @@
-/* client/src/assets/BookRide.css */
-
-.parent-container {
+.book-ride-parent-container {
   display: flex;
   justify-content: center;
-  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
-.child-container {
+.book-ride-child-container {
   width: 100%;
   max-width: 1200px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.book-ride-header {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
 }
 
 .ride-details {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.left-section,
+.booking-summary {
+  flex: 1;
+  min-width: 300px;
+  margin: 10px;
 }
 
 .left-section {
-  width: 60%;
-  padding-right: 8rem;
+  padding-right: 20px;
 }
 
 .driver-info {
   display: flex;
-  margin-bottom: 1rem;
-  margin-left: 33%;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.profile-pic {
-  width: 100px;
-  height: 100px;
-  background-color: #ccc;
+.profile-picture img {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin-right: 1rem;
+  object-fit: cover;
+  border: 2px solid #ffa500;
 }
 
 .driver-details {
+  margin-left: 20px;
   text-align: left;
 }
 
 .driver-details h2 {
+  font-size: 1.5rem;
   margin: 0;
-  margin-bottom: 0.5rem;
-}
-
-.rating {
-  display: flex;
 }
 
 .rating span {
   color: gold;
+  font-size: 1.2rem;
 }
 
 .ride-info {
-  text-align: left;
-  margin-bottom: 1rem;
-  margin-left: 33%;
+  margin-top: 20px;
 }
 
-.ride-info h3 {
-  margin-top: 0;
-}
-
+.ride-info h4,
 .vehicle-info p {
-  margin: 0;
+  margin: 5px 0;
 }
 
 .booking-summary {
-  width: 35%;
-  padding: 1rem;
-  border: 1px solid #0f0f0f;
-  border-radius: 8%;
-  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fafafa;
 }
 
-.booking-summary h3 {
-  text-align: center;
-}
-
-.request-button {
-  background-color: #ffa500;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  width: 50%;
-  margin-top: 1rem;
-}
-
-.error-message {
-  color: red;
-  margin-top: 1rem;
-}
-
-h5 {
-  text-align: right;
-}
-
-hr {
-  border: none;
-  height: 3px;
-  background-color: #2e5862;
-  border-radius: 50px;
-  margin: 20px 0;
-  width: 350px;
-}
-
-.left-section h3 {
-  margin-left: 20%;
-  margin-bottom: 2rem;
+.booking-summary h4 {
+  margin-bottom: 15px;
+  font-size: 1.25rem;
 }
 
 .cost-summary {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
-  margin: 1rem;
+  margin-top: 15px;
 }
 
 .cost-summary p,
 .cost-summary h3 {
   margin: 0;
+  font-size: 1rem;
 }
 
-.cost-summary p {
-  font-weight: normal;
+.request-button,
+.message-button {
+  background-color: #ffa500;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
-.cost-summary h3 {
-  font-weight: bold;
+.request-button:hover,
+.message-button:hover {
+  background-color: #ff8c00;
 }
 
-/* Additional CSS for the new sections */
+.success-message,
+.error-message {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
 
 .additional-info {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 2rem;
+  margin-top: 40px;
 }
 
-.select-seats {
-  flex: 1;
-  margin-right: 2rem;
-  text-align: center;
-}
-
-.select-seats-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.select-seats h3 {
-  margin-top: 0;
-  margin-right: 1rem;
-}
-
-.select-seats .form-control {
-  display: inline-block;
-  width: auto;
-}
-
-.payment-policy {
-  margin-top: 2rem;
-  text-align: left;
-}
-
+.select-seats,
 .payment-method-box {
-  width: 35%;
-  padding: 1rem;
-  border: 1px solid #0f0f0f;
-  border-radius: 8%;
-  text-align: center;
+  flex: 1;
+  min-width: 300px;
+  margin: 10px;
+  padding: 20px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }
 
-.payment-method {
-  display: flex;
-  flex-direction: column;
+.select-seats h3,
+.payment-method h3 {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+}
+
+.select-seats select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .payment-method label {
-  margin-bottom: 0.5rem;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #555;
 }
 
 .payment-method input {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
+  width: calc(100% - 22px);
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .payment-method button {
   background-color: #ffa500;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 10px 20px;
   cursor: pointer;
-  width: 50%;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
-.message-button {
-  background-color: #ffa500;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  width: 25%;
-  margin-top: 1rem;
+.payment-method button:hover {
+  background-color: #ff8c00;
+}
+
+.payment-policy {
+  margin-top: 20px;
 }
 
 .payment-policy h3,
 .cancellation-policy h3 {
-  margin-top: 0;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
 }
 
-.success-message {
-  color: green;
+.payment-policy p,
+.cancellation-policy p {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #666;
 }
 
-.error-message {
-  color: red;
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .left-section {
+    padding-right: 0;
+  }
+
+  .booking-summary,
+  .payment-method-box {
+    margin-top: 20px;
+  }
+
+  .parent-container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .driver-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .driver-details {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .ride-details,
+  .additional-info {
+    flex-direction: column;
+  }
+
+  .select-seats,
+  .payment-method-box {
+    width: 100%;
+  }
 }

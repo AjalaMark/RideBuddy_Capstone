@@ -14,6 +14,9 @@ router
     authenticateToken,
     Controller.update_profile_picture
   )
+  .get("/bookings/pending", Controller.get_pending_bookings)
+  .post("/bookings/:bookingId/accept", Controller.accept_booking)
+  .post("/bookings/:bookingId/decline", Controller.decline_booking)
   .get("/ride", Controller.get_ride)
   .get("/rides/search", Controller.search)
   .get("/ride/:rideId", Controller.get_ride_id)
@@ -25,6 +28,7 @@ router
   .post("/send", Controller.post_message)
   .get("/ride/:id/availability", Controller.check_ride_availability)
   .get("/booking", authenticateToken, Controller.get_booking)
+  .get("/booking-ride/:rideId", Controller.get_booking_ride)
   .post("/booking", authenticateToken, Controller.post_booking);
 
 export default router;

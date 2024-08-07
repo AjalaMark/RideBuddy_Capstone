@@ -17,6 +17,7 @@ const BookRide = () => {
   const [cvv, setCvv] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [acceptanceMessage, setAcceptanceMessage] = useState(""); // New state for acceptance message
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,16 +39,31 @@ const BookRide = () => {
       }
     };
 
+    // const fetchBookings = async () => {
+    //   try {
+    //     const apiUrl = import.meta.env.VITE_API_BASE_URL;
+    //     const response = await fetch(`${apiUrl}/booking-ride/${rideId}`, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     });
+    //     if (!response.ok) {
+    //       throw new Error("Failed to fetch booking details");
+    //     }
+    //     const bookingData = await response.json();
+
+    //     console.log(bookingData);
+    //   } catch (error) {
+    //     setError(error.message);
+    //   }
+    // };
+
     fetchRideDetails();
+    // fetchBookings();
   }, [rideId]);
 
   const handleBooking = async (event) => {
     event.preventDefault();
-
-    if (!nameOnCard || !cardNumber || !expDate || !cvv) {
-      setError("All payment fields are required.");
-      return;
-    }
 
     const token = localStorage.getItem("token");
     const decoded = jwtDecode(token);
@@ -97,10 +113,10 @@ const BookRide = () => {
   return (
     <>
       <Navbar textColor="text-blue" />
-      <div className="parent-container">
-        <div className="child-container">
+      <div className="book-ride-parent-container">
+        <div className="book-ride-child-container">
           <div className="container my-5">
-            <h1>Book a Ride</h1>
+            <h1 className="book-ride-header">Book a Ride</h1>
             <div className="ride-details">
               <div className="left-section">
                 <div className="driver-info">
@@ -127,7 +143,6 @@ const BookRide = () => {
                     {ride.startCity.name} to {ride.endCity.name}
                   </h4>
                   <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
-                  <p>Returning: {new Date(ride.returnTime).toLocaleString()}</p>
                   <h5>{ride.seatsNumber} seats left</h5>
                   <p>Pickup: {ride.startCity.name}</p>
                   <p>Dropoff: {ride.endCity.name}</p>
@@ -150,7 +165,6 @@ const BookRide = () => {
                   {ride.startCity.name} to {ride.endCity.name}
                 </p>
                 <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
-                <p>Returning: {new Date(ride.returnTime).toLocaleString()}</p>
                 <hr />
                 <div className="cost-summary">
                   <p>{seats} seats</p>
@@ -178,6 +192,9 @@ const BookRide = () => {
                   >
                     {message}
                   </div>
+                )}
+                {acceptanceMessage && (
+                  <div className="success-message">{acceptanceMessage}</div>
                 )}
                 {error && <div className="error-message">{error}</div>}
               </div>

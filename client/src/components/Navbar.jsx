@@ -22,6 +22,11 @@ const Navbar = (props) => {
       text: "Messages",
       userType: "driver",
     },
+    // {
+    //   path: "/driver-notification",
+    //   text: "Notifications",
+    //   userType: "driver",
+    // },
     { path: "#about-us", text: "About Us" },
     { path: "/profile", text: "Profile" },
     !token
