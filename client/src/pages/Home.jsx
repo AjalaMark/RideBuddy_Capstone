@@ -147,7 +147,7 @@ const Home = () => {
                     Safety First
                   </div>
                 </div>
-                <button className="btn btn-success">Read More</button>
+                <button id="btn" className="btn btn-success">Read More</button>
               </div>
               <div className="col-md-6">
                 <img
