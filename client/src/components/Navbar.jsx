@@ -37,7 +37,7 @@ const Navbar = (props) => {
   return (
     <div className="container d-flex justify-content-between align-items-center py-3 navbar-bg">
       <div>LOGO</div>
-      <nav className="d-flex">
+      <nav className="d-flex nav-ul">
         {links.map((link, index) => {
           if (!link.userType || link.userType === userType) {
             return (
