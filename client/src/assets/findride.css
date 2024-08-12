@@ -13,6 +13,13 @@
   text-align: center;
 }
 
+.no-rides-message {
+  text-align: center;
+  font-size: large;
+  font-weight: 800;
+  color: red;
+}
+
 .navbar-brand {
   font-size: 1.5rem;
   font-weight: bold;

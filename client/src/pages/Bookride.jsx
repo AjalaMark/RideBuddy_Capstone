@@ -33,6 +33,7 @@ const BookRide = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch ride details");
         }
+
         const data = await response.json();
         setRide(data.ride);
       } catch (error) {
@@ -43,26 +44,42 @@ const BookRide = () => {
     const fetchBookings = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const token = localStorage.getItem("token");
+        const decoded = jwtDecode(token);
+        const { userId: currentUserId } = decoded;
         const response = await fetch(`${apiUrl}/booking-ride/${rideId}`, {
           headers: {
             "Content-Type": "application/json",
           },
         });
 
-        if (!response.ok) {
+        if (response.status === 404) {
+          setAcceptanceMessage("No booking details available");
+          setError(""); // Clear any previous errors
+        } else if (!response.ok) {
           throw new Error("Failed to fetch booking details");
         }
 
         const bookingData = await response.json();
+        if (bookingData && bookingData.booking) {
+          const bookingStatus = bookingData.booking.status;
+          const bookingUserId = bookingData.booking.userId;
 
-        if (bookingData.booking.status === "accepted") {
-          setAcceptanceMessage("Booking Accepted");
-        } else if (bookingData.booking.status === "pending") {
-          setAcceptanceMessage("Booking is pending approval");
-        } else if (bookingData.booking.status === "declined") {
-          setAcceptanceMessage("Booking was declined");
+          if (bookingUserId === currentUserId) {
+            if (bookingStatus === "accepted") {
+              setAcceptanceMessage("Booking Accepted");
+            } else if (bookingStatus === "pending") {
+              setAcceptanceMessage("Booking is pending approval");
+            } else if (bookingStatus === "declined") {
+              setAcceptanceMessage("Booking was declined");
+            } else {
+              setAcceptanceMessage(null);
+            }
+          } else {
+            setAcceptanceMessage(null);
+          }
         } else {
-          setAcceptanceMessage("");
+          setAcceptanceMessage(null);
         }
 
         setError("");
@@ -108,8 +125,10 @@ const BookRide = () => {
       if (response.ok) {
         setMessage(result);
         setError("");
+        setTimeout(() => setMessage(""), 3000);
       } else {
         setError(result.message);
+        setTimeout(() => setError(""), 3000);
       }
     } catch (error) {
       setError("Failed to book the ride");
@@ -158,6 +177,12 @@ const BookRide = () => {
     navigate(`/message/${ride.driver._id}`);
   };
 
+  const seatOptions = Array.from({ length: ride?.seatsNumber || 0 }, (_, i) => (
+    <option key={i + 1} value={i + 1}>
+      {i + 1}
+    </option>
+  ));
+
   if (!ride) {
     return <div>Loading...</div>;
   }
@@ -195,7 +220,7 @@ const BookRide = () => {
                     {ride.startCity.name} to {ride.endCity.name}
                   </h4>
                   <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
-                  <h5>{ride.seatsNumber} seats left</h5>
+                  <h5>{ride.seatsNumber} seats</h5>
                   <p>Pickup: {ride.startCity.name}</p>
                   <p>Dropoff: {ride.endCity.name}</p>
                   <hr />
@@ -219,7 +244,7 @@ const BookRide = () => {
                 <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
                 <hr />
                 <div className="cost-summary">
-                  <p>{seats} seats</p>
+                  <p>{seats} seat</p>
                   <p>${ride.seatPrice * seats}</p>
                 </div>
                 <div className="cost-summary">
@@ -250,7 +275,9 @@ const BookRide = () => {
                 acceptanceMessage == "Booking is pending approval" ? (
                   <div className="success-message">{acceptanceMessage}</div>
                 ) : (
-                  <div className="error-message">{acceptanceMessage}</div>
+                  acceptanceMessage && (
+                    <div className="error-message">{acceptanceMessage}</div>
+                  )
                 )}
                 {error && <div className="error-message">{error}</div>}
               </div>
@@ -265,8 +292,7 @@ const BookRide = () => {
                     value={seats}
                     onChange={(e) => setSeats(e.target.value)}
                   >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
+                    {seatOptions}
                   </select>
                 </div>
                 <button
@@ -330,7 +356,9 @@ const BookRide = () => {
                     paymentmessage != "Payment processed successfully" ? (
                       <div className="error-message">{paymentmessage}</div>
                     ) : (
-                      <div className="success-message">{paymentmessage}</div>
+                      paymentmessage && (
+                        <div className="success-message">{paymentmessage}</div>
+                      )
                     )}
                   </form>
                 </div>
