@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "../components/Navbar";
 import MessageInterface from "../components/MessageInterface";
+import { logo2 } from "../Constants";
 
 const DriverChats = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const DriverChats = () => {
 
   return (
     <div className="driver-container">
-      <Navbar />
+      <Navbar image={logo2} />
       <div className="chat-interface">
         <div className="contacts-toggle">
           <button onClick={toggleContacts}>

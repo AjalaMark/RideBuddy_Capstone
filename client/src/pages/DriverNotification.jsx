@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../assets/Notifications.css";
 import Navbar from "../components/Navbar";
+import { logo2 } from "../Constants";
 
 const DriverNotification = () => {
   const [bookings, setBookings] = useState([]);
@@ -72,7 +73,7 @@ const DriverNotification = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar image={logo2} />
       <div className="pending-bookings-container">
         <h2>Pending Bookings</h2>
         <ul>

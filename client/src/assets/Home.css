@@ -10,6 +10,9 @@
   height: 100vh;
 }
 
+.mv-p-con {
+  display: none;
+}
 .home-container {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -34,11 +37,11 @@ header {
   height: 50px;
 }
 
-#btn{
+#btn {
   margin-top: 20px;
 }
 
-.orange-circle{
+.orange-circle {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -78,11 +81,14 @@ section h2 {
 }
 
 .bkg-color {
-  position: absolute;
+  position: relative;
   background-color: #004753;
   height: 200px;
-  /* margin: -30px 0 20px; Negative margin to overlap */
+  width: 100vw;
+  left: 50%; /* Shift left by 50% of the viewport width */
+  margin-left: -50vw; /* Adjust for the shift, effectively centering it */
 }
+
 .flex-review {
   position: relative;
   display: flex;
@@ -113,7 +119,7 @@ section h2 {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
   cursor: pointer;
   margin-top: 10px;
 }
@@ -146,7 +152,7 @@ button:hover {
 }
 
 .testimonials {
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   padding: 20px;
 }
 
@@ -187,6 +193,7 @@ button:hover {
 footer {
   background-color: #d9d9d9;
   padding: 40px;
+  margin-top: 20%;
   border-top: 1px solid #ddd;
   color: #191c57;
   display: flex;
@@ -223,7 +230,45 @@ footer a:hover {
 .footer-column a i {
   margin-right: 8px;
 }
-
 footer p {
-  margin: 0;
+  margin-top: 0;
+}
+.footer-container {
+  margin-top: 10%;
+}
+
+/* Responsive mobile view */
+@media (max-width: 768px) {
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* justify-content: center;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+      rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
+  }
+  .img-heading {
+    display: flex;
+    flex-direction: column;
+  }
+  .icon-img {
+    width: 40px;
+    height: 40px;
+  }
+  .flex-review {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    visibility: visible;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1;
+  }
+  .bkg-color {
+    visibility: hidden;
+  }
+  .footer-container {
+    margin-top: 170%;
+  }
 }

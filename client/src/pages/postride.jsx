@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { logo2 } from "../Constants";
 
 const PostRide = () => {
   const [origin, setOrigin] = useState("");
@@ -114,7 +115,7 @@ const PostRide = () => {
 
   return (
     <>
-      <Navbar textColor="#005770" />
+      <Navbar textColor="#005770" image={logo2} />
       <div className="parent-container">
         <div className="child-container">
           <div className="container my-5">

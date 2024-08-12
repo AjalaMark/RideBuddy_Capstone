@@ -5,52 +5,99 @@
   padding: 0;
   box-sizing: border-box;
 }
-.btn{
-    height: 40px;
-    margin-bottom: 0%;
+.btn {
+  height: 38px;
+  margin-top: 0%;
+  width: 100%;
 }
-.row{
-    justify-content: center;
-    padding: 10px;
+.row {
+  justify-content: center;
+  padding: 10px;
 }
-.col-md-2{
-    background-color: azure;
-    height: 45px;
-    padding: 2.5px;
+#header button {
+  background-color: #f6b241;
+  color: #000;
+  border: none;
+  margin: 3px;
+  padding: auto;
 }
-.main-container{
-    display: flex;
-    justify-content: center;
-    padding-bottom: 0 ;
-    width: fit-content;
-    height: fit-content;
+.custome-date,
+.custom-select,
+.custom-passenger,
+.btn {
+  margin: 3px 0px 3px 3px;
+  border-radius: 0%;
+  background-color: rgb(217, 217, 217, 0.4);
 }
 
-.m-element{
-    padding-left: 2.5px;
-    padding-right: 2.5px;
+.search-container {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  background-color: #eafafe;
 }
 
+.main-container {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0;
+  width: fit-content;
+  height: fit-content;
+}
+
+.m-element {
+  padding-left: 2.5px;
+  padding-right: 2.5px;
+}
+#header .form-control {
+  margin-bottom: 3px;
+}
 .bkg {
-    margin: 0%;
-    background-color: rgb(217, 217, 217, 0.4);
+  margin: 0%;
+  background-color: rgb(217, 217, 217, 0.4);
 }
-.bkg::placeholder{
-    font-weight:500;
-    color: #000;
+.bkg::placeholder {
+  font-weight: 500;
+  color: #000;
 }
-#input-from, #input-to, #input-date, #input-passenger, #click-btn{
-    margin-bottom: 10px;
-    border: 1px solid rgb(217, 217, 217, 0.4);
-    border-radius: 0px;
-    outline: none;
-    height: 40px;
+#input-from,
+#input-to,
+#input-date,
+#input-passenger,
+#click-btn {
+  margin-bottom: 10px;
+  border: 1px solid rgb(217, 217, 217, 0.4);
+  border-radius: 0px;
+  outline: none;
+  height: 40px;
 }
-.f-element{
- padding-left: 5px;
- padding-right: 2.5px;
+.f-element {
+  padding-left: 5px;
+  padding-right: 2.5px;
 }
-.l-element{
-    padding-right: 5px;
-    padding-left: 2.5px;
+.l-element {
+  padding-right: 5px;
+  padding-left: 2.5px;
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns of equal width */
+    grid-template-rows: auto auto auto; /* Three rows */
+    gap: 17px; /* Adjust the gap between grid items as needed */
+    background-color: #eafafe;
+    width: fit-content;
+  }
+  .search-container select,
+  .search-container input,
+  .search-container button {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+
+  .search-container > button:last-child {
+    grid-column: span 2; /* Last row spans across both columns */
+  }
 }

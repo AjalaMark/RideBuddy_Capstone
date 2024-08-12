@@ -15,9 +15,15 @@
   margin-left: 5px;
   margin-right: 5px;
 }
-.logo-home{
+
+.logo-home {
   height: 40px;
   width: 200px;
+}
+.link-flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
 }
 .nav-container {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
@@ -60,5 +66,16 @@
     width: 100%; /* Each link takes up full width */
     text-align: center; /* Align text to the left */
     padding: 10px 20px; /* Padding for links */
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .link-flex-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Two columns of equal width */
+    grid-template-rows: auto auto; /* Three rows */
+    /* gap: px; Adjust the gap between grid items as needed */
+    width: fit-content;
   }
 }

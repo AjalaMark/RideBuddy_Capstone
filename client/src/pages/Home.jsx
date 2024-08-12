@@ -10,6 +10,7 @@ import {
   getADriverIcon,
   enjoyTripIcon,
   iconImgClass,
+  logo1,
 } from "../Constants";
 
 import Navbar from "../components/Navbar";
@@ -24,10 +25,10 @@ const Home = () => {
   return (
     <div className="home-container">
       <header className="text-white">
-        <Navbar textColor="text-white" />
+        <Navbar textColor="text-white" image={logo1} />
         <SearchBar />
       </header>
-      <main className="container my-5">
+      <main className="container">
         <section className="text-center mb-5">
           <div className="container">
             <div className="row align-items-center">
@@ -43,6 +44,7 @@ const Home = () => {
                     </a>
                   </div>
                   <h3>Sign Up</h3>
+
                   <p className="p-con">
                     Create your RideBuddy account in just a few simple steps.
                   </p>
@@ -70,9 +72,10 @@ const Home = () => {
                       </a>
                     )}
                   </div>
-                  <h3>Book A Ride</h3>
-                  <p className="p-con">
-                    Enter your destination and confirm your booking.
+                  <h3>Book Ride</h3>
+
+                  <p className="p-con ">
+                    Enter your destination brand confirm your booking.
                   </p>
                 </div>
               </div>
@@ -86,7 +89,7 @@ const Home = () => {
                       className={iconImgClass}
                     />
                   </div>
-                  <h3>Get a driver </h3>
+                  <h3>Get driver</h3>
                   <p className="p-con">
                     We match you with the available driver for a prompt pickup.
                   </p>
@@ -103,6 +106,7 @@ const Home = () => {
                     />
                   </div>
                   <h3>Enjoy Trip</h3>
+
                   <p className="p-con">
                     Sit back, relax, and enjoy the ride with RideBuddy.
                   </p>
@@ -167,7 +171,9 @@ const Home = () => {
                     Safety First
                   </div>
                 </div>
-                <button id="btn" className="btn btn-success">Read More</button>
+                <button id="btn" className="btn btn-success">
+                  Read More
+                </button>
               </div>
               <div className="col-md-6">
                 <img
@@ -179,46 +185,47 @@ const Home = () => {
             </div>
           </div>
         </section>
-
-        <section className="testimonials text-center bg-light py-5">
+        <section className="text-center mb-5">
           <div className="container">
-            <div className="row">
-              <Testimonial
-                message={
-                  <blockquote>
-                    &quot;RideBuddy has been a game-changer for my daily
-                    commute. The booking process is quick and easy, and the
-                    drivers are always friendly and professional. I especially
-                    appreciate the real-time tracking feature, which lets me
-                    know exactly when my ride will arrive. Highly recommend!
-                    &quot;
-                  </blockquote>
-                }
-              />
-              <Testimonial
-                message={
-                  <blockquote>
-                    &quot;I&apos;ve tried several ride-sharing services, but
-                    RideBuddy stands out for its affordability and reliability.
-                    The app is super user-friendly, and I&apos;ve never had to
-                    wait long for a driver. Plus, I love the option to choose
-                    eco-friendly vehicles I would highly recommend as they are
-                    providing the best service. &quot;
-                  </blockquote>
-                }
-              />
-              <Testimonial
-                message={
-                  <blockquote>
-                    &quot;RideBuddy is fantastic! I use it for everything from
-                    grocery runs to airport trips. The drivers are always
-                    courteous, and I feel safe knowing that RideBuddy thoroughly
-                    vets them. The transparent pricing is a huge plus, and
-                    I&apos;ve never had any surprise charges. Five stars!. Go
-                    for it, it&apos;s safe, it&apos; awesome&quot;
-                  </blockquote>
-                }
-              />
+            <div className="bkg-color">
+              <div className="flex-review">
+                <Testimonial
+                  message={
+                    <blockquote>
+                      &quot;RideBuddy has been a game-changer for my daily
+                      commute. The booking process is quick and easy, and the
+                      drivers are always friendly and professional. I especially
+                      appreciate the real-time tracking feature, which lets me
+                      know exactly when my ride will arrive. Highly recommend!
+                      &quot;
+                    </blockquote>
+                  }
+                />
+                <Testimonial
+                  message={
+                    <blockquote>
+                      &quot;I&apos;ve tried several ride-sharing services, but
+                      RideBuddy stands out for its affordability and
+                      reliability. The app is super user-friendly, and I&apos;ve
+                      never had to wait long for a driver. Plus, I love the
+                      option to choose eco-friendly vehicles I would highly
+                      recommend as they are providing the best service. &quot;
+                    </blockquote>
+                  }
+                />
+                <Testimonial
+                  message={
+                    <blockquote>
+                      &quot;RideBuddy is fantastic! I use it for everything from
+                      grocery runs to airport trips. The drivers are always
+                      courteous, and I feel safe knowing that RideBuddy
+                      thoroughly vets them. The transparent pricing is a huge
+                      plus, and I&apos;ve never had any surprise charges. Five
+                      stars!. Go for it, it&apos;s safe, it&apos; awesome&quot;
+                    </blockquote>
+                  }
+                />
+              </div>
             </div>
           </div>
         </section>

@@ -5,6 +5,7 @@ import "../assets/Home.css";
 import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import Footer from "../components/Footer";
+import { logo1 } from "../Constants";
 
 const FindRide = () => {
   const [rides, setRides] = useState([]);
@@ -73,7 +74,7 @@ const FindRide = () => {
   return (
     <div className="findRide-container">
       <header className="text-white">
-        <Navbar textColor="text-white" />
+        <Navbar textColor="text-white" image={logo1} />
         {localStorage.getItem("userType") === "passenger" ? (
           <SearchBar onSearch={handleSearch} />
         ) : (

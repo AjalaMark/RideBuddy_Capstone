@@ -1,8 +1,8 @@
 import { instaIcon, twitterIcon, facebookIcon } from "../Constants";
 const Footer = () => {
   return (
-    <div>
-      <footer className="py-4">
+    <div className="footer-container">
+      <footer className="py-4 ">
         <div className="container d-flex justify-content-between flex-wrap">
           <div className="footer-column mb-3">
             <p className="h4">Quick Links:</p>

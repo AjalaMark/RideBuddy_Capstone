@@ -10,6 +10,8 @@ import enjoyTripIcon from "./assets/enjoy.png";
 import twitterIcon from "./assets/twitter.png";
 import facebookIcon from "./assets/facebook.png";
 import instaIcon from "./assets/insta.png";
+import logo1 from "./assets/logo-white.png";
+import logo2 from "./assets/logo-blue.webp";
 
 export {
   driverImage,
@@ -23,6 +25,8 @@ export {
   twitterIcon,
   facebookIcon,
   instaIcon,
+  logo1,
+  logo2,
 };
 
 // CSS Classes

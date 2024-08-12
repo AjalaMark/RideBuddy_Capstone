@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../assets/Navbar.css";
 import PropTypes from "prop-types";
-import logo from "../assets/logo-white.png";
 import { logout } from "../utils/Auth";
 
 const Navbar = (props) => {
@@ -38,9 +37,9 @@ const Navbar = (props) => {
   return (
     <div className="container d-flex justify-content-between align-items-center py-3 navbar-bg">
       <div>
-      <img className="logo-home" src={logo} alt="logo" />
+        <img className="logo-home" src={props.image} alt="logo" />
       </div>
-      <nav className="d-flex">
+      <nav className="link-flex-container grid-container">
         {links.map((link, index) => {
           if (!link.userType || link.userType === userType) {
             return (

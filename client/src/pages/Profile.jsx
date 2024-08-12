@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { userIcon } from "../Constants";
 import { logout } from "../utils/Auth";
+import { logo2 } from "../Constants";
 
 const Profile = () => {
   const [user, setUser] = useState({});
@@ -110,7 +111,9 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar textColor="#005770" />
+      {/* <Navbar textColor="#005770" /> */}
+
+      <Navbar textColor="text-white" image={logo2} />
       <div className="profile-page">
         <h2>User Profile</h2>
         <div className="profile-picture">
