@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "../assets/Navbar.css";
 import PropTypes from "prop-types";
+import logo from "../assets/logo-white.png";
 
 const Navbar = (props) => {
   const links = [
@@ -19,7 +20,9 @@ const Navbar = (props) => {
 
   return (
     <div className="container d-flex justify-content-between align-items-center py-3 navbar-bg">
-      <div>LOGO</div>
+      <div>
+      <img className="logo-home" src={logo} alt="logo" />
+      </div>
       <nav className="d-flex">
         {links.map((link, index) => {
           if (!link.userType || link.userType === userType) {
