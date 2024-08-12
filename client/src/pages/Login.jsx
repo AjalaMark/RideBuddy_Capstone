@@ -7,9 +7,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
-
+  console.log(apiUrl);
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -23,7 +23,9 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password: encPassword }),
+        
       });
+      
       const data = await response.json();
       console.log(data);
       if (response.ok) {
