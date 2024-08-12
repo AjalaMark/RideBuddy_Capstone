@@ -7,6 +7,92 @@
   font-family: Arial, sans-serif;
 }
 
+/* Container for the entire chats section */
+.chats-container {
+  width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: #f7f9fc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.driver-container {
+  background-color: #f9f9f9;
+}
+
+/* Title for the contacts section */
+.chats-title {
+  font-size: 1.5em;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.contacts-toggle {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.contacts-toggle button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.contacts-toggle button:hover {
+  background-color: #006bde;
+  transform: scale(1.05);
+}
+
+.contacts-toggle button:active {
+  background-color: #0059b8;
+  transform: scale(0.98);
+}
+
+.contacts-toggle button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(72, 110, 187, 0.5);
+}
+
+.contacts-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-item {
+  padding: 10px 15px;
+  margin: 5px 0;
+  background-color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Contact item when hovered */
+.contact-item:hover {
+  background-color: #e9ecf3;
+}
+
+/* Selected contact item */
+.contact-item.selected {
+  background-color: #4a90e2;
+  color: #fff;
+  font-weight: bold;
+}
+
 .chat-container .dark-mode {
   background-color: #121212;
   color: #e0e0e0;

@@ -48,7 +48,8 @@ const Home = () => {
               </div>
               <div className="col-md-3 mb-4">
                 <div className="box p-4 bg-light">
-                  {isLoggedIn ? (
+                  {isLoggedIn &&
+                  localStorage.getItem("userType") === "passenger" ? (
                     <a href="/findride">
                       <img
                         src={bookARideIcon}

@@ -3,18 +3,17 @@ import PropTypes from "prop-types";
 import "../assets/Searchbar.css";
 import { useNavigate } from "react-router-dom";
 
-
 const SearchBar = ({ onSearch }) => {
   const [fromLocation, setFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
   const [date, setDate] = useState("");
   const [passenger, setPassenger] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     if (!onSearch) {
-      navigate(`/findride`)
-      return
+      navigate(`/findride`);
+      return;
     }
     onSearch({ fromLocation, toLocation, date });
   };

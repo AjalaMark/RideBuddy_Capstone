@@ -6,9 +6,15 @@ import MessageInterface from "../components/MessageInterface";
 
 const DriverChats = () => {
   const navigate = useNavigate();
-  const [contactId, setContactId] = useState("");
+  const [contacts, setContacts] = useState([]);
+  const [selectedContactId, setSelectedContactId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showContacts, setShowContacts] = useState(true);
   const [error, setError] = useState("");
+
+  const toggleContacts = () => {
+    setShowContacts((prevShowContacts) => !prevShowContacts);
+  };
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -27,14 +33,19 @@ const DriverChats = () => {
 
         const data = await response.json();
 
-        if (data.length > 0) {
-          setContactId(data[0]._id);
+        if (response.ok) {
+          setContacts(data);
+          if (data.length > 0) {
+            setSelectedContactId(data[0]._id);
+          }
+          setError("");
+        } else {
+          setError("Failed to fetch contacts");
         }
-
-        setError("");
         setLoading(false);
       } catch (error) {
         setError("Failed to fetch contacts");
+        setLoading(false);
       }
     };
 
@@ -44,20 +55,45 @@ const DriverChats = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const userId = decoded.userId;
-
   return (
-    <>
-      <Navbar contactId={contactId} />
-      <MessageInterface
-        apiUrl={import.meta.env.VITE_API_BASE_URL}
-        contactId={contactId}
-        userId={userId}
-        onBack={() => navigate(-1)}
-      />
-    </>
+    <div className="driver-container">
+      <Navbar />
+      <div className="chat-interface">
+        <div className="contacts-toggle">
+          <button onClick={toggleContacts}>
+            {showContacts ? "Hide Contacts" : "Show Contacts"}
+          </button>
+        </div>
+
+        {showContacts && (
+          <div className="chats-container">
+            <h2 className="chats-title">Contacts</h2>
+            <ul className="contacts-list">
+              {contacts.map((contact) => (
+                <li
+                  key={contact._id}
+                  onClick={() => setSelectedContactId(contact._id)}
+                  className={`contact-item ${
+                    selectedContactId === contact._id ? "selected" : ""
+                  }`}
+                >
+                  {`${contact.firstName} has sent you a message`}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {selectedContactId && (
+        <MessageInterface
+          apiUrl={import.meta.env.VITE_API_BASE_URL}
+          contactId={selectedContactId}
+          userId={jwtDecode(localStorage.getItem("token")).userId}
+          onBack={() => navigate(-1)}
+        />
+      )}
+    </div>
   );
 };
 

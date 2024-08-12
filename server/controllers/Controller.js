@@ -383,23 +383,20 @@ export default class Controller {
       const chats = await Chat.find({
         $or: [{ senderId: userId }, { receiverId: userId }],
       })
-        .populate("senderId", "name")
-        .populate("receiverId", "name");
+        .populate("senderId", "firstName")
+        .populate("receiverId", "firstName");
 
-      const contacts = [];
+      const contacts = new Map();
+
       chats.forEach((chat) => {
         if (chat.senderId._id.toString() !== userId) {
-          contacts.push(chat.senderId);
+          contacts.set(chat.senderId._id.toString(), chat.senderId);
         } else {
-          contacts.push(chat.receiverId);
+          contacts.set(chat.receiverId._id.toString(), chat.receiverId);
         }
       });
 
-      const uniqueContacts = [
-        ...new Map(
-          contacts.map((contact) => [contact._id.toString(), contact])
-        ).values(),
-      ];
+      const uniqueContacts = Array.from(contacts.values());
 
       res.json(uniqueContacts);
     } catch (error) {
@@ -509,12 +506,14 @@ export default class Controller {
       const booking = new Booking({
         rideId,
         userId,
-        paymentStatus: "pending", // Payment is pending until ride is accepted
-        status: "pending", // Booking status is pending
+        paymentStatus: "pending",
+        status: "pending",
       });
 
       await booking.save();
-      res.status(200).json({ message: "ride booked successfully" });
+      res
+        .status(200)
+        .json({ type: "success", message: "Ride Booked Successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
@@ -542,7 +541,7 @@ export default class Controller {
       const bookings = await Booking.find({
         rideId: { $in: rideIds },
         status: "pending",
-      }).populate("userId"); // Populate user details
+      }).populate("userId");
 
       res.status(200).json(bookings);
     } catch (e) {
@@ -591,23 +590,21 @@ export default class Controller {
     }
   };
 
-  // static get_booking_ride = async (req, res) => {
-  //   try {
-  //     const rideId = req.params.rideId;
-  //     console.log(rideId);
-  //     const booking = await Booking.findById(rideId).populate("ride");
+  static get_booking_ride = async (req, res) => {
+    try {
+      const rideId = req.params.rideId;
 
-  //     console.log(booking);
+      const booking = await Booking.findOne({ rideId });
 
-  //     if (!booking) {
-  //       return res.status(404).json({ message: "Booking not found" });
-  //     }
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
 
-  //     res.json({ booking: ride.booking });
-  //   } catch (error) {
-  //     res.status(500).json({ message: error.message });
-  //   }
-  // };
+      res.json({ booking });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
 }
 
 async function check_ride_avail(rideId, cb) {

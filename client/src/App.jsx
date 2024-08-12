@@ -9,7 +9,7 @@ import PassChat from "./pages/PassChat";
 import DriverChats from "./pages/DriverChats";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Profile from "./pages/Profile";
-// import DriverNotification from "./pages/DriverNotification";
+import DriverNotification from "./pages/DriverNotification";
 
 const routes = [
   { path: "/", element: <Home /> },
@@ -17,14 +17,20 @@ const routes = [
   { path: "/login", element: <Login /> },
   { path: "/postride", element: <ProtectedRoute element={PostRide} /> },
   { path: "/findride", element: <ProtectedRoute element={FindRide} /> },
-  { path: "/book-ride/:rideId", element: <BookRide /> },
-  { path: "/message/:contactId", element: <PassChat /> },
+  {
+    path: "/book-ride/:rideId",
+    element: <ProtectedRoute element={BookRide} />,
+  },
+  {
+    path: "/message/:contactId",
+    element: <ProtectedRoute element={PassChat} />,
+  },
   { path: "/messages", element: <DriverChats /> },
   { path: "/profile", element: <ProtectedRoute element={Profile} /> },
-  // {
-  //   path: "/driver-notification",
-  //   element: <ProtectedRoute element={DriverNotification} />,
-  // },
+  {
+    path: "/driver-notification",
+    element: <ProtectedRoute element={DriverNotification} />,
+  },
 ];
 
 function App() {

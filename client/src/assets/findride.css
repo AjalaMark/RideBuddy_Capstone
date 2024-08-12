@@ -171,15 +171,6 @@
   background-color: darkorange;
 }
 
-.ride-card img {
-  border-radius: 50%;
-  border: 1px solid #ddd;
-  width: 80px;
-  height: 80px;
-  margin-right: 1rem;
-  padding-left: 1rem;
-}
-
 @media (min-width: 1025px) {
   .ride-card {
     display: flex;

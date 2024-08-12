@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import "../assets/Notifications.css";
+import Navbar from "../components/Navbar";
 
 const DriverNotification = () => {
   const [bookings, setBookings] = useState([]);
@@ -69,21 +71,32 @@ const DriverNotification = () => {
   };
 
   return (
-    <div>
-      <h2>Pending Bookings</h2>
-      <ul>
-        {bookings.map((booking) => (
-          <li key={booking._id}>
-            {`${booking.userId?.firstName || "Unknown"} ${
-              booking.userId?.lastName || "User"
-            }`}{" "}
-            has requested to book your ride.
-            <button onClick={() => handleAccept(booking._id)}>Accept</button>
-            <button onClick={() => handleDecline(booking._id)}>Decline</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <Navbar />
+      <div className="pending-bookings-container">
+        <h2>Pending Bookings</h2>
+        <ul>
+          {bookings.map((booking) => (
+            <li key={booking._id}>
+              <span>
+                {`${booking.userId?.firstName || "Unknown"} ${
+                  booking.userId?.lastName || "User"
+                }`}{" "}
+                has requested to book your ride.
+              </span>
+              <div className="booking-buttons">
+                <button onClick={() => handleAccept(booking._id)}>
+                  Accept
+                </button>
+                <button onClick={() => handleDecline(booking._id)}>
+                  Decline
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 };
 
