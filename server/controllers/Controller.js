@@ -185,9 +185,26 @@ export default class Controller {
         .populate("driver")
         .populate("startCity")
         .populate("endCity");
-      res
-        .status(200)
-        .json({ rides, message: "Ride(s) retrieved successfully" });
+
+      const ridesWithSeats = await Promise.all(
+        rides.map(async (ride) => {
+          const bookedSeats = await Booking.countDocuments({
+            rideId: ride._id,
+          });
+          const remainingSeats = ride.seatsNumber - bookedSeats;
+
+          // Return the ride object with the additional remainingSeats field
+          return {
+            ...ride.toObject(), // Convert mongoose document to plain object
+            remainingSeats,
+          };
+        })
+      );
+
+      res.status(200).json({
+        rides: ridesWithSeats,
+        message: "Ride(s) retrieved successfully",
+      });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
@@ -318,37 +335,54 @@ export default class Controller {
   static search = async (req, res) => {
     let filter = {};
     const { from, to, date } = req.query;
-    try {
-      const startCity = await CityModel.findOne({ name: from });
-      const endCity = await CityModel.findOne({ name: to });
-      if (!startCity || !endCity) {
-        return res.status(404).json({ message: "City not found" });
-      }
-      if (!startCity || !endCity) {
-        return res.status(404).json({ message: "City not found" });
-      }
 
-      // Build the filter object
-      if (startCity) {
+    try {
+      if (from) {
+        const startCity = await CityModel.findOne({ name: from });
+        if (!startCity) {
+          return res.status(404).json({ message: "Start city not found" });
+        }
         filter.startCity = startCity._id;
       }
-      if (endCity) {
+
+      if (to) {
+        const endCity = await CityModel.findOne({ name: to });
+        if (!endCity) {
+          return res.status(404).json({ message: "End city not found" });
+        }
         filter.endCity = endCity._id;
       }
+
       if (date) {
-        // Assuming your date field in the model is called "rideDate"
-        filter.rideDate = new Date(date);
+        const startOfDay = new Date(date);
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date(date);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        filter.travelDate = {
+          $gte: startOfDay,
+          $lte: endOfDay,
+        };
       }
+
+      console.log(date);
+
       const rides = await PostRideModel.find(filter)
         .populate("startCity")
         .populate("endCity")
         .populate("driver");
 
+      if (rides.length === 0) {
+        return res.status(404).json({
+          message: "No rides available",
+        });
+      }
+
       res.status(200).json({ rides });
-      console.log(`this is the object being sent ${rides}`);
     } catch (error) {
       res.status(500).send("Server error");
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -494,13 +528,38 @@ export default class Controller {
 
   static post_booking = async (req, res) => {
     try {
-      const { rideId, userId } = req.body;
-      let avail = await promisify(check_ride_avail)(rideId);
+      const { rideId, userId, seats } = req.body;
 
-      if (!avail) {
+      const ride = await PostRideModel.findById(rideId);
+      const currentTime = new Date();
+      const departTime = new Date(ride.departTime);
+
+      if (currentTime > departTime) {
+        return res.status(400).json({
+          message: "Booking not allowed. The ride has already departed.",
+        });
+      }
+
+      let avail = await promisify(check_ride_avail)(rideId, seats);
+
+      if (avail instanceof Error) {
+        return res.status(400).json({ message: avail.message });
+      }
+
+      const existingBooking = await Booking.findOne({ rideId, userId });
+      if (existingBooking) {
         return res
-          .status(200)
-          .json({ message: "Ride has already been booked" });
+          .status(400)
+          .json({ message: "User has already booked this ride" });
+      }
+
+      const bookedSeats = await Booking.countDocuments({ rideId });
+      const remainingSeats = ride.seatsNumber - bookedSeats;
+
+      if (remainingSeats < seats) {
+        return res.status(400).json({
+          message: "All seats have been booked",
+        });
       }
 
       const booking = new Booking({
@@ -511,9 +570,11 @@ export default class Controller {
       });
 
       await booking.save();
-      res
-        .status(200)
-        .json({ type: "success", message: "Ride Booked Successfully" });
+
+      res.status(200).json({
+        type: "success",
+        message: "Ride Booked Successfully",
+      });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
@@ -607,18 +668,27 @@ export default class Controller {
   };
 }
 
-async function check_ride_avail(rideId, cb) {
+async function check_ride_avail(rideId, requiredSeats, cb) {
   try {
     const ride = await PostRideModel.findById(rideId);
     if (!ride) {
-      return cb(new Error("no such ride"));
+      return cb(new Error("No such ride"));
     }
-    const booking = await Booking.findOne({ rideId: rideId });
-    if (!booking) {
-      cb(null, true);
-      return;
+
+    const bookedSeats = await Booking.aggregate([
+      { $match: { rideId: rideId } },
+      { $group: { _id: "$rideId", totalSeats: { $sum: 1 } } },
+    ]);
+
+    const totalBookedSeats =
+      bookedSeats.length > 0 ? bookedSeats[0].totalSeats : 0;
+    const availableSeats = ride.seatsNumber - totalBookedSeats;
+
+    if (availableSeats < requiredSeats) {
+      return cb(new Error("Not enough seats available"));
     }
-    cb(null, false);
+
+    cb(null, true);
   } catch (e) {
     cb(e);
   }

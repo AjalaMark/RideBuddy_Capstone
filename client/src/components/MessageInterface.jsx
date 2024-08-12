@@ -86,10 +86,10 @@ const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
     };
   }, [apiUrl, contactId, userId]);
 
-  const toggleDarkMode = () => {
-    setDarkMode((prev) => !prev);
-    document.body.classList.toggle("dark-mode", !darkMode);
-  };
+  // const toggleDarkMode = () => {
+  //   setDarkMode((prev) => !prev);
+  //   document.body.classList.toggle("dark-mode", !darkMode);
+  // };
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -151,16 +151,18 @@ const MessageInterface = ({ apiUrl, contactId, userId, onBack }) => {
     }
   };
 
+  // ${darkMode ? "dark-mode" : ""}
+
   return (
     <>
-      <div className={`chat-container ${darkMode ? "dark-mode" : ""}`}>
+      <div className={`chat-container`}>
         <div className="top-buttons">
           <button onClick={onBack} className="btn btn-primary hBack">
             Go Back
           </button>
-          <button onClick={toggleDarkMode} className="btn btn-primary">
+          {/* <button onClick={toggleDarkMode} className="btn btn-primary">
             Toggle Dark Mode
-          </button>
+          </button> */}
         </div>
         <div className="message-interface">
           <div className="messages-container">

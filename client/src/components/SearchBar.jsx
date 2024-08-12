@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "../assets/Searchbar.css";
 import { useNavigate } from "react-router-dom";
@@ -7,14 +7,42 @@ const SearchBar = ({ onSearch }) => {
   const [fromLocation, setFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
   const [date, setDate] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [passenger, setPassenger] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+
   const handleSearch = () => {
+    const token = localStorage.getItem("token");
+    const isLoggedIn = !!token;
+
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
     if (!onSearch) {
       navigate(`/findride`);
       return;
     }
+
+    if (!fromLocation && !toLocation && !date) {
+      setErrorMessage(
+        "Please select at least one filter option (From, To, or Date)."
+      );
+      return;
+    }
+
+    setErrorMessage("");
+
     onSearch({ fromLocation, toLocation, date });
   };
 
@@ -116,6 +144,7 @@ const SearchBar = ({ onSearch }) => {
               </button>
             </div>
           </div>
+          {errorMessage && <p className="text-danger mt-2">{errorMessage}</p>}
         </div>
       </section>
     </div>
