@@ -34,13 +34,13 @@ const Home = () => {
               <div className="col-md-3 mb-4">
                 <div className="box p-4 bg-light flex-container">
                   <div className="orange-circle">
-                  <a href="/register">
+                    <a href="/register">
                       <img
                         src={signUpIcon}
                         alt="Sign Up"
                         className={iconImgClass}
                       />
-                  </a>
+                    </a>
                   </div>
                   <h3>Sign Up</h3>
                   <p className="p-con">
@@ -52,26 +52,28 @@ const Home = () => {
                 <div className="box p-4 bg-light flex-container">
                   <div className="orange-circle">
                     {isLoggedIn &&
-                  localStorage.getItem("userType") === "passenger" ? (
-                    <a href="/findride">
-                      <img
-                        src={bookARideIcon}
-                        alt="Book A Ride"
-                        className={iconImgClass}
-                      />
-                    </a>
-                  ) : (
-                    <a href="/login">
-                      <img
+                    localStorage.getItem("userType") === "passenger" ? (
+                      <a href="/findride">
+                        <img
                           src={bookARideIcon}
                           alt="Book A Ride"
                           className={iconImgClass}
                         />
+                      </a>
+                    ) : (
+                      <a href="/login">
+                        <img
+                          src={bookARideIcon}
+                          alt="Book A Ride"
+                          className={iconImgClass}
+                        />
+                      </a>
+                    )}
                   </div>
-                    </a>
-                  )}
                   <h3>Book A Ride</h3>
-                  <p className="p-con">Enter your destination and confirm your booking.</p>
+                  <p className="p-con">
+                    Enter your destination and confirm your booking.
+                  </p>
                 </div>
               </div>
 
@@ -101,7 +103,9 @@ const Home = () => {
                     />
                   </div>
                   <h3>Enjoy Trip</h3>
-                  <p className="p-con">Sit back, relax, and enjoy the ride with RideBuddy.</p>
+                  <p className="p-con">
+                    Sit back, relax, and enjoy the ride with RideBuddy.
+                  </p>
                 </div>
               </div>
             </div>
@@ -118,10 +122,10 @@ const Home = () => {
                 <p className="p-con2">
                   Drivers, fantastic news! Your good habits are being rewarded.
                   Enjoy the Carpool Bonus by carpooling. Check the eligibility
-                  conditions for more details.  By choosing to share your ride 
-                  with others, you're not only helping to reduce traffic congestion 
-                  and lower carbon emissions but also saving on fuel costs 
-                  and contributing to a more sustainable future.
+                  conditions for more details. By choosing to share your ride
+                  with others, you&apos;re not only helping to reduce traffic
+                  congestion and lower carbon emissions but also saving on fuel
+                  costs and contributing to a more sustainable future.
                 </p>
                 <button className="btn btn-success">Offer Ride</button>
               </div>
@@ -152,7 +156,6 @@ const Home = () => {
                     <img src={tickMark} alt="Tick Mark" className="tick-mark" />{" "}
                     Eco-Friendly Options
                   </div>
-
 
                   <div>
                     <img src={tickMark} alt="Tick Mark" className="tick-mark" />{" "}
@@ -211,8 +214,8 @@ const Home = () => {
                     grocery runs to airport trips. The drivers are always
                     courteous, and I feel safe knowing that RideBuddy thoroughly
                     vets them. The transparent pricing is a huge plus, and
-                    I&apos;ve never had any surprise charges. Five stars!.
-                    Go for it, it's safe, it's awesome&quot;
+                    I&apos;ve never had any surprise charges. Five stars!. Go
+                    for it, it&apos;s safe, it&apos; awesome&quot;
                   </blockquote>
                 }
               />
