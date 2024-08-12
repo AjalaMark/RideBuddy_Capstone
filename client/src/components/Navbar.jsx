@@ -1,11 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../assets/Navbar.css";
 import PropTypes from "prop-types";
 import logo from "../assets/logo-white.png";
+import { logout } from "../utils/Auth";
 
 const Navbar = (props) => {
+  const token = localStorage.getItem("token");
+  const userType = localStorage.getItem("userType");
+  const navigate = useNavigate;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   const links = [
-    { path: "/home", text: "Home" },
+    { path: "/", text: "Home" },
     { path: "/findride", text: "Find Ride", userType: "passenger" },
     { path: "/postride", text: "Post Rides", userType: "driver" },
     {
@@ -13,10 +23,17 @@ const Navbar = (props) => {
       text: "Messages",
       userType: "driver",
     },
+    {
+      path: "/driver-notification",
+      text: "Notifications",
+      userType: "driver",
+    },
     { path: "#about-us", text: "About Us" },
+    { path: "/profile", text: "Profile" },
+    !token
+      ? { path: "/login", text: "Login" }
+      : { path: "#", text: "Logout", onClick: handleLogout },
   ];
-
-  const userType = localStorage.getItem("userType");
 
   return (
     <div className="container d-flex justify-content-between align-items-center py-3 navbar-bg">
@@ -29,8 +46,10 @@ const Navbar = (props) => {
             return (
               <Link
                 key={index}
-                className={`nav-link me-3 ${props.textColor}`}
+                className={`nav-link me-3`}
+                style={{ color: props.textColor }}
                 to={link.path}
+                onClick={link.onClick}
               >
                 {link.text}
               </Link>

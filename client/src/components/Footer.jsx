@@ -5,7 +5,7 @@ const Footer = () => {
       <footer className="py-4">
         <div className="container d-flex justify-content-between flex-wrap">
           <div className="footer-column mb-3">
-            <h4>Quick Links:</h4>
+            <p className="h4">Quick Links:</p>
             <a href="#home" className="d-block">
               Home
             </a>
@@ -20,7 +20,7 @@ const Footer = () => {
             </a>
           </div>
           <div className="footer-column mb-3">
-            <h4>Support</h4>
+            <p className="h4">Support</p>
             <a href="#help-center" className="d-block">
               Help Center
             </a>
@@ -33,7 +33,7 @@ const Footer = () => {
           </div>
 
           <div className="footer-column mb-3">
-            <h4>Connect with Us</h4>
+            <p className="h4">Connect with Us</p>
             <a
               href="https://twitter.com/example"
               className="d-inline-block mx-2 "
@@ -52,7 +52,7 @@ const Footer = () => {
             >
               <img src={instaIcon} alt="Instagram" />
             </a>
-            <h5>Contact Information</h5>
+            <p className="h5">Contact Information</p>
             <p>Email: support@ridebuddy.com</p>
             <p>Phone: 1-800-RIDEBUDDY</p>
           </div>

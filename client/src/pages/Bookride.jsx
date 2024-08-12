@@ -5,6 +5,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { jwtDecode } from "jwt-decode";
 
+import { userIcon } from "../Constants";
+
 const BookRide = () => {
   const { rideId } = useParams();
   const [ride, setRide] = useState(null);
@@ -15,6 +17,8 @@ const BookRide = () => {
   const [cvv, setCvv] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [paymentmessage, setPaymentMessage] = useState("");
+  const [acceptanceMessage, setAcceptanceMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,16 +40,44 @@ const BookRide = () => {
       }
     };
 
+    const fetchBookings = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/booking-ride/${rideId}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch booking details");
+        }
+
+        const bookingData = await response.json();
+
+        if (bookingData.booking.status === "accepted") {
+          setAcceptanceMessage("Booking Accepted");
+        } else if (bookingData.booking.status === "pending") {
+          setAcceptanceMessage("Booking is pending approval");
+        } else if (bookingData.booking.status === "declined") {
+          setAcceptanceMessage("Booking was declined");
+        } else {
+          setAcceptanceMessage("");
+        }
+
+        setError("");
+      } catch (error) {
+        setError(error.message);
+        setAcceptanceMessage("");
+      }
+    };
+
     fetchRideDetails();
+    fetchBookings();
   }, [rideId]);
 
   const handleBooking = async (event) => {
     event.preventDefault();
-
-    if (!nameOnCard || !cardNumber || !expDate || !cvv) {
-      setError("All payment fields are required.");
-      return;
-    }
 
     const token = localStorage.getItem("token");
     const decoded = jwtDecode(token);
@@ -74,7 +106,7 @@ const BookRide = () => {
       const result = await response.json();
 
       if (response.ok) {
-        setMessage(result.message);
+        setMessage(result);
         setError("");
       } else {
         setError(result.message);
@@ -82,6 +114,44 @@ const BookRide = () => {
     } catch (error) {
       setError("Failed to book the ride");
     }
+  };
+
+  const handlePayment = (e) => {
+    e.preventDefault();
+
+    // Validate payment input fields
+    if (!nameOnCard || !cardNumber || !expDate || !cvv) {
+      setPaymentMessage("All fields are required");
+      return;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(nameOnCard)) {
+      setPaymentMessage("Name on card must contain only letters and spaces");
+      return;
+    }
+
+    if (!/^\d{16}$/.test(cardNumber)) {
+      setPaymentMessage("Card number must be 16 digits");
+      return;
+    }
+
+    if (!/^\d{2}\/\d{2}$/.test(expDate)) {
+      setPaymentMessage("Expiration date must be in MM/YY format");
+      return;
+    }
+
+    if (!/^\d{3,4}$/.test(cvv)) {
+      setPaymentMessage("CVV must be 3 or 4 digits");
+      return;
+    }
+
+    if (acceptanceMessage === "Booking was declined") {
+      setPaymentMessage("Cannot proceed with payment; booking was declined");
+      return;
+    }
+
+    // Mock payment processing
+    setPaymentMessage("Payment processed successfully");
   };
 
   const handleMessageDriver = () => {
@@ -95,14 +165,19 @@ const BookRide = () => {
   return (
     <>
       <Navbar textColor="text-blue" />
-      <div className="parent-container">
-        <div className="child-container">
+      <div className="book-ride-parent-container">
+        <div className="book-ride-child-container">
           <div className="container my-5">
-            <h1>Book a Ride</h1>
+            <h1 className="book-ride-header">Book a Ride</h1>
             <div className="ride-details">
               <div className="left-section">
                 <div className="driver-info">
-                  <div className="profile-pic"></div>
+                  <div className="profile-picture">
+                    <img
+                      src={ride.driver.profilePicture || userIcon}
+                      alt="profile-picture"
+                    />
+                  </div>
                   <div className="driver-details">
                     <h2>{ride.driver.firstName}</h2>
                     <div className="rating">
@@ -120,7 +195,6 @@ const BookRide = () => {
                     {ride.startCity.name} to {ride.endCity.name}
                   </h4>
                   <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
-                  <p>Returning: {new Date(ride.returnTime).toLocaleString()}</p>
                   <h5>{ride.seatsNumber} seats left</h5>
                   <p>Pickup: {ride.startCity.name}</p>
                   <p>Dropoff: {ride.endCity.name}</p>
@@ -143,7 +217,6 @@ const BookRide = () => {
                   {ride.startCity.name} to {ride.endCity.name}
                 </p>
                 <p>Leaving: {new Date(ride.departTime).toLocaleString()}</p>
-                <p>Returning: {new Date(ride.returnTime).toLocaleString()}</p>
                 <hr />
                 <div className="cost-summary">
                   <p>{seats} seats</p>
@@ -169,8 +242,15 @@ const BookRide = () => {
                         : "error-message"
                     }`}
                   >
-                    {message}
+                    {message.message}
                   </div>
+                )}
+                {(acceptanceMessage &&
+                  acceptanceMessage == "Booking Accepted") ||
+                acceptanceMessage == "Booking is pending approval" ? (
+                  <div className="success-message">{acceptanceMessage}</div>
+                ) : (
+                  <div className="error-message">{acceptanceMessage}</div>
                 )}
                 {error && <div className="error-message">{error}</div>}
               </div>
@@ -216,10 +296,11 @@ const BookRide = () => {
                   </p>
                 </div>
               </div>
+
               <div className="payment-method-box">
                 <div className="payment-method">
                   <h3>Payment Method</h3>
-                  <form onSubmit={handleBooking}>
+                  <form onSubmit={handlePayment}>
                     <label>Name on Card</label>
                     <input
                       type="text"
@@ -245,6 +326,12 @@ const BookRide = () => {
                       onChange={(e) => setCvv(e.target.value)}
                     />
                     <button type="submit">Proceed To Pay</button>
+                    {paymentmessage &&
+                    paymentmessage != "Payment processed successfully" ? (
+                      <div className="error-message">{paymentmessage}</div>
+                    ) : (
+                      <div className="success-message">{paymentmessage}</div>
+                    )}
                   </form>
                 </div>
               </div>

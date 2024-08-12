@@ -12,13 +12,35 @@ const FindRide = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const handleSearch = async ({ fromLocation, toLocation, date }) => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(
+        `${apiUrl}/rides/search?from=${fromLocation}&to=${toLocation}&date=${date}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch rides");
+      }
+      const data = await response.json();
+      console.log("this is the data received", data);
+      setRides(data.rides);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchRides = async () => {
+      const token = localStorage.getItem("token");
+
       try {
         const apiUrl = import.meta.env.VITE_API_BASE_URL;
         const response = await fetch(`${apiUrl}/ride`, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
         if (!response.ok) {
@@ -49,10 +71,14 @@ const FindRide = () => {
   };
 
   return (
-    <div>
+    <div className="findRide-container">
       <header className="text-white">
         <Navbar textColor="text-white" />
-        <SearchBar />
+        {localStorage.getItem("userType") === "passenger" ? (
+          <SearchBar onSearch={handleSearch} />
+        ) : (
+          ""
+        )}
       </header>
 
       <main className="main-container">
@@ -65,7 +91,7 @@ const FindRide = () => {
               onClick={() => handleRideClick(ride._id)}
             >
               <div className="driver-image-container">
-                <div>driver image</div>
+                <img src={ride.driver.profilePicture} alt="driver-image" />
               </div>
 
               <div className="ride-details-container">
@@ -78,10 +104,6 @@ const FindRide = () => {
                     <p className="leaving">
                       Leaving:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       {new Date(ride.departTime).toLocaleString()}
-                    </p>
-                    <p className="returning">
-                      Returning:&nbsp;&nbsp;&nbsp;{" "}
-                      {new Date(ride.returnTime).toLocaleString()}
                     </p>
                   </div>
                   <div className="pickup-dropoff-container">

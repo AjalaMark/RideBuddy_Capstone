@@ -13,6 +13,11 @@ const bookingSchema = new Schema({
     enum: ["pending", "completed", "failed"],
     default: "pending",
   },
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "declined"],
+    default: "pending",
+  },
 });
 
 const Booking = model("Booking", bookingSchema);
