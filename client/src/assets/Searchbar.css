@@ -1,0 +1,17 @@
+*::after,
+*::before,
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.custom-select {
+  padding: 11px;
+  width: 140%;
+}
+
+.btn-warning {
+  height: 45px;
+  font-weight: 700;
+}

@@ -1,21 +1,6 @@
-import mongoose from "mongoose";
-import {} from "dotenv/config.js";
+import { model, Schema } from "mongoose";
 
-const uri = process.env.MONGO_URI;
-
-mongoose
-  .connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("connected to mongodb successfully");
-  })
-  .catch((err) => {
-    console.log(`error connecting to mongodb, error: ${err}`);
-  });
-
-const userSchema = mongoose.Schema({
+const userSchema = new Schema({
   firstName: { type: String, default: "default" },
   lastName: { type: String, default: "default" },
   email: {
@@ -26,7 +11,8 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   phoneNumber: { type: Number, default: "0", required: true },
   profilePicture: { type: String, default: null },
+  userType: { type: String, enum: ["driver", "passenger"], required: true },
 });
 
-const userModel = mongoose.model("userData", userSchema);
+const userModel = model("userData", userSchema);
 export { userModel };

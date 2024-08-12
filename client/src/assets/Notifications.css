@@ -1,0 +1,86 @@
+/* Container for the pending bookings section */
+.pending-bookings-container {
+  background-color: #f9f9f9; /* Light background for contrast */
+  padding: 20px; /* Padding around the container */
+  border-radius: 10px; /* Rounded corners for the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 600px; /* Limit width for better readability */
+  margin: 100px auto; /* Center the container */
+}
+
+/* Styling for the section title */
+.pending-bookings-container h2 {
+  font-size: 24px; /* Larger font size for the title */
+  color: #333; /* Dark text color */
+  margin-bottom: 20px; /* Space below the title */
+  text-align: center; /* Center the title */
+}
+
+/* Container for the bookings list */
+.pending-bookings-container ul {
+  list-style: none; /* Remove default list styling */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+/* Styling for individual booking items */
+.pending-bookings-container li {
+  background-color: #ffffff; /* White background for each item */
+  border: 1px solid #e0e0e0; /* Light border around each item */
+  border-radius: 8px; /* Rounded corners for each item */
+  padding: 15px; /* Padding inside each item */
+  margin-bottom: 10px; /* Space between items */
+  display: flex; /* Align content horizontally */
+  justify-content: space-between; /* Space out text and buttons */
+  align-items: center; /* Center content vertically */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for booking items */
+.pending-bookings-container li:hover {
+  background-color: #f1f1f1; /* Slightly darker background on hover */
+}
+
+/* Styling for the text inside booking items */
+.pending-bookings-container li span {
+  font-size: 16px; /* Font size for the booking text */
+  color: #555; /* Dark gray text color */
+}
+
+/* Styling for the buttons */
+.pending-bookings-container button {
+  background-color: #2fd1ff; /* Primary button color */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners for buttons */
+  padding: 8px 15px; /* Padding inside buttons */
+  font-size: 14px; /* Font size for button text */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions for hover and click effects */
+  margin-left: 10px; /* Space between buttons */
+}
+
+/* Hover effect for buttons */
+.pending-bookings-container button:hover {
+  background-color: #1ca1cc; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+/* Click effect for buttons */
+.pending-bookings-container button:active {
+  transform: scale(1); /* Return to original size on click */
+}
+
+/* Media query for responsive design */
+@media (max-width: 480px) {
+  .pending-bookings-container li {
+    flex-direction: column; /* Stack text and buttons vertically */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .pending-bookings-container button {
+    margin: 5px 0 0 0; /* Adjust margin for buttons on smaller screens */
+    width: 100%; /* Make buttons full-width */
+    text-align: center; /* Center text inside buttons */
+  }
+}

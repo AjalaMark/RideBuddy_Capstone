@@ -1,0 +1,173 @@
+.home-container *,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  height: 100vh;
+}
+
+.home-container {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+
+header {
+  background-color: #2ed1ff;
+}
+
+#header {
+  background-image: url("./carpool_only_large-1fb250954893109fa160.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 550px;
+}
+
+.icon-img {
+  width: 50px;
+  height: 50px;
+}
+
+.home-container #header .form-control {
+  margin-bottom: 10px;
+}
+
+.home-container #header button {
+  background-color: #ffcc00;
+  color: #000;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.home-container main {
+  padding: 20px;
+}
+
+.home-container section h2 {
+  color: #2c3e50;
+}
+
+.home-container section p {
+  line-height: 1.6;
+  color: #555;
+}
+
+.home-container section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.home-container section ul li {
+  background: url("check-icon.png") no-repeat left center;
+  color: #333;
+  padding-left: 25px;
+  margin-bottom: 10px;
+}
+
+.home-container button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.home-container .tick-mark {
+  width: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.home-container button:hover {
+  background-color: #1d3249;
+}
+
+.testimonials {
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.testimonial-card {
+  position: relative;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px;
+  height: 350px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.testimonial-card blockquote {
+  background-color: white;
+  border-left: none;
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+  color: #333;
+  text-align: justify;
+}
+
+.user-icon {
+  position: absolute;
+  bottom: 25px;
+  width: 50px;
+  height: 50px;
+  background: url("path-to-icon.png") no-repeat center center;
+  background-size: contain;
+  margin-top: 20px;
+}
+
+footer {
+  background-color: #d9d9d9;
+  padding: 40px;
+  border-top: 1px solid #ddd;
+  color: #191c57;
+  display: flex;
+  justify-content: space-between;
+}
+
+footer a {
+  text-decoration: none;
+  color: #004753;
+  display: block;
+  margin: 20px 0 20px 0;
+}
+
+footer h4 {
+  margin-top: 30px;
+  color: #004753;
+  font-weight: 700;
+}
+
+footer h5 {
+  font-weight: 700;
+}
+
+footer h5,
+p {
+  color: #004753;
+}
+
+footer a:hover {
+  text-decoration: underline;
+  color: #004753;
+}
+
+.footer-column a i {
+  margin-right: 8px;
+}
+
+footer p {
+  margin: 0;
+}

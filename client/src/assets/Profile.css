@@ -1,0 +1,129 @@
+.profile-page {
+  max-width: 800px;
+  margin: 90px auto;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-page h2 {
+  text-align: center;
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.profile-picture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-picture img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.profile-picture input[type="file"] {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.profile-picture button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.profile-picture button:hover {
+  background-color: #0056b3;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profile-details label {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  color: #444;
+}
+
+.profile-details input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #fff;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details p {
+  font-size: 16px;
+  margin: 0;
+  color: #555;
+}
+
+.profile-page button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.profile-page button:hover {
+  background-color: #0056b3;
+}
+
+.edit-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.edit-buttons button {
+  padding: 10px 30px;
+  font-size: 16px;
+  border-radius: 50px;
+}
+
+.profile-page .profile-details label p {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.profile-details input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.profile-picture img:hover {
+  border-color: #0056b3;
+  transition: ease-in-out 0.5s;
+}

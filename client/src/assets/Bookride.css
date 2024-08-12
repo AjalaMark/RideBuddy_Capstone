@@ -1,0 +1,256 @@
+.book-ride-parent-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.book-ride-child-container {
+  width: 100%;
+  max-width: 1200px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.book-ride-header {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.ride-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.left-section,
+.booking-summary {
+  flex: 1;
+  min-width: 300px;
+  margin: 10px;
+}
+
+.left-section {
+  padding-right: 20px;
+}
+
+.driver-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffa500;
+}
+
+.driver-details {
+  margin-left: 20px;
+  text-align: left;
+}
+
+.driver-details h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.rating span {
+  color: gold;
+  font-size: 1.2rem;
+}
+
+.ride-info {
+  margin-top: 20px;
+}
+
+.ride-info h4,
+.vehicle-info p {
+  margin: 5px 0;
+}
+
+.booking-summary {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.booking-summary h4 {
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+}
+
+.cost-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.cost-summary p,
+.cost-summary h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.request-button,
+.message-button {
+  background-color: #ffa500;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.request-button:hover,
+.message-button:hover {
+  background-color: #ff8c00;
+}
+
+.success-message,
+.error-message {
+  margin-top: 20px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.additional-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.select-seats,
+.payment-method-box {
+  flex: 1;
+  min-width: 300px;
+  margin: 10px;
+  padding: 20px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.select-seats h3,
+.payment-method h3 {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+}
+
+.select-seats select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.payment-method label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.payment-method input {
+  width: calc(100% - 22px);
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.payment-method button {
+  background-color: #ffa500;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.payment-method button:hover {
+  background-color: #ff8c00;
+}
+
+.payment-policy {
+  margin-top: 20px;
+}
+
+.payment-policy h3,
+.cancellation-policy h3 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.payment-policy p,
+.cancellation-policy p {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #666;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .left-section {
+    padding-right: 0;
+  }
+
+  .booking-summary,
+  .payment-method-box {
+    margin-top: 20px;
+  }
+
+  .parent-container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .driver-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .driver-details {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .ride-details,
+  .additional-info {
+    flex-direction: column;
+  }
+
+  .select-seats,
+  .payment-method-box {
+    width: 100%;
+  }
+}
