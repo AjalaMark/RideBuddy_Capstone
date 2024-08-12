@@ -18,24 +18,24 @@
   justify-content: center;
 }
 
-section.mb-5 {
+.parent-container section.mb-5 {
   margin-top: 10px;
   /* text-align: center; */
 }
 
-section.mb-5 h3 {
+.parent-container section.mb-5 h3 {
   margin-bottom: 10px;
   font-weight: bold;
   /* text-decoration: underline; */
 }
 
-section.mb-5 label {
+.parent-container section.mb-5 label {
   font-weight: bold;
   color: #2e5862;
   margin: 7px;
 }
 
-section.mb-5 .form-control {
+.parent-container section.mb-5 .form-control {
   font-size: 14px;
   background-color: rgb(46, 88, 98, 0.09);
   border-color: rgb(46, 88, 98, 0.09);
@@ -43,7 +43,7 @@ section.mb-5 .form-control {
   margin: 5px auto;
 }
 
-hr {
+.parent-container hr {
   border: none;
   height: 7px;
   background-color: #2e5862; /* Adjust this color to match the desired one */
@@ -52,22 +52,26 @@ hr {
   width: 80px;
 }
 
-h1 {
+.parent-container h1 {
   font-weight: 600;
   color: #2e5862;
 }
 
-h3 {
+.parent-container h3 {
   color: #2e5862;
 }
 
-section p {
+.parent-container section p {
   color: hsla(190, 100%, 16%, 0.6);
   font-weight: 300;
 }
 
-section.mb-5 input[type="time"]::-webkit-calendar-picker-indicator,
-section.mb-5 input[type="date"]::-webkit-calendar-picker-indicator {
+.parent-container
+  section.mb-5
+  input[type="time"]::-webkit-calendar-picker-indicator,
+.parent-container
+  section.mb-5
+  input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 .main-container {
@@ -78,11 +82,11 @@ section.mb-5 input[type="date"]::-webkit-calendar-picker-indicator {
     width: 60%;
 } */
 
-input[type="text"],
-input[type="time"],
-input[type="date"],
-input[type="number"],
-select {
+.parent-container input[type="text"],
+.parent-container input[type="time"],
+.parent-container input[type="date"],
+.parent-container input[type="number"],
+.parent-container select {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -92,12 +96,12 @@ select {
   font-size: 16px;
 }
 
-.btn {
+.parent-container .btn {
   background-color: #004553;
   border: 1px solid #004553;
 }
 
-.btn:hover {
+.parent-container .btn:hover {
   background-color: rgba(0, 69, 83, 0.1);
   border: 1px solid #004553;
   color: #004553;

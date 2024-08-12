@@ -9,7 +9,6 @@ const PostRide = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [departureTime, setDepartureTime] = useState("");
-  const [returnTime, setReturnTime] = useState("");
   const [travelDate, setTravelDate] = useState("");
   const [carModel, setCarModel] = useState("");
   const [carType, setCarType] = useState("");
@@ -22,6 +21,7 @@ const PostRide = () => {
   const navigate = useNavigate();
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const currentYear = new Date().getFullYear();
 
   const handlePost = async (event) => {
     event.preventDefault();
@@ -40,13 +40,11 @@ const PostRide = () => {
       };
 
       const departTime = combineDateAndTime(travelDate, departureTime);
-      const returnTimeDate = combineDateAndTime(travelDate, returnTime);
 
       if (
         !origin &&
         !destination &&
         !departureTime &&
-        !returnTime &&
         !travelDate &&
         !carModel &&
         !carType &&
@@ -60,13 +58,18 @@ const PostRide = () => {
         return;
       }
 
-      if (
-        !departTime ||
-        !returnTimeDate ||
-        isNaN(departTime) ||
-        isNaN(returnTimeDate)
-      ) {
+      if (!departTime || isNaN(departTime)) {
         setError("Ride Schedule is required.");
+        return;
+      }
+
+      if (carYear > currentYear) {
+        setError("Car year cannot exceed the current year.");
+        return;
+      }
+
+      if (seatPrice < 0) {
+        setError("Price per seat cannot be less than 0.");
         return;
       }
 
@@ -80,7 +83,6 @@ const PostRide = () => {
           origin,
           destination,
           departureTime: departTime.toISOString(),
-          returnTime: returnTimeDate.toISOString(),
           travelDate,
           carModel,
           carType,
@@ -100,7 +102,7 @@ const PostRide = () => {
 
       const data = await response.json();
       if (response.ok) {
-        navigate("/home");
+        navigate("/");
       } else {
         setError(data?.message || "An error occurred. Please try again.");
       }
@@ -112,7 +114,7 @@ const PostRide = () => {
 
   return (
     <>
-      <Navbar textColor="text-blue" />
+      <Navbar textColor="#005770" />
       <div className="parent-container">
         <div className="child-container">
           <div className="container my-5">
@@ -123,7 +125,7 @@ const PostRide = () => {
 
             <form onSubmit={handlePost}>
               <section className="mb-5">
-                <h3>Travel Plan</h3>
+                <p className="h3">Travel Plan</p>
                 <p>
                   Your origin and destination you&apos;re willing to make along
                   the way.
@@ -201,7 +203,7 @@ const PostRide = () => {
               <hr />
 
               <section className="mb-5">
-                <h3>Ride Schedule</h3>
+                <p className="h3">Ride Schedule</p>
                 <p>
                   Enter a precise date and time with am (morning) or pm
                   (evening).
@@ -224,22 +226,6 @@ const PostRide = () => {
                 </div>
                 <div className="form-group row">
                   <label
-                    htmlFor="return-time"
-                    className="col-sm-5 col-form-label text-right"
-                  >
-                    Time for Returning
-                  </label>
-
-                  <input
-                    type="time"
-                    className="form-control"
-                    id="return-time"
-                    value={returnTime}
-                    onChange={(e) => setReturnTime(e.target.value)}
-                  />
-                </div>
-                <div className="form-group row">
-                  <label
                     htmlFor="travel-date"
                     className="col-sm-5 col-form-label text-right"
                   >
@@ -258,7 +244,7 @@ const PostRide = () => {
 
               <hr />
               <section className="mb-5">
-                <h3>Vehicle Details</h3>
+                <p className="h3">Vehicle Details</p>
                 <p>
                   This helps you get more bookings and makes it easier for
                   passengers to identify your vehicle.
@@ -340,8 +326,9 @@ const PostRide = () => {
                     id="car-year"
                     value={carYear}
                     onChange={(e) => setCarYear(e.target.value)}
-                    placeholder="Year"
-                    min="2017"
+                    min="1990"
+                    max={currentYear}
+                    placeholder="Year of Manufacture"
                   />
                 </div>
 
@@ -366,7 +353,7 @@ const PostRide = () => {
 
               <hr />
               <section className="mb-5">
-                <h3>Empty Seats</h3>
+                <p className="h3">Empty Seats</p>
                 <div className="form-group row">
                   <label
                     htmlFor="seats-number"
@@ -391,7 +378,7 @@ const PostRide = () => {
 
               <hr />
               <section className="mb-5">
-                <h3>Pricing</h3>
+                <p className="h3">Pricing</p>
                 <p>
                   Enter a fair price per seat to cover your gas and other
                   expenses. Note that all prices are CAD.
@@ -410,6 +397,7 @@ const PostRide = () => {
                     id="seat-price"
                     value={seatPrice}
                     onChange={(e) => setSeatPrice(e.target.value)}
+                    min="0"
                     placeholder="Enter price per seat"
                   />
                 </div>

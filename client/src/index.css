@@ -96,6 +96,12 @@ button:focus-visible {
   text-align: center;
 }
 
+.register-box {
+  max-height: 100%;
+  overflow-y: scroll;  
+}
+
+
 .login-box h2,
 .register-box h2 {
   margin-bottom: 20px;
@@ -183,5 +189,19 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media (min-width: 1024px) {
+  .login-box,
+  .register-box {
+    width: 450px;
+  }
+
+}
+
+@media (max-width: 376px) {
+  .register-page {
+    height: 140vh;
   }
 }

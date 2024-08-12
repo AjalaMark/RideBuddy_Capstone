@@ -5,7 +5,6 @@ import {
   driverImage,
   tickMark,
   whoWeAreImage,
-  userIcon,
   signUpIcon,
   bookARideIcon,
   getADriverIcon,
@@ -16,10 +15,14 @@ import {
 import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import Footer from "../components/Footer";
+import Testimonial from "../components/Testimonial";
+
+const token = localStorage.getItem("token");
+const isLoggedIn = !!token;
 
 const Home = () => {
   return (
-    <div>
+    <div className="home-container">
       <header className="text-white">
         <Navbar textColor="text-white" />
         <SearchBar />
@@ -31,11 +34,13 @@ const Home = () => {
               <div className="col-md-3 mb-4">
                 <div className="box p-4 bg-light flex-container">
                   <div className="orange-circle">
-                    <img
-                      src={signUpIcon}
-                      alt="Sign Up"
-                      className={iconImgClass}
-                    />
+                  <a href="/register">
+                      <img
+                        src={signUpIcon}
+                        alt="Sign Up"
+                        className={iconImgClass}
+                      />
+                  </a>
                   </div>
                   <h3>Sign Up</h3>
                   <p className="p-con">
@@ -43,16 +48,28 @@ const Home = () => {
                   </p>
                 </div>
               </div>
-
               <div className="col-md-3 mb-4 ">
                 <div className="box p-4 bg-light flex-container">
                   <div className="orange-circle">
-                    <img
-                      src={bookARideIcon}
-                      alt="Book A Ride"
-                      className={iconImgClass}
-                    />
+                    {isLoggedIn &&
+                  localStorage.getItem("userType") === "passenger" ? (
+                    <a href="/findride">
+                      <img
+                        src={bookARideIcon}
+                        alt="Book A Ride"
+                        className={iconImgClass}
+                      />
+                    </a>
+                  ) : (
+                    <a href="/login">
+                      <img
+                          src={bookARideIcon}
+                          alt="Book A Ride"
+                          className={iconImgClass}
+                        />
                   </div>
+                    </a>
+                  )}
                   <h3>Book A Ride</h3>
                   <p className="p-con">Enter your destination and confirm your booking.</p>
                 </div>
@@ -163,9 +180,8 @@ const Home = () => {
         <section className="testimonials text-center bg-light py-5">
           <div className="container">
             <div className="row">
-              <div className="bkg-color"></div>
-              <div className="flex-review">
-                <div className="testimonial-card p-4">
+              <Testimonial
+                message={
                   <blockquote>
                     &quot;RideBuddy has been a game-changer for my daily
                     commute. The booking process is quick and easy, and the
@@ -174,11 +190,10 @@ const Home = () => {
                     know exactly when my ride will arrive. Highly recommend!
                     &quot;
                   </blockquote>
-                  <div className="user-icon">
-                    <img src={userIcon} alt="User" className="img-fluid" />
-                  </div>
-                </div>
-                <div className="testimonial-card p-4">
+                }
+              />
+              <Testimonial
+                message={
                   <blockquote>
                     &quot;I&apos;ve tried several ride-sharing services, but
                     RideBuddy stands out for its affordability and reliability.
@@ -187,11 +202,10 @@ const Home = () => {
                     eco-friendly vehicles I would highly recommend as they are
                     providing the best service. &quot;
                   </blockquote>
-                  <div className="user-icon">
-                    <img src={userIcon} alt="User" className="img-fluid" />
-                  </div>
-                </div>
-                <div className="testimonial-card p-4">
+                }
+              />
+              <Testimonial
+                message={
                   <blockquote>
                     &quot;RideBuddy is fantastic! I use it for everything from
                     grocery runs to airport trips. The drivers are always
@@ -200,11 +214,8 @@ const Home = () => {
                     I&apos;ve never had any surprise charges. Five stars!.
                     Go for it, it's safe, it's awesome&quot;
                   </blockquote>
-                  <div className="user-icon">
-                    <img src={userIcon} alt="User" className="img-fluid" />
-                  </div>
-                </div>
-              </div>
+                }
+              />
             </div>
           </div>
         </section>

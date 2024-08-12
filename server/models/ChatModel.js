@@ -9,6 +9,11 @@ const chatSchema = new Schema({
       receiverId: { type: Schema.Types.ObjectId, ref: "userData" },
       message: String,
       timestamp: { type: Date, default: Date.now },
+      status: {
+        type: String,
+        enum: ["sent", "delivered"],
+        default: "sent",
+      },
     },
   ],
 });

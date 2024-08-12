@@ -15,3 +15,47 @@
   margin-left: 5px;
   margin-right: 5px;
 }
+
+.nav-container {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+  border-radius: 8px; /* Soft rounded corners */
+}
+
+/* Styling for individual links */
+.nav-link {
+  padding: 10px 15px; /* Padding around each link */
+
+  border-radius: 5px; /* Rounded corners for links */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions for background and color */
+}
+
+/* Hover effect for links */
+.nav-link:hover {
+  background-color: #1ca1cc; /* Complementary color on hover */
+  color: #ffffff; /* Keep text white on hover */
+}
+
+/* Active link styling */
+.nav-link.active {
+  background-color: #009dcf; /* Slightly darker than the background color for active state */
+  color: white; /* White text color */
+}
+
+/* Media query for responsive design */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column; /* Stack logo and links vertically */
+    align-items: center; /* Align items to the start */
+  }
+
+  .nav-ul {
+    flex-direction: column; /* Stack links vertically */
+    width: 100%; /* Take up full width */
+  }
+
+  .nav-link {
+    width: 100%; /* Each link takes up full width */
+    text-align: center; /* Align text to the left */
+    padding: 10px 20px; /* Padding for links */
+  }
+}

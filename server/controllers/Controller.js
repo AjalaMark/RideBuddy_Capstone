@@ -57,7 +57,7 @@ export default class Controller {
       if (req.body?.notEncrypted) {
         oriPassword = password;
       }
-      console.log("oriPassword: ", oriPassword);
+
       const isMatch = await bcrypt.compare(oriPassword, user.password);
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid password" });
@@ -74,8 +74,83 @@ export default class Controller {
     }
   };
 
-  static get_home = (req, res) => {
-    res.status(200).json({ message: "Welcome to the Home Page" });
+  static get_profile = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await userModel
+        .findById(userId)
+        .select("-password -userType");
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  };
+
+  static update_profile_picture = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const { profilePicture } = req.body;
+
+      const user = await userModel
+        .findOneAndUpdate(
+          { _id: userId },
+          { profilePicture },
+          { new: true, runValidators: true }
+        )
+        .select("-userType");
+
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  };
+
+  static update_profile = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const updatedData = req.body.user;
+
+      // Extract fields from updatedData
+      const {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+        profilePicture,
+      } = updatedData;
+
+      const updateObject = {};
+
+      if (firstName) updateObject.firstName = firstName;
+      if (lastName) updateObject.lastName = lastName;
+      if (email) updateObject.email = email;
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        updateObject.password = hashedPassword;
+      }
+      if (phoneNumber) updateObject.phoneNumber = phoneNumber;
+      if (profilePicture) updateObject.profilePicture = profilePicture;
+
+      const user = await userModel.findOneAndUpdate(
+        { _id: userId },
+        updateObject,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+      // Check if the user was found and updated
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.status(200).json(user);
+    } catch (error) {
+      // Log the error for debugging
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
   };
 
   static get_ride = async (req, res) => {
@@ -140,7 +215,6 @@ export default class Controller {
         origin,
         destination,
         departureTime,
-        returnTime,
         travelDate,
         carModel,
         carType,
@@ -152,10 +226,9 @@ export default class Controller {
       } = req.body;
 
       const departTime = new Date(departureTime);
-      const returnTimeDate = new Date(returnTime);
       const travelDateDate = new Date(travelDate);
 
-      if (isNaN(departTime) || isNaN(returnTimeDate) || isNaN(travelDateDate)) {
+      if (isNaN(departTime) || isNaN(travelDateDate)) {
         return res.status(400).json({ message: "Invalid date format" });
       }
 
@@ -195,7 +268,6 @@ export default class Controller {
         endCity: endCityObj._id,
         departTime: departTime,
         car: savedCar._id,
-        returnTime: returnTimeDate,
         travelDate: travelDateDate,
         carModel,
         carType,
@@ -206,8 +278,10 @@ export default class Controller {
         seatPrice,
       });
 
-      await ride.save();
-      res.status(200).json({ message: "ride post successfully" });
+      let savedRide = await ride.save();
+      res
+        .status(200)
+        .json({ rideId: savedRide._id, message: "ride post successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
@@ -238,6 +312,43 @@ export default class Controller {
       res.status(200).json({ message: "city post successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
+    }
+  };
+
+  static search = async (req, res) => {
+    let filter = {};
+    const { from, to, date } = req.query;
+    try {
+      const startCity = await CityModel.findOne({ name: from });
+      const endCity = await CityModel.findOne({ name: to });
+      if (!startCity || !endCity) {
+        return res.status(404).json({ message: "City not found" });
+      }
+      if (!startCity || !endCity) {
+        return res.status(404).json({ message: "City not found" });
+      }
+
+      // Build the filter object
+      if (startCity) {
+        filter.startCity = startCity._id;
+      }
+      if (endCity) {
+        filter.endCity = endCity._id;
+      }
+      if (date) {
+        // Assuming your date field in the model is called "rideDate"
+        filter.rideDate = new Date(date);
+      }
+      const rides = await PostRideModel.find(filter)
+        .populate("startCity")
+        .populate("endCity")
+        .populate("driver");
+
+      res.status(200).json({ rides });
+      console.log(`this is the object being sent ${rides}`);
+    } catch (error) {
+      res.status(500).send("Server error");
+      console.log(error);
     }
   };
 
@@ -272,23 +383,20 @@ export default class Controller {
       const chats = await Chat.find({
         $or: [{ senderId: userId }, { receiverId: userId }],
       })
-        .populate("senderId", "name")
-        .populate("receiverId", "name");
+        .populate("senderId", "firstName")
+        .populate("receiverId", "firstName");
 
-      const contacts = [];
+      const contacts = new Map();
+
       chats.forEach((chat) => {
         if (chat.senderId._id.toString() !== userId) {
-          contacts.push(chat.senderId);
+          contacts.set(chat.senderId._id.toString(), chat.senderId);
         } else {
-          contacts.push(chat.receiverId);
+          contacts.set(chat.receiverId._id.toString(), chat.receiverId);
         }
       });
 
-      const uniqueContacts = [
-        ...new Map(
-          contacts.map((contact) => [contact._id.toString(), contact])
-        ).values(),
-      ];
+      const uniqueContacts = Array.from(contacts.values());
 
       res.json(uniqueContacts);
     } catch (error) {
@@ -315,15 +423,26 @@ export default class Controller {
         });
       }
 
-      chat.messages.push({
+      const newMessage = {
         senderId: senderId,
         receiverId: receiverId,
         message: message,
         timestamp: new Date(),
-      });
+        status: "sent",
+      };
+
+      chat.messages.push(newMessage);
 
       const savedMessage = await chat.save();
-      res.json(savedMessage);
+
+      const addedMessage =
+        savedMessage.messages[savedMessage.messages.length - 1];
+
+      res.json({
+        chatId: savedMessage._id,
+        messageId: addedMessage._id,
+        chat: savedMessage,
+      });
 
       req.app.get("socketio").emit("chat message", savedMessage);
     } catch (error) {
@@ -384,17 +503,106 @@ export default class Controller {
           .json({ message: "Ride has already been booked" });
       }
 
-      const paymentStatus = "completed";
-
       const booking = new Booking({
         rideId,
         userId,
-        paymentStatus,
+        paymentStatus: "pending",
+        status: "pending",
       });
+
       await booking.save();
-      res.status(200).json({ message: "ride booked successfully" });
+      res
+        .status(200)
+        .json({ type: "success", message: "Ride Booked Successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
+    }
+  };
+
+  // Controller function to get all pending bookings for a driver
+  static get_pending_bookings = async (req, res) => {
+    try {
+      // Extract the token from the request headers
+      const authHeader = req.headers["authorization"];
+      const token = authHeader && authHeader.split(" ")[1];
+
+      if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+      }
+
+      const decoded = jwt.decode(token);
+      const driverId = decoded.userId;
+
+      // Fetch rides for the driver
+      const rides = await PostRideModel.find({ driver: driverId });
+      const rideIds = rides.map((ride) => ride._id);
+
+      // Fetch pending bookings for these rides
+      const bookings = await Booking.find({
+        rideId: { $in: rideIds },
+        status: "pending",
+      }).populate("userId");
+
+      res.status(200).json(bookings);
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+  // Controller function to accept a booking
+  static accept_booking = async (req, res) => {
+    try {
+      const { bookingId } = req.params;
+
+      const updatedBooking = await Booking.findByIdAndUpdate(
+        bookingId,
+        { status: "accepted", paymentStatus: "pending" }, // Adjust if needed
+        { new: true } // Return the updated document
+      ).populate("userId"); // Optionally populate user details
+
+      if (!updatedBooking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      res.status(200).json({ message: "Booking accepted successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+
+  // Controller function to decline a booking
+  static decline_booking = async (req, res) => {
+    try {
+      const { bookingId } = req.params;
+
+      const updatedBooking = await Booking.findByIdAndUpdate(
+        bookingId,
+        { status: "declined", paymentStatus: "pending" }, // Adjust if needed
+        { new: true } // Return the updated document
+      ).populate("userId"); // Optionally populate user details
+
+      if (!updatedBooking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      res.status(200).json({ message: "Booking declined successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+
+  static get_booking_ride = async (req, res) => {
+    try {
+      const rideId = req.params.rideId;
+
+      const booking = await Booking.findOne({ rideId });
+
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      res.json({ booking });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
   };
 }
